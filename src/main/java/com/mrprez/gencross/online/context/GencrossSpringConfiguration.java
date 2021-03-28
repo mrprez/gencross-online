@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
 @Configuration
-@ComponentScan(basePackages = "com.mrprez.gencross.online.controller")
+@ComponentScan(basePackages = {"com.mrprez.gencross.online.controller", "com.mrprez.gencross.online.service"})
 public class GencrossSpringConfiguration {
 	
 	@Bean

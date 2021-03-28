@@ -40,7 +40,7 @@ function checkConfirm() {
 	  							</div>
 	  							<div class="mb-3">
 	  								<label for="emailInput"><fmt:message key="label.email"/></label>
-	  								<input type="email" name="username" class="form-control" id="emailInput" required/>
+	  								<input type="email" name="email" class="form-control" id="emailInput" required/>
 	  							</div>
 	  							<div class="mb-3">
 	  								<label for="passwordInput"><fmt:message key="label.password"/></label>

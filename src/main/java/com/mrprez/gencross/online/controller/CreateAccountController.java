@@ -1,13 +1,19 @@
 package com.mrprez.gencross.online.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.mrprez.gencross.online.service.UserService;
+
 @Controller
 @RequestMapping("/createAccount")
 public class CreateAccountController {
+	
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping(method = RequestMethod.GET)
     public String get() {
@@ -16,7 +22,8 @@ public class CreateAccountController {
 	
 	@RequestMapping(method = RequestMethod.POST)
     public String post(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password) {
-        return "/jsp/createAccount.jsp";
+		userService.createUser(username, email, password);
+		return "/jsp/login.jsp";
     }
 
 
