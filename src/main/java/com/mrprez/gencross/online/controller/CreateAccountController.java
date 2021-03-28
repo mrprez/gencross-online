@@ -1,5 +1,8 @@
 package com.mrprez.gencross.online.controller;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +24,7 @@ public class CreateAccountController {
     }
 	
 	@RequestMapping(method = RequestMethod.POST)
-    public String post(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password) {
+    public String post(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		userService.createUser(username, email, password);
 		return "/jsp/login.jsp";
     }

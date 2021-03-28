@@ -4,6 +4,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.flywaydb.core.Flyway;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.MessageSource;
@@ -35,7 +36,12 @@ public class GencrossSpringConfiguration {
 	
 	@Bean
     public DataSource dataSource() throws NamingException {
-        return new JndiTemplate().lookup("java:comp/env/jdbc/gencross-db", DataSource.class);
+        DataSource datasource = new JndiTemplate().lookup("java:comp/env/jdbc/gencross-db", DataSource.class);
+        
+        Flyway flyway = Flyway.configure().locations("classpath:db/migration").dataSource(datasource).load();
+        flyway.migrate();
+        
+        return datasource;
     }
 
 }
