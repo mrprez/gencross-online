@@ -4,6 +4,22 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mrprez.gencross.online.dao.UserDao">
 
+	<resultMap id="User" type="com.mrprez.gencross.online.model.User">
+		<id column="id" property="id"/>
+		<result column="username" property="username"/>
+		<result column="email" property="email"/>
+	</resultMap>
+	
+	<resultMap id="UserWithPassword" type="com.mrprez.gencross.online.model.UserWithPassword">
+		<id column="id"/>
+		<result column="password_hash" property="hash"/>
+		<association property="user" resultMap="User"/>
+	</resultMap>
+
+	<select id="getWithPassword" resultMap="UserWithPassword">
+		SELECT * FROM user u WHERE u.username = #{username}
+	</select>
+
 	<insert id="createUser">
 		INSERT INTO user (username, password_hash, email) VALUES (#{user.username}, #{passwordHash}, #{user.email})
 	</insert>

@@ -17,7 +17,7 @@ public abstract class AbstractIntId {
 	}
 
 
-	public int getId() {
+	public int getInt() {
 		return id;
 	}
 

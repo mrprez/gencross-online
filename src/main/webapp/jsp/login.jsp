@@ -22,7 +22,7 @@
   					<div class="card">
   						<div class="card-body">
 	  						<h5><fmt:message key="label.connection"/></h5>
-	  						<form action="/gencross-online/dispatcher/login" method="POST">
+	  						<form action="/gencross-online/login" method="POST">
 	  							<div class="mb-3">
 	  								<label for="usernameInput"><fmt:message key="label.username"/></label>
 	  								<input type="text" name="username" class="form-control" id="usernameInput" auto-focus required/>
