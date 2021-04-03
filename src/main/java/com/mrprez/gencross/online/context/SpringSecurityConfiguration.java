@@ -29,7 +29,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.formLogin()
 				.loginPage("/dispatcher/login")
 				.loginProcessingUrl("/login")
-				.defaultSuccessUrl("/jsp/home.jsp", true)
+				.defaultSuccessUrl("/dispatcher/home", true)
 				.permitAll()
 			.and().csrf().disable();
 	}

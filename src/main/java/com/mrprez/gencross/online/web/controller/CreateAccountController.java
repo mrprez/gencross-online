@@ -1,4 +1,4 @@
-package com.mrprez.gencross.online.controller;
+package com.mrprez.gencross.online.web.controller;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;

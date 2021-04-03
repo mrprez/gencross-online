@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mrprez.gencross.online.dao.RpgTableDao">
+
+	<resultMap id="RpgTable" type="com.mrprez.gencross.online.model.RpgTable">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="type" property="type"/>
+		<result column="creation_date" property="creationDate"/>
+		<result column="gm_id" property="gmId"/>
+	</resultMap>
+
+	<select id="getTablesAsGm" resultMap="RpgTable">
+		SELECT * FROM rpg_table rt WHERE rt.gm_id = #{userId} ORDER BY rt.creation_date DESC
+	</select>
+	
+</mapper>
