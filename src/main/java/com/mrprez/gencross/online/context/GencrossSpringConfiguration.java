@@ -21,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.mrprez.gencross.disk.PersonnageFactory;
-import com.mrprez.gencross.online.dao.handler.RpgTableIdTypeHandler;
+import com.mrprez.gencross.online.dao.handler.TableIdTypeHandler;
 import com.mrprez.gencross.online.dao.handler.UserIdTypeHandler;
 
 @Configuration
@@ -45,7 +45,7 @@ public class GencrossSpringConfiguration {
 		factoryBean.setDataSource(dataSource);
 		factoryBean.setTypeHandlers(
 				new UserIdTypeHandler(),
-				new RpgTableIdTypeHandler());
+				new TableIdTypeHandler());
 		return factoryBean.getObject();
 	}
 	

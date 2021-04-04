@@ -2,18 +2,22 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mrprez.gencross.online.dao.RpgTableDao">
+<mapper namespace="com.mrprez.gencross.online.dao.TableDao">
 
-	<resultMap id="RpgTable" type="com.mrprez.gencross.online.model.RpgTable">
+	<resultMap id="Table" type="com.mrprez.gencross.online.model.Table">
 		<id column="id" property="id"/>
 		<result column="name" property="name"/>
-		<result column="type" property="type"/>
+		<result column="game" property="game"/>
 		<result column="creation_date" property="creationDate"/>
 		<result column="gm_id" property="gmId"/>
 	</resultMap>
 
-	<select id="getTablesAsGm" resultMap="RpgTable">
+	<select id="getTablesAsGm" resultMap="Table">
 		SELECT * FROM rpg_table rt WHERE rt.gm_id = #{userId} ORDER BY rt.creation_date DESC
 	</select>
+	
+	<insert id="createTable">
+		INSERT INTO rpg_table (name, game, creation_date, gm_id) VALUES (#{name}, #{game}, #{creationDate}, #{gmId})
+	</insert>
 	
 </mapper>

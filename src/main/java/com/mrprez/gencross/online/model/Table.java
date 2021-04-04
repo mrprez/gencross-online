@@ -2,21 +2,21 @@ package com.mrprez.gencross.online.model;
 
 import java.time.LocalDateTime;
 
-import com.mrprez.gencross.online.model.id.RpgTableId;
+import com.mrprez.gencross.online.model.id.TableId;
 import com.mrprez.gencross.online.model.id.UserId;
 
-public class RpgTable {
-	private RpgTableId id;
+public class Table {
+	private TableId id;
 	private String name;
-	private String type;
+	private String game;
 	private LocalDateTime creationDate;
 	private UserId gmId;
 	
 	
-	public RpgTableId getId() {
+	public TableId getId() {
 		return id;
 	}
-	public void setId(RpgTableId id) {
+	public void setId(TableId id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -25,11 +25,11 @@ public class RpgTable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getType() {
-		return type;
+	public String getGame() {
+		return game;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setGame(String game) {
+		this.game = game;
 	}
 	public LocalDateTime getCreationDate() {
 		return creationDate;

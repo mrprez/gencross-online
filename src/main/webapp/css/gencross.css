@@ -1,0 +1,16 @@
+
+#newTableButton {
+	position: relative;
+}
+
+#newTableButtonSpinner {
+	display: none;
+	position: absolute;
+	margin: auto;
+	width: 1em;
+	height: 1em;
+	left: 50%;
+	top: 50%;
+	margin-top: -0.5em;
+	margin-left: -0.5em;
+}

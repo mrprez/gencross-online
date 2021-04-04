@@ -1,5 +1,6 @@
 package com.mrprez.gencross.online.web.controller;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mrprez.gencross.online.model.RpgTable;
+import com.mrprez.gencross.disk.PluginDescriptor;
+import com.mrprez.gencross.online.model.Table;
+import com.mrprez.gencross.online.service.CharacterService;
 import com.mrprez.gencross.online.service.GencrossAuthenticationProvider;
 import com.mrprez.gencross.online.service.TableService;
 
@@ -17,7 +20,10 @@ import com.mrprez.gencross.online.service.TableService;
 public class HomeController {
 	
 	@Autowired
-	private TableService rpgTableService;
+	private TableService tableService;
+	
+	@Autowired
+	private CharacterService characterService;
 	
 	@Autowired
 	private GencrossAuthenticationProvider authenticationProvider;
@@ -25,11 +31,17 @@ public class HomeController {
 	
 	@RequestMapping(method = RequestMethod.GET)
     public ModelAndView get() {
-		List<RpgTable> userGmTables = rpgTableService.getUserGmTables(authenticationProvider.getAuthenticatedUser().getId());
-		RpgTable table = new RpgTable();
+		List<Table> userGmTables = tableService.getUserGmTables(authenticationProvider.getAuthenticatedUser().getId());
+		Table table = new Table();
 		table.setName("TableName");
 		userGmTables.add(table);
         return new ModelAndView("/jsp/home.jsp", "userGmTables", userGmTables);
+    }
+	
+	@RequestMapping(value = "/createTable", method = RequestMethod.GET)
+    public ModelAndView getCreateTable() {
+		Collection<PluginDescriptor> pluginList = characterService.getPluginList();
+        return new ModelAndView("/jsp/createTableModal.jsp", "pluginList", pluginList);
     }
 
 }
