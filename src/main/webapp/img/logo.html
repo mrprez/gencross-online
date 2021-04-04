@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>logo</title>
+		<script>
+var logoSvg;
+var svgNs;
+	
+function init() {
+	logoSvg = document.querySelector("svg");
+	svgNs = "http://www.w3.org/2000/svg";
+	
+	var angleStep = Math.PI / 6;
+	var phase = Math.PI / 20;
+	var axeStep = 50;
+	var rayon = 25;
+	var center = 150;
+	var width = 100;
+	
+	var circles = [];
+	
+	for (var i=1; i<14; i++) {
+		var c1 = {
+			x: i * axeStep,
+			y: center + width * Math.cos( i * angleStep + phase),
+			z: Math.sin( i * angleStep + phase),
+			r: rayon
+		};
+		var c2 = {
+			x: i * axeStep,
+			y: center + width * Math.cos( i * angleStep + Math.PI + phase),
+			z: Math.sin( i * angleStep + Math.PI + phase),
+			r: rayon
+		};
+		circles.push(c1);
+		circles.push(c2);
+		drawLine(
+			c1.x, center + (c1.y - center) * (1 + 0.2 * c1.z),
+			c2.x, center + (c2.y - center) * (1 + 0.2 * c2.z));
+	}
+	
+	circles.sort((c1, c2) => {
+		if (c1.z != c2.z) {
+			return c1.z - c2.z;
+		} else if (c1.y != c2.y) {
+			return c1.y - c2.y;
+		} else {
+			return c1.x - c2.x;
+		}
+	});
+	
+	for (var i=0; i<circles.length; i++) {
+		var circle = circles[i];
+		drawCircle(
+			circle.x,
+			center + (circle.y - center) * (1 + 0.2 * circle.z),
+			circle.r * (1 + 0.20 * circle.z)
+		);
+	}
+	
+}
+
+function drawCircle(x, y, r) {
+	var circle = document.createElementNS(svgNs, 'circle');
+	circle.setAttributeNS(null, 'cx', x);
+	circle.setAttributeNS(null, 'cy', y);
+	circle.setAttributeNS(null, 'r', r);
+	circle.setAttributeNS(null, 'style', 'fill: url(#RadialGradient1); stroke: none;' );
+	logoSvg.appendChild(circle); 
+}
+
+function drawLine(x1, y1, x2, y2) {
+	var line = document.createElementNS(svgNs, 'line');
+	line.setAttributeNS(null, 'x1', x1);
+	line.setAttributeNS(null, 'x2', x2);
+	line.setAttributeNS(null, 'y1', y1);
+	line.setAttributeNS(null, 'y2', y2);
+	line.setAttributeNS(null, 'style', 'stroke: #03138c; stroke-width:2;' );
+	logoSvg.appendChild(line); 
+}
+		</script>
+	</head>
+	<body onload="init()">
+		
+		<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="300" viewBox="0 0 1000 300">
+			<defs>
+				<radialGradient id="RadialGradient1">
+					<stop offset="0%" stop-color="#03138c"/>
+					<stop offset="100%" stop-color="#7d8cff"/>
+				</radialGradient>
+			</defs>
+		</svg>
+		
+	</body>
+</html>

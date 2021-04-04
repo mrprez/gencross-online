@@ -4,4 +4,5 @@
 <link href="/gencross-online/css/bootstrap.min.css" rel="stylesheet">
 <link href="/gencross-online/css/gencross.css" rel="stylesheet">
 <script src="/gencross-online/js/jquery-3.6.0.min.js"></script>
+<script src="/gencross-online/js/popper.min.js"></script>
 <script src="/gencross-online/js/bootstrap.min.js"></script>

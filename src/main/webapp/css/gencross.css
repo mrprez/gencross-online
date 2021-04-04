@@ -1,4 +1,30 @@
 
+#topSideBar {
+	margin-bottom: 10px;
+	box-shadow: 0 5px 5px #c2c9fe;
+}
+
+#topSideBar .container {
+	display: flex;
+	justify-content: space-between;
+}
+
+#topSideBar .container .gencrossLogoContainer {
+	align-self: left;
+}
+
+#topSideBar .container .gencrossLogoContainer img {
+	height: 50px;
+}
+
+#topSideBar .container .accountLogoContainer {
+	align-self: right;
+}
+
+#topSideBar .container .accountLogoContainer img {
+	height: 40px;
+}
+
 #newTableButton {
 	position: relative;
 }
