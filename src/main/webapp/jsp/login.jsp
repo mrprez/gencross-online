@@ -3,12 +3,7 @@
 <!doctype html>
 <html lang="en">
 	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>GenCross</title>
-		<link href="/gencross-online/css/bootstrap.min.css" rel="stylesheet">
-		<script src="/gencross-online/js/jquery-3.6.0.min.js"></script>
-		<script src="/gencross-online/js/bootstrap.min.js"></script>
+		<%@ include file="include/head.jsp" %>
 	</head>
 	<body>
 		<div class="container-liquid">

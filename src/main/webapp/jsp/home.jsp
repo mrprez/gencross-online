@@ -4,13 +4,7 @@
 <!doctype html>
 <html lang="en">
 	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>GenCross</title>
-		<link href="/gencross-online/css/bootstrap.min.css" rel="stylesheet">
-		<link href="/gencross-online/css/gencross.css" rel="stylesheet">
-		<script src="/gencross-online/js/jquery-3.6.0.min.js"></script>
-		<script src="/gencross-online/js/bootstrap.min.js"></script>
+		<%@ include file="include/head.jsp" %>
 		<script type="text/javascript">
 function openCreateTableModal() {
 	$('#newTableButton').width($('#newTableButton').width());
@@ -31,13 +25,7 @@ function openCreateTableModal() {
 		</script>
 	</head>
 	<body>
-		<div class="container-liquid">
-			<div class="row align-items-left">
-				<div class="col">
-					<img class=".img-fluid" src="/gencross-online/img/logo_GenCross.png" style="width:92px; height: 100px;"/>
-				</div>
-			</div>
-		</div>
+		<%@ include file="include/top.jsp" %>
 		<div class="container">
 			<div class="row align-items-center">
 				<div class="col">
@@ -63,7 +51,7 @@ function openCreateTableModal() {
 							<button type="button" class="btn btn-primary" id="newTableButton" onclick="openCreateTableModal()">
 								<span id="newTableButtonLabel"><fmt:message key="label.newTable"/></span>
 								<div id="newTableButtonSpinner" class="spinner-border" role="status">
-									<span class="visually-hidden">Loading...</span>
+									<span class="visually-hidden"><fmt:message key="label.loading"/></span>
 								</div>
 							</button>
 						</div>
