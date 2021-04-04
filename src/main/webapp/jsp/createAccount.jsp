@@ -17,7 +17,7 @@ function checkConfirm() {
 		</script>
 	</head>
 	<body>
-		<div class="container-liquid">
+		<div class="container">
 			<div class="row align-items-left">
 				<div class="col">
 					<img class=".img-fluid" src="/gencross-online/img/logo_GenCross.png"/>
@@ -47,6 +47,9 @@ function checkConfirm() {
 	  							</div>
 	  							<button type="submit" class="btn btn-primary"><fmt:message key="label.validate"/></button>
 	  						</form>
+	  						<div class="mt-2">
+	  							<a href="/gencross-online/dispatcher/login"><fmt:message key="label.login"/></a>
+	  						</div>
 	  					</div>
   					</div>
   				</div>
