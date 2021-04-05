@@ -11,7 +11,7 @@ function openCreateTableModal() {
 	$('#newTableButton').height($('#newTableButton').height());
 	$('#newTableButtonLabel').fadeOut();
 	$('#newTableButtonSpinner').fadeIn();
-	$.ajax("/gencross-online/dispatcher/home/createTable")
+	$.ajax("/gencross-online/dispatcher/home/include/createTable")
 		.done(function(data) {
 			$('body').append(data);
 			$('#createTableModal').modal('show');
@@ -21,7 +21,6 @@ function openCreateTableModal() {
 			$('#newTableButton').height('');
 		});
 }
-		
 		</script>
 	</head>
 	<body>
@@ -32,7 +31,7 @@ function openCreateTableModal() {
 					<div class="card">
 						<div class="card-body">
 							<h5 class="card-title"><fmt:message key="label.gmTableListTitle"/></h5>
-							<div class="accordion" id="GmTablesAccordion">
+							<div class="accordion">
 								<c:forEach items="${userGmTables}" var="userGmTable">
 									<div class="accordion-item">
 										<h2 class="accordion-header" id="flush-headingGmTable${userGmTable.id}">
@@ -40,7 +39,7 @@ function openCreateTableModal() {
 												${userGmTable.name}
 											</button>
 										</h2>
-										<div id="flush-collapseGmTable${userGmTable.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingGmTable${userGmTable.id}" data-bs-parent="#GmTablesAccordion">
+										<div id="flush-collapseGmTable${userGmTable.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingGmTable${userGmTable.id}">
 											<div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
 										</div>
 									</div>

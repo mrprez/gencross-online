@@ -12,8 +12,18 @@
 				</a>
 				<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 					<li><a class="dropdown-item" href="/gencross-online/logout"><fmt:message key="label.logout"/></a></li>
+					<li><button class="dropdown-item" type="button" onclick="openUpdateAccountModal()"><fmt:message key="label.updateAccount"/></button></li>
 				</ul>
 			</div>
 		</div>
 	</div>
 </nav>
+<script type="text/javascript">
+function openUpdateAccountModal() {
+	$.ajax("/gencross-online/dispatcher/account/include/update")
+		.done(function(data, textStatus, xhr) {
+			$('body').append(data);
+			$('#updateAccountModal').modal('show');
+		});
+}
+</script>

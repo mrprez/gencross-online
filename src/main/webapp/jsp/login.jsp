@@ -29,7 +29,7 @@
 	  							<button type="submit" class="btn btn-primary"><fmt:message key="label.connection"/></button>
 	  						</form>
 	  						<div class="mt-2">
-	  							<a href="/gencross-online/dispatcher/createAccount"><fmt:message key="label.createAccount"/></a>
+	  							<a href="/gencross-online/dispatcher/account/create"><fmt:message key="label.createAccount"/></a>
 	  						</div>
 	  					</div>
   					</div>

@@ -16,6 +16,10 @@
 		<association property="user" resultMap="User"/>
 	</resultMap>
 
+	<select id="get" resultMap="User">
+		SELECT * FROM user u WHERE u.id = #{userId}
+	</select>
+
 	<select id="getWithPassword" resultMap="UserWithPassword">
 		SELECT * FROM user u WHERE u.username = #{username}
 	</select>
@@ -23,5 +27,13 @@
 	<insert id="createUser">
 		INSERT INTO user (username, password_hash, email) VALUES (#{user.username}, #{passwordHash}, #{user.email})
 	</insert>
+	
+	<update id="updateUser">
+		UPDATE user SET username = #{username}, email = #{email} WHERE id = #{id}
+	</update>
+	
+	<update id="updatePassword">
+		UPDATE user SET password_hash = #{passwordHash} WHERE id = #{userId}
+	</update>
 	
 </mapper>

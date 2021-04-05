@@ -27,7 +27,7 @@ import com.mrprez.gencross.online.dao.handler.UserIdTypeHandler;
 @Configuration
 @EnableWebMvc
 @Import({ SpringSecurityConfiguration.class })
-@ComponentScan(basePackages = { "com.mrprez.gencross.online.web.controller", "com.mrprez.gencross.online.web.rest", "com.mrprez.gencross.online.service" })
+@ComponentScan(basePackages = { "com.mrprez.gencross.online.web", "com.mrprez.gencross.online.service" })
 @MapperScan("com.mrprez.gencross.online.dao")
 public class GencrossSpringConfiguration {
 

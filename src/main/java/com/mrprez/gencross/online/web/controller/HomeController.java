@@ -38,7 +38,7 @@ public class HomeController {
         return new ModelAndView("/jsp/home.jsp", "userGmTables", userGmTables);
     }
 	
-	@RequestMapping(value = "/createTable", method = RequestMethod.GET)
+	@RequestMapping(value = "/include/createTable", method = RequestMethod.GET)
     public ModelAndView getCreateTable() {
 		Collection<PluginDescriptor> pluginList = characterService.getPluginList();
         return new ModelAndView("/jsp/include/createTableModal.jsp", "pluginList", pluginList);
