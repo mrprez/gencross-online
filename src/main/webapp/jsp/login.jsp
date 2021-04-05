@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!doctype html>
 <html lang="en">
 	<head>
@@ -26,6 +27,11 @@
 	  								<label for="passwordInput"><fmt:message key="label.password"/></label>
 	  								<input type="password" name="password" class="form-control" id="passwordInput" required/>
 	  							</div>
+	  							<c:if test = "${param.error != null}">
+	  								<div class="alert alert-warning mb-3">
+	  									<fmt:message key="label.invalidUsernameOrPassword"/>
+	  								</div>
+	  							</c:if>
 	  							<button type="submit" class="btn btn-primary"><fmt:message key="label.connection"/></button>
 	  						</form>
 	  						<div class="mt-2">

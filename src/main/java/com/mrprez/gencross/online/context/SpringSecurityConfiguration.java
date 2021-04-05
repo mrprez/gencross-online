@@ -34,6 +34,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.anyRequest().hasRole("USER")
 			.and().formLogin()
 				.loginProcessingUrl("/login")
+				.failureUrl("/dispatcher/login?error")
 				.defaultSuccessUrl("/dispatcher/home", true)
 				.permitAll()
 			.and().logout().logoutSuccessUrl("/dispatcher/login")
