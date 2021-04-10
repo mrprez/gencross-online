@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.mrprez.gencross.online.dao.TableDao;
 import com.mrprez.gencross.online.model.Table;
+import com.mrprez.gencross.online.model.TableWithCharacters;
 import com.mrprez.gencross.online.model.id.UserId;
 
 @Service
@@ -19,7 +20,7 @@ public class TableService {
 	private DateProvider dateProvider;
 	
 	
-	public List<Table> getUserGmTables(UserId userId) {
+	public List<TableWithCharacters> getUserGmTables(UserId userId) {
 		return tableDao.getTablesAsGm(userId);
 	}
 

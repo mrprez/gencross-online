@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mrprez.gencross.disk.PluginDescriptor;
-import com.mrprez.gencross.online.model.Table;
+import com.mrprez.gencross.online.model.TableWithCharacters;
 import com.mrprez.gencross.online.service.CharacterService;
 import com.mrprez.gencross.online.service.GencrossAuthenticationProvider;
 import com.mrprez.gencross.online.service.TableService;
@@ -31,11 +31,8 @@ public class HomeController {
 	
 	@RequestMapping(method = RequestMethod.GET)
     public ModelAndView get() {
-		List<Table> userGmTables = tableService.getUserGmTables(authenticationProvider.getAuthenticatedUser().getId());
-		Table table = new Table();
-		table.setName("TableName");
-		userGmTables.add(table);
-        return new ModelAndView("/jsp/home.jsp", "userGmTables", userGmTables);
+		List<TableWithCharacters> userGmTables = tableService.getUserGmTables(authenticationProvider.getAuthenticatedUser().getId());
+		return new ModelAndView("/jsp/home.jsp", "userGmTables", userGmTables);
     }
 	
 	@RequestMapping(value = "/include/createTable", method = RequestMethod.GET)
@@ -43,5 +40,6 @@ public class HomeController {
 		Collection<PluginDescriptor> pluginList = characterService.getPluginList();
         return new ModelAndView("/jsp/include/createTableModal.jsp", "pluginList", pluginList);
     }
+	
 
 }

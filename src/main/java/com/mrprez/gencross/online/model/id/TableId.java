@@ -6,4 +6,10 @@ public class TableId extends AbstractIntId {
 		super(id);
 	}
 
+	public TableId(String id) {
+		super(id);
+	}
+	
+	
+
 }

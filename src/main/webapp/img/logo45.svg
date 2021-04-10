@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="700" viewBox="0 0 700 700">
+	<defs>
+		<radialGradient id="RadialGradient1">
+			<stop offset="0%" stop-color="#03138c"></stop>
+			<stop offset="100%" stop-color="#7d8cff"></stop>
+		</radialGradient>
+	</defs>
+	<g id="main" transform="rotate(-45, 350, 350)">
+		<line x1="50" x2="50" y1="437.49607215303513" y2="282.0668798616409" style="stroke: #03138c; stroke-width:2;"></line>
+		<line x1="100" x2="100" y1="392.5281010181186" y2="320.8545111090585" style="stroke: #03138c; stroke-width:2;"></line>
+		<line x1="150" x2="150" y1="331.26638355222747" y2="362.5532765602736" style="stroke: #03138c; stroke-width:2;"></line>
+		<line x1="200" x2="200" y1="277.28648488767817" y2="403.15056309764566" style="stroke: #03138c; stroke-width:2;"></line>
+		<line x1="250" x2="250" y1="249.95065128669125" y2="436.66673658613155" style="stroke: #03138c; stroke-width:2;"></line>
+		<line x1="300" x2="300" y1="254.32133588423568" y2="451.85900400326324" style="stroke: #03138c; stroke-width:2;"></line>
+		<line x1="350" x2="350" y1="282.0668798616409" y2="437.49607215303524" style="stroke: #03138c; stroke-width:2;"></line>
+		<line x1="400" x2="400" y1="320.8545111090585" y2="392.52810101811866" style="stroke: #03138c; stroke-width:2;"></line>
+		<line x1="450" x2="450" y1="362.5532765602736" y2="331.2663835522276" style="stroke: #03138c; stroke-width:2;"></line>
+		<line x1="500" x2="500" y1="403.15056309764566" y2="277.2864848876783" style="stroke: #03138c; stroke-width:2;"></line>
+		<line x1="550" x2="550" y1="436.66673658613155" y2="249.9506512866912" style="stroke: #03138c; stroke-width:2;"></line>
+		<line x1="600" x2="600" y1="451.85900400326324" y2="254.3213358842357" style="stroke: #03138c; stroke-width:2;"></line>
+		<line x1="650" x2="650" y1="437.49607215303524" y2="282.0668798616409" style="stroke: #03138c; stroke-width:2;"></line>
+		<circle cx="150" cy="362.5532765602736" r="20.061558297024312" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="450" cy="362.5532765602736" r="20.061558297024312" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="100" cy="320.8545111090585" r="20.332097867513994" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="400" cy="320.8545111090585" r="20.332097867513994" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="200" cy="403.15056309764566" r="21.114270192715143" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="500" cy="403.15056309764566" r="21.114270192715143" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="650" cy="282.0668798616409" r="21.85339804475081" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="50" cy="282.0668798616409" r="21.85339804475081" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="350" cy="282.0668798616409" r="21.85339804475081" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="250" cy="436.66673658613155" r="23.208160252273498" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="550" cy="436.66673658613155" r="23.208160252273498" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="600" cy="254.3213358842357" r="24.21782767479884" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="300" cy="254.32133588423568" r="24.217827674798848" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="300" cy="451.85900400326324" r="25.782172325201152" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="600" cy="451.85900400326324" r="25.782172325201152" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="550" cy="249.9506512866912" r="26.7918397477265" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="250" cy="249.95065128669125" r="26.791839747726502" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="350" cy="437.49607215303524" r="28.146601955249185" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="650" cy="437.49607215303524" r="28.146601955249185" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="50" cy="437.49607215303513" r="28.146601955249185" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="200" cy="277.28648488767817" r="28.885729807284854" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="500" cy="277.2864848876783" r="28.88572980728486" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="400" cy="392.52810101811866" r="29.667902132486006" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="100" cy="392.5281010181186" r="29.667902132486006" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="150" cy="331.26638355222747" r="29.938441702975688" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+		<circle cx="450" cy="331.2663835522276" r="29.938441702975688" style="fill: url(#RadialGradient1); stroke: none;"></circle>
+	</g>
+</svg>

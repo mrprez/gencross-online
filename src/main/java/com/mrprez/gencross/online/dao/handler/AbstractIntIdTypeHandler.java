@@ -11,7 +11,7 @@ import org.apache.ibatis.type.TypeHandler;
 
 import com.mrprez.gencross.online.model.id.AbstractIntId;
 
-public abstract class AbstractIntIdTypeHandler<T extends AbstractIntId> implements TypeHandler<T>{
+public abstract class AbstractIntIdTypeHandler<T extends AbstractIntId> implements TypeHandler<T> {
 
 	@Override
 	public void setParameter(PreparedStatement ps, int paramaterIndex, T id, JdbcType jdbcType)

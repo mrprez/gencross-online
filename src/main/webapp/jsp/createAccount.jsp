@@ -4,6 +4,17 @@
 <html lang="en">
 	<head>
 		<%@ include file="include/head.jsp" %>
+		<style type="text/css">
+html {
+	height: 100%;
+}
+body {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+		</style>
 		<script>
 function checkConfirm() {
 	const passwordInput = document.querySelector('#createAccountForm').elements['passwordInput'];
@@ -18,17 +29,12 @@ function checkConfirm() {
 	</head>
 	<body>
 		<div class="container">
-			<div class="row align-items-left">
-				<div class="col">
-					<img class=".img-fluid" src="/gencross-online/img/logo_GenCross.png"/>
-				</div>
-			</div>
-  			<div class="row align-items-center justify-content-center">
+			<div class="row align-items-center justify-content-center">
   				<div class="col-4">
   					<div class="card">
   						<div class="card-body">
 	  						<h5><fmt:message key="label.newAccount"/></h5>
-	  						<form method="POST" id="createAccountForm">
+	  						<form method="POST" action="/gencross-online/dispatcher/account" id="createAccountForm">
 	  							<div class="mb-3">
 	  								<label for="usernameInput"><fmt:message key="label.username"/></label>
 	  								<input type="text" name="username" class="form-control" id="usernameInput" required/>

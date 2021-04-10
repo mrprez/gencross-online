@@ -6,24 +6,49 @@
 	<head>
 		<%@ include file="include/head.jsp" %>
 		<script type="text/javascript">
+window.addEventListener('load', (event) => {
+	const results = new RegExp('[\?&]tableId=([^&#]*)').exec(window.location.search);
+	if (results !== null) {
+		const tableId = results[1];
+		$('#flush-collapseGmTable'+tableId).collapse('show');
+	}
+});
+		
+		
 function openCreateTableModal() {
 	$('#newTableButton').width($('#newTableButton').width());
 	$('#newTableButton').height($('#newTableButton').height());
-	$('#newTableButtonLabel').fadeOut();
-	$('#newTableButtonSpinner').fadeIn();
+	$('#newTableButton .buttonLabel').fadeOut();
+	$('#newTableButton .buttonSpinner').fadeIn();
 	$.ajax("/gencross-online/dispatcher/home/include/createTable")
 		.done(function(data) {
 			$('body').append(data);
 			$('#createTableModal').modal('show');
-			$('#newTableButtonLabel').fadeIn(0);
-			$('#newTableButtonSpinner').fadeOut(0);
+			$('#newTableButton .buttonLabel').fadeIn(0);
+			$('#newTableButton .buttonSpinner').fadeOut(0);
 			$('#newTableButton').width('');
 			$('#newTableButton').height('');
 		});
 }
+
+function openCreateCharacterModal(tableId) {
+	$('#newCharacterButton_'+tableId).width($('#newCharacterButton_'+tableId).width());
+	$('#newCharacterButton_'+tableId).height($('#newCharacterButton_'+tableId).height());
+	$('#newCharacterButton_'+tableId+' .buttonLabel').fadeOut();
+	$('#newCharacterButton_'+tableId+' .buttonSpinner').fadeIn();
+	$.ajax("/gencross-online/dispatcher/table/"+tableId+"/include/createCharacter")
+		.done(function(data) {
+			$('body').append(data);
+			$('#createCharacterModal').modal('show');
+			$('#newCharacterButton_'+tableId+' .buttonLabel').fadeIn(0);
+			$('#newCharacterButton_'+tableId+' .buttonSpinner').fadeOut(0);
+			$('#newCharacterButton_'+tableId).width('');
+			$('#newCharacterButton_'+tableId).height('');
+		});
+}
 		</script>
 	</head>
-	<body>
+	<body class="home">
 		<%@ include file="include/top.jsp" %>
 		<div class="container">
 			<div class="row align-items-center">
@@ -31,25 +56,41 @@ function openCreateTableModal() {
 					<div class="card">
 						<div class="card-body">
 							<h5 class="card-title"><fmt:message key="label.gmTableListTitle"/></h5>
+							<c:if test="${empty userGmTables}">
+								<fmt:message key="label.noTable"/>
+							</c:if>
 							<div class="accordion">
 								<c:forEach items="${userGmTables}" var="userGmTable">
 									<div class="accordion-item">
-										<h2 class="accordion-header" id="flush-headingGmTable${userGmTable.id}">
-											<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseGmTable${userGmTable.id}" aria-expanded="false" aria-controls="flush-collapseGmTable${userGmTable.id}">
-												${userGmTable.name}
+										<h2 class="accordion-header" id="flush-headingGmTable${userGmTable.table.id}">
+											<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseGmTable${userGmTable.table.id}" aria-controls="flush-collapseGmTable${userGmTable.table.id}">
+												<span class="tableName">${userGmTable.table.name}</span>
+												<span class="tableGame">${userGmTable.table.game}</span>
 											</button>
 										</h2>
-										<div id="flush-collapseGmTable${userGmTable.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingGmTable${userGmTable.id}">
-											<div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+										<div id="flush-collapseGmTable${userGmTable.table.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingGmTable${userGmTable.table.id}">
+											<div class="accordion-body">
+												<ul class="list-group mb-3">
+													<c:forEach items="${userGmTable.characters}" var="character">
+														<li class="list-group-item">${character.name}</li>
+													</c:forEach>
+												</ul>
+												<button type="button" class="btn btn-primary buttonWithSpinner" id="newCharacterButton_${userGmTable.table.id}" onclick="openCreateCharacterModal(${userGmTable.table.id})">
+													<span class="buttonLabel"><fmt:message key="label.createCharacter"/></span>
+													<div class="buttonSpinner spinner-border" role="status">
+														<span class="visually-hidden"><fmt:message key="label.loading"/></span>
+													</div>
+												</button>
+											</div>
 										</div>
 									</div>
 								</c:forEach>
 							</div>
 						</div>
 						<div class="card-footer">
-							<button type="button" class="btn btn-primary" id="newTableButton" onclick="openCreateTableModal()">
-								<span id="newTableButtonLabel"><fmt:message key="label.newTable"/></span>
-								<div id="newTableButtonSpinner" class="spinner-border" role="status">
+							<button type="button" class="btn btn-primary buttonWithSpinner" onclick="openCreateTableModal()">
+								<span class="buttonLabel"><fmt:message key="label.newTable"/></span>
+								<div class="buttonSpinner spinner-border" role="status">
 									<span class="visually-hidden"><fmt:message key="label.loading"/></span>
 								</div>
 							</button>

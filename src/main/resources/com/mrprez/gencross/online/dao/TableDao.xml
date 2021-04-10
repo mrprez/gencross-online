@@ -11,9 +11,41 @@
 		<result column="creation_date" property="creationDate"/>
 		<result column="gm_id" property="gmId"/>
 	</resultMap>
+	
+	<resultMap id="TableWithCharacters" type="com.mrprez.gencross.online.model.TableWithCharacters">
+		<id column="id"/>
+		<association property="table" resultMap="Table"/>
+		<collection property="characters" resultMap="com.mrprez.gencross.online.dao.CharacterDao.Character" columnPrefix="rc_"/>
+	</resultMap>
 
-	<select id="getTablesAsGm" resultMap="Table">
-		SELECT * FROM rpg_table rt WHERE rt.gm_id = #{userId} ORDER BY rt.creation_date DESC
+	<select id="getTablesAsGm" resultMap="TableWithCharacters">
+		SELECT
+			rt.id AS id,
+			rt.name AS name,
+			rt.game AS game,
+			rt.creation_date AS creation_date,
+			rt.gm_id AS gm_id,
+			rc.id AS rc_id,
+			rc.name AS rc_name,
+			rc.table_id AS rc_table_id,
+			rc.player_id AS rc_player_id,
+			rc.data AS rc_data,
+			rc.creation_date AS rc_creation_date
+		FROM rpg_table rt
+		LEFT JOIN rpg_character rc ON rc.table_id=rt.id
+		WHERE rt.gm_id = #{userId} 
+		ORDER BY rt.creation_date DESC
+	</select>
+	
+	<select id="get" resultMap="Table">
+		SELECT
+			rt.id AS id,
+			rt.name AS name,
+			rt.game AS game,
+			rt.creation_date AS creation_date,
+			rt.gm_id AS gm_id
+		FROM rpg_table rt
+		WHERE rt.id = #{tableId} 
 	</select>
 	
 	<insert id="createTable">

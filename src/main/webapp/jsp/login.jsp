@@ -5,14 +5,20 @@
 <html lang="en">
 	<head>
 		<%@ include file="include/head.jsp" %>
+		<style type="text/css">		
+html {
+	height: 100%;
+}
+body {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+		</style>
 	</head>
 	<body>
 		<div class="container">
-			<div class="row align-items-left">
-				<div class="col">
-					<img class=".img-fluid" src="/gencross-online/img/logo_GenCross.png"/>
-				</div>
-			</div>
   			<div class="row align-items-center justify-content-center">
   				<div class="col-4">
   					<div class="card">

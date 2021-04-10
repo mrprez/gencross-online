@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 	<head>
-		<title>logo</title>
+		<title>logo - 45</title>
 		<script>
 var mainGroup;
 var svgNs;
@@ -14,7 +14,7 @@ function init() {
 	var phase = Math.PI / 20;
 	var axeStep = 50;
 	var rayon = 25;
-	var center = 150;
+	var center = 350;
 	var width = 100;
 	
 	var circles = [];
@@ -57,6 +57,8 @@ function init() {
 			circle.r * (1 + 0.20 * circle.z)
 		);
 	}
+
+	mainGroup.setAttributeNS(null, 'transform', 'rotate(-45, 350, 350)' );
 	
 }
 
@@ -82,7 +84,7 @@ function drawLine(x1, y1, x2, y2) {
 	</head>
 	<body onload="init()">
 		
-		<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="300" viewBox="0 0 1000 300">
+		<svg xmlns="http://www.w3.org/2000/svg" width="700" height="700" viewBox="0 0 700 700">
 			<defs>
 				<radialGradient id="RadialGradient1">
 					<stop offset="0%" stop-color="#03138c"/>
