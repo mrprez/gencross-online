@@ -49,3 +49,7 @@
 .home .tableGame {
 	flex: 1 1 50%;
 }
+
+.home .character {
+	cursor: pointer;
+}

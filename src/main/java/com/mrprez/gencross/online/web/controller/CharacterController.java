@@ -2,11 +2,14 @@ package com.mrprez.gencross.online.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mrprez.gencross.online.model.id.CharacterId;
 import com.mrprez.gencross.online.model.id.TableId;
 import com.mrprez.gencross.online.model.id.UserId;
 import com.mrprez.gencross.online.service.CharacterService;
@@ -28,6 +31,11 @@ public class CharacterController {
 		UserId userId = authenticationProvider.getAuthenticatedUser().getId();
 		characterService.createCharacter(tableId, userId, name);
 		return new ModelAndView("redirect:home", "tableId", tableId.getInt());
+	}
+	
+	@GetMapping(path = "{characterId}")
+	public String get(@PathVariable("characterId") CharacterId characterId) {
+		return "/jsp/character.jsp";
 	}
 	
 

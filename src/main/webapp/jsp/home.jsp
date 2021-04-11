@@ -46,6 +46,10 @@ function openCreateCharacterModal(tableId) {
 			$('#newCharacterButton_'+tableId).height('');
 		});
 }
+
+function clickOnCharacter(characterId) {
+	window.location = "/gencross-online/dispatcher/character/"+characterId;
+}
 		</script>
 	</head>
 	<body class="home">
@@ -72,7 +76,9 @@ function openCreateCharacterModal(tableId) {
 											<div class="accordion-body">
 												<ul class="list-group mb-3">
 													<c:forEach items="${userGmTable.characters}" var="character">
-														<li class="list-group-item">${character.name}</li>
+														<li class="list-group-item character" onclick="clickOnCharacter(${character.id})">
+															${character.name}
+														</li>
 													</c:forEach>
 												</ul>
 												<button type="button" class="btn btn-primary buttonWithSpinner" id="newCharacterButton_${userGmTable.table.id}" onclick="openCreateCharacterModal(${userGmTable.table.id})">
