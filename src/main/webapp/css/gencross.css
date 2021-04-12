@@ -53,3 +53,27 @@
 .home .character {
 	cursor: pointer;
 }
+
+.character .propertyNode {
+	list-style-type: none;
+}
+
+.character .propertyNode .nodeIcon {
+	cursor: pointer;
+}
+
+.character .propertyNode.collapsed > .nodeIcon::before {
+	content: url('/gencross-online/img/bootstrap-icons-1.4.1/chevron-right.svg');
+}
+
+.character .propertyNode.expanded > .nodeIcon::before {
+	content: url('/gencross-online/img/bootstrap-icons-1.4.1/chevron-down.svg');
+}
+
+.character .propertyNode.end > .nodeIcon::before {
+	content: url('/gencross-online/img/bootstrap-icons-1.4.1/dash.svg');
+}
+
+.character .propertyNode.collapsed ul {
+	display: none;
+}

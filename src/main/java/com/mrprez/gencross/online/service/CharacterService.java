@@ -1,5 +1,6 @@
 package com.mrprez.gencross.online.service;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Collection;
 
@@ -12,8 +13,10 @@ import com.mrprez.gencross.disk.PersonnageSaver;
 import com.mrprez.gencross.disk.PluginDescriptor;
 import com.mrprez.gencross.online.dao.CharacterDao;
 import com.mrprez.gencross.online.dao.TableDao;
+import com.mrprez.gencross.online.model.LoadedCharacter;
 import com.mrprez.gencross.online.model.RpgCharacter;
 import com.mrprez.gencross.online.model.Table;
+import com.mrprez.gencross.online.model.id.CharacterId;
 import com.mrprez.gencross.online.model.id.TableId;
 import com.mrprez.gencross.online.model.id.UserId;
 
@@ -51,6 +54,17 @@ public class CharacterService {
 		PersonnageSaver.savePersonnage(personnage, baos);
 		character.setData(baos.toByteArray());
 		characterDao.createCharacter(character);
+	}
+
+	public LoadedCharacter getCharachter(CharacterId characterId) throws Exception {
+		RpgCharacter rpgCharacter = characterDao.get(characterId);
+		LoadedCharacter loadedCharacter = new LoadedCharacter();
+		loadedCharacter.setId(rpgCharacter.getId());
+		loadedCharacter.setName(rpgCharacter.getName());
+		loadedCharacter.setPlayerId(rpgCharacter.getPlayerId());
+		loadedCharacter.setTableId(rpgCharacter.getTableId());
+		loadedCharacter.setData(personnageFactory.loadPersonnage(new ByteArrayInputStream(rpgCharacter.getData())));
+		return loadedCharacter;
 	}
 
 }

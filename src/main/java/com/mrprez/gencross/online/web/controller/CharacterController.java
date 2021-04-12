@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mrprez.gencross.online.model.LoadedCharacter;
 import com.mrprez.gencross.online.model.id.CharacterId;
 import com.mrprez.gencross.online.model.id.TableId;
 import com.mrprez.gencross.online.model.id.UserId;
@@ -34,8 +35,9 @@ public class CharacterController {
 	}
 	
 	@GetMapping(path = "{characterId}")
-	public String get(@PathVariable("characterId") CharacterId characterId) {
-		return "/jsp/character.jsp";
+	public ModelAndView get(@PathVariable("characterId") CharacterId characterId) throws Exception {
+		LoadedCharacter loadedCharacter = characterService.getCharachter(characterId);
+		return new ModelAndView("/jsp/character.jsp", "character", loadedCharacter);
 	}
 	
 

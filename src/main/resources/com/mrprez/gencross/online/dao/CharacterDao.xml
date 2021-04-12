@@ -17,4 +17,8 @@
 		INSERT INTO rpg_character (name, table_id, creation_date, data) VALUES (#{name}, #{tableId}, #{creationDate}, #{data})
 	</insert>
 	
+	<select id="get" resultMap="Character">
+		SELECT * FROM rpg_character WHERE id=#{characterId}
+	</select>
+	
 </mapper>
