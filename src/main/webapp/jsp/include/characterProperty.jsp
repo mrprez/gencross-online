@@ -1,12 +1,30 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="com.mrprez.gencross.Personnage"%>
+<%@page import="com.mrprez.gencross.value.StringValue"%>
 <% request.setAttribute("property", ((Personnage) request.getAttribute("characterData")).getProperty((String) request.getParameter("propertyAbsoluteName")));%>
 
 <li class="propertyNode ${property.subProperties != null ? 'collapsed' : 'end' }">
 	<span class="nodeIcon"></span>
 	<span class="propertyName">${property.fullName}</span>
 	<c:if test="${property.value != null}">
-		: ${property.value}
+		:
+		<div class="propertyValue">
+			${property.value}
+			<c:if test="${property.editable}">
+				<div class="editPropertyContainer">
+					<img class="editIcon" src="/gencross-online/img/bootstrap-icons-1.4.1/pencil.svg"/>
+					<c:if test="${property.value['class'].simpleName == 'StringValue'}">
+						<div class="card editPropertyField editStringPropertyField">
+							<div class="card-body">
+								<input type="text" value="${property.value}"/>
+								<img class="editPropertyButton valid" src="/gencross-online/img/bootstrap-icons-1.4.1/check.svg"/>
+								<img class="editPropertyButton close" src="/gencross-online/img/bootstrap-icons-1.4.1/x.svg"/>
+							</div>
+						</div>
+					</c:if>
+				</div>
+			</c:if>
+		</div>
 	</c:if>
 	<c:if test="${property.subProperties != null}">
 		<ul>

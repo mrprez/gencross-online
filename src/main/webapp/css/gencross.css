@@ -74,6 +74,40 @@
 	content: url('/gencross-online/img/bootstrap-icons-1.4.1/dash.svg');
 }
 
+.character .propertyNode .editIcon {
+	cursor: pointer;
+}
+
 .character .propertyNode.collapsed ul {
 	display: none;
+}
+
+.character .propertyNode .propertyValue {
+	display: inline;
+}
+
+.character .propertyNode .editPropertyContainer {
+	position: relative;
+	display: inline;
+}
+
+.character .propertyNode .editPropertyField {
+	position: absolute;
+	display: none;
+	z-index: 10;
+}
+
+.character .propertyNode .editPropertyField.editStringPropertyField {
+	top: -20px;
+	left: 0;
+}
+
+.character .propertyNode .editPropertyField .card-body {
+	display: flex;
+	align-items: center;
+}
+
+.character .propertyNode .editPropertyField .editPropertyButton {
+	height: 2em;
+	cursor: pointer;
 }

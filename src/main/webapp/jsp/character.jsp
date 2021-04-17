@@ -19,6 +19,29 @@ window.addEventListener('load', (event) => {
 	});
 });
 
+var shownEditPropertyField = null;
+
+window.addEventListener('load', (event) => {
+	$(".propertyNode .editPropertyContainer .editIcon").click(function() {
+		if (shownEditPropertyField) {
+			shownEditPropertyField.hide();
+			shownEditPropertyField = null;
+		}
+		var editPropertyContainer = $(this).parent();
+		shownEditPropertyField = editPropertyContainer.children(".editPropertyField");
+		shownEditPropertyField.show();
+	});
+	$(".editPropertyButton.close").click(function() {
+		shownEditPropertyField.hide();
+		shownEditPropertyField = null;
+	});
+	$(".editPropertyButton.valid").click(function() {
+		$.ajax(
+			"/gencross-online/dispatcher/character/setValue",
+			{ method: 'POST'});
+	});
+});
+
 		</script>
 	</head>
 	<body class="character">
