@@ -13,6 +13,20 @@
 	<name>Gencross Online</name>
 	<description>RPG character creation web application</description>
 
+	<scm>
+		<connection>scm:git:git://github.com/mrprez/gencross-online.git</connection>
+		<developerConnection>scm:git:git@github.com:mrprez/gencross-online.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub mrprez Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/mrprez/gencross-online</url>
+		</repository>
+	</distributionManagement>
+
 	<repositories>
 		<repository>
 			<id>github</id>
@@ -143,13 +157,8 @@
 		    <scope>test</scope>
 		</dependency>
 		
-		
-
-
 	</dependencies>
 
-	<build>
-
-	</build>
+	<build></build>
 
 </project>
