@@ -13,9 +13,13 @@
 		<result column="creation_date" property="creationDate"/>
 	</resultMap>
 	
-	<insert id="createCharacter">
+	<insert id="createCharacter" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
 		INSERT INTO rpg_character (name, table_id, creation_date, data) VALUES (#{name}, #{tableId}, #{creationDate}, #{data})
 	</insert>
+	
+	<update id="updateData">
+		UPDATE rpg_character SET data = #{data} WHERE id = #{id}
+	</update>
 	
 	<select id="get" resultMap="Character">
 		SELECT * FROM rpg_character WHERE id=#{characterId}

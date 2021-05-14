@@ -36,9 +36,10 @@ window.addEventListener('load', (event) => {
 		shownEditPropertyField = null;
 	});
 	$(".editPropertyButton.valid").click(function() {
-		$.ajax(
-			"/gencross-online/dispatcher/character/setValue",
-			{ method: 'POST'});
+		var propertyForm = $(this).parents(".propertyForm");
+		$.post(
+			"/gencross-online/dispatcher/rest/character/${character.id}/setValue",
+			propertyForm.serialize());
 	});
 });
 

@@ -82,6 +82,10 @@
 	display: none;
 }
 
+.character .propertyNode .propertyForm {
+	display: flex;
+}
+
 .character .propertyNode .propertyValue {
 	display: inline;
 }

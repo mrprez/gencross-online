@@ -6,6 +6,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.type.TypeHandler;
 import org.flywaydb.core.Flyway;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -44,11 +45,16 @@ public class GencrossSpringConfiguration {
 	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
 		SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
 		factoryBean.setDataSource(dataSource);
-		factoryBean.setTypeHandlers(
-				new UserIdTypeHandler(),
-				new TableIdTypeHandler(),
-				new CharacterIdTypeHandler());
+		factoryBean.setTypeHandlers(getTypeHandlers());
 		return factoryBean.getObject();
+	}
+	
+	public static TypeHandler<?>[] getTypeHandlers() {
+		return new TypeHandler[] {
+			new UserIdTypeHandler(),
+			new TableIdTypeHandler(),
+			new CharacterIdTypeHandler()	
+		};
 	}
 	
 	@Bean

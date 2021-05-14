@@ -2,12 +2,14 @@ package com.mrprez.gencross.online.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mrprez.gencross.Personnage;
+import com.mrprez.gencross.Property;
 import com.mrprez.gencross.disk.PersonnageFactory;
 import com.mrprez.gencross.disk.PersonnageSaver;
 import com.mrprez.gencross.disk.PluginDescriptor;
@@ -19,6 +21,7 @@ import com.mrprez.gencross.online.model.Table;
 import com.mrprez.gencross.online.model.id.CharacterId;
 import com.mrprez.gencross.online.model.id.TableId;
 import com.mrprez.gencross.online.model.id.UserId;
+import com.mrprez.gencross.value.Value;
 
 @Service
 public class CharacterService {
@@ -65,6 +68,23 @@ public class CharacterService {
 		loadedCharacter.setTableId(rpgCharacter.getTableId());
 		loadedCharacter.setData(personnageFactory.loadPersonnage(new ByteArrayInputStream(rpgCharacter.getData())));
 		return loadedCharacter;
+	}
+
+	public Personnage setValue(CharacterId characterId, String propertyName, String valueAsString, UserId userId) throws Exception {
+		LoadedCharacter loadedCharacter = getCharachter(characterId);
+		Personnage personnage = loadedCharacter.getData();
+		Property property = personnage.getProperty(propertyName);
+		Value newValue = property.getValue().clone();
+		newValue.setValue(valueAsString);
+		personnage.setNewValue(propertyName, newValue);
+		updateCharacterData(characterId, personnage);
+		return personnage;
+	}
+	
+	private void updateCharacterData(CharacterId characterId, Personnage personnage) throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PersonnageSaver.savePersonnage(personnage, baos);
+		characterDao.updateData(characterId, baos.toByteArray());
 	}
 
 }

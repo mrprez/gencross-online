@@ -16,9 +16,12 @@
 					<c:if test="${property.value['class'].simpleName == 'StringValue'}">
 						<div class="card editPropertyField editStringPropertyField">
 							<div class="card-body">
-								<input type="text" value="${property.value}"/>
-								<img class="editPropertyButton valid" src="/gencross-online/img/bootstrap-icons-1.4.1/check.svg"/>
-								<img class="editPropertyButton close" src="/gencross-online/img/bootstrap-icons-1.4.1/x.svg"/>
+								<form class="propertyForm">
+									<input type="hidden" name="property" value="${property.absoluteName}"/>
+									<input type="text" name="value" value="${property.value}"/>
+									<img class="editPropertyButton valid" src="/gencross-online/img/bootstrap-icons-1.4.1/check.svg"/>
+									<img class="editPropertyButton close" src="/gencross-online/img/bootstrap-icons-1.4.1/x.svg"/>
+								</form>
 							</div>
 						</div>
 					</c:if>

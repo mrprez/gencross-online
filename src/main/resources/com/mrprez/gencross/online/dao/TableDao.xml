@@ -48,7 +48,7 @@
 		WHERE rt.id = #{tableId} 
 	</select>
 	
-	<insert id="createTable">
+	<insert id="createTable" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
 		INSERT INTO rpg_table (name, game, creation_date, gm_id) VALUES (#{name}, #{game}, #{creationDate}, #{gmId})
 	</insert>
 	

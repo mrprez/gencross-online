@@ -24,7 +24,7 @@
 		SELECT * FROM user u WHERE u.username = #{username}
 	</select>
 
-	<insert id="createUser">
+	<insert id="createUser" useGeneratedKeys="true" keyColumn="id" keyProperty="user.id">
 		INSERT INTO user (username, password_hash, email) VALUES (#{user.username}, #{passwordHash}, #{user.email})
 	</insert>
 	
