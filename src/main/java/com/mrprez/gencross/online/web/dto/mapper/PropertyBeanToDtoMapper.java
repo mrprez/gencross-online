@@ -1,6 +1,7 @@
 package com.mrprez.gencross.online.web.dto.mapper;
 
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -18,7 +19,12 @@ public class PropertyBeanToDtoMapper implements Function<Property, PropertyDto> 
 		if (bean.getValue() != null) {
 			dto.setValue(bean.getValue().getString());
 		}
-		dto.setValue(null);
+		dto.setEditable(bean.isEditable());
+		
+		if (bean.getSubProperties()!=null) {
+			dto.setSubProperties(bean.getSubProperties().stream().map(this).collect(Collectors.toList()));
+		}
+		
 		return dto;
 	}
 	

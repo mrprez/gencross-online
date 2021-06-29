@@ -6,6 +6,7 @@ public class PropertyDto {
 	private String name;
 	private String absoluteName;
 	private String value;
+	private boolean editable;
 	private List<PropertyDto> subProperties;
 	
 	
@@ -26,6 +27,12 @@ public class PropertyDto {
 	}
 	public void setValue(String value) {
 		this.value = value;
+	}
+	public boolean isEditable() {
+		return editable;
+	}
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 	public List<PropertyDto> getSubProperties() {
 		return subProperties;

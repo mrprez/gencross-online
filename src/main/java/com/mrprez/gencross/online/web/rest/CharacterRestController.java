@@ -1,6 +1,7 @@
 package com.mrprez.gencross.online.web.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mrprez.gencross.Personnage;
+import com.mrprez.gencross.online.model.LoadedCharacter;
 import com.mrprez.gencross.online.model.id.CharacterId;
 import com.mrprez.gencross.online.model.id.UserId;
 import com.mrprez.gencross.online.service.CharacterService;
@@ -28,6 +30,12 @@ public class CharacterRestController {
 	@Autowired
 	private CharacterBeanToDtoMapper characterBeanToDtoMapper;
 
+	
+	@GetMapping(path = "{characterId}")
+	public CharacterDto get(@PathVariable("characterId") CharacterId characterId) throws Exception {
+		LoadedCharacter loadedCharacter = characterService.getCharachter(characterId);
+		return characterBeanToDtoMapper.apply(loadedCharacter.getData());
+	}
 	
 	@PostMapping(path = "{characterId}/setValue")
 	public CharacterDto setValue(@PathVariable("characterId") CharacterId characterId, @RequestParam("property") String property, 

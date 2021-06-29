@@ -6,22 +6,17 @@
 	<head>
 		<%@ include file="include/head.jsp" %>
 		<script type="text/javascript">
-window.addEventListener('load', (event) => {
-	$(".propertyNode .nodeIcon").click(function() {
-		var propertyNode = $(this).parent();
-		if (propertyNode.attr("class").includes("collapsed")) {
-			propertyNode.removeClass("collapsed");
-			propertyNode.addClass("expanded");
-		} else if (propertyNode.attr("class").includes("expanded")) {
-			propertyNode.removeClass("expanded");
-			propertyNode.addClass("collapsed");
-		}
-	});
-});
 
 var shownEditPropertyField = null;
 
 window.addEventListener('load', (event) => {
+	$.get(
+		"/gencross-online/dispatcher/rest/character/${character.id}",
+		function( character ) { 
+			$("#characterRootSpinner").remove();
+			character.properties.forEach(addRootProperty);
+		});
+	
 	$(".propertyNode .editPropertyContainer .editIcon").click(function() {
 		if (shownEditPropertyField) {
 			shownEditPropertyField.hide();
@@ -43,6 +38,62 @@ window.addEventListener('load', (event) => {
 	});
 });
 
+function addRootProperty(property) {
+	addProperty(document.getElementById("characterRoot"), property);
+}
+
+function addProperty(parentUlElement, property) {
+	const liElement = document.createElement("li");
+	liElement.setAttribute("propertyName", property.absoluteName);
+	liElement.classList.add("propertyNode");
+	parentUlElement.appendChild(liElement);
+	
+	const nodeIconElement = document.createElement("span");
+	nodeIconElement.classList.add("nodeIcon");
+	liElement.appendChild(nodeIconElement);
+	
+	const textElement = document.createElement("span");
+	textElement.appendChild(document.createTextNode(property.name));
+	liElement.appendChild(textElement);
+	
+	if (property.value != null) {
+		textElement.appendChild(document.createTextNode(": "));
+		textElement.appendChild(document.createTextNode(property.value));
+		if (property.editable) {
+			const editIconElement = document.createElement("img");
+			editIconElement.src = "/gencross-online/img/bootstrap-icons-1.4.1/pencil.svg";
+			editIconElement.classList.add("actionIcon");
+			liElement.appendChild(editIconElement);
+			$(editIconElement).click(clickOnEditValue);
+		}
+	}
+	
+	if (property.subProperties != null) {
+		liElement.classList.add("collapsed");
+		nodeIconElement.addEventListener("click", () => {
+			if (liElement.classList.contains("collapsed")) {
+				liElement.classList.remove("collapsed");
+				liElement.classList.add("expanded");
+			} else if (liElement.classList.contains("expanded")) {
+				liElement.classList.add("collapsed");
+				liElement.classList.remove("expanded");
+			}
+		});
+		const ulElement = document.createElement("ul");
+		liElement.appendChild(ulElement);
+		property.subProperties.forEach((subProperty) => {addProperty(ulElement, subProperty)});
+	} else {
+		liElement.classList.add("end");
+	}
+}
+
+function clickOnEditValue(event) {
+	const liElement = event.currentTarget.parentElement;
+	const cardElement = document.createElement("div");
+	cardElement.classList.add("card");
+	cardElement.classList.add("editPropertyField");
+}
+
 		</script>
 	</head>
 	<body class="character">
@@ -54,13 +105,8 @@ window.addEventListener('load', (event) => {
 						<div class="card-body">
 							<h5 class="card-title">${character.name}</h5>
 						</div>
-						<ul>
-							<c:set var="characterData" value="${character.data}" scope="request"></c:set>
-							<c:forEach items="${character.data.properties}" var="property">
-								<c:import url="include/characterProperty.jsp">
-									<c:param name="propertyAbsoluteName" value="${property.absoluteName}"/>
-								</c:import>
-							</c:forEach>
+						<ul id="characterRoot">
+							<div id="characterRootSpinner" class="spinner-border" role="status"></div>
 						</ul>
 					</div>
 				</div>
