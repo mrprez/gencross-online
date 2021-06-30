@@ -52,13 +52,21 @@ function addProperty(parentUlElement, property) {
 	nodeIconElement.classList.add("nodeIcon");
 	liElement.appendChild(nodeIconElement);
 	
-	const textElement = document.createElement("span");
-	textElement.appendChild(document.createTextNode(property.name));
-	liElement.appendChild(textElement);
+	const nodeLineElement = document.createElement("span");
+	liElement.appendChild(nodeLineElement);
+	
+	const propertyNameElement = document.createElement("span");
+	propertyNameElement.innerText = property.name;
+	nodeLineElement.appendChild(propertyNameElement);
 	
 	if (property.value != null) {
-		textElement.appendChild(document.createTextNode(": "));
-		textElement.appendChild(document.createTextNode(property.value));
+		nodeLineElement.appendChild(document.createTextNode(": "));
+		
+		const propertyValueElement = document.createElement("span");
+		propertyValueElement.innerText = property.value;
+		propertyValueElement.classList.add("propertyValue");
+		nodeLineElement.appendChild(propertyValueElement);
+		
 		if (property.editable) {
 			const editIconElement = document.createElement("img");
 			editIconElement.src = "/gencross-online/img/bootstrap-icons-1.4.1/pencil.svg";
@@ -89,9 +97,31 @@ function addProperty(parentUlElement, property) {
 
 function clickOnEditValue(event) {
 	const liElement = event.currentTarget.parentElement;
+	
 	const cardElement = document.createElement("div");
 	cardElement.classList.add("card");
 	cardElement.classList.add("editPropertyField");
+	$(liElement).find(".propertyValue").append(cardElement);
+	
+	const cardBodyElement = document.createElement("div");
+	cardBodyElement.classList.add("card-body");
+	cardElement.appendChild(cardBodyElement);
+	
+	const inputTextElement = document.createElement("input");
+	inputTextElement.setAttribute("type", "text");
+	inputTextElement.setAttribute("name", "value");
+	inputTextElement.setAttribute("value", $(liElement).find(".propertyValue").text());
+	cardBodyElement.appendChild(inputTextElement);
+	
+	const closeButtonElement = document.createElement("img");
+	closeButtonElement.setAttribute("src", "/gencross-online/img/bootstrap-icons-1.4.1/x.svg");
+	closeButtonElement.classList.add("editPropertyButton");
+	cardBodyElement.appendChild(closeButtonElement);
+
+	const validButtonElement = document.createElement("img");
+	validButtonElement.setAttribute("src", "/gencross-online/img/bootstrap-icons-1.4.1/check.svg");
+	validButtonElement.classList.add("editPropertyButton");
+	cardBodyElement.appendChild(validButtonElement);
 }
 
 		</script>

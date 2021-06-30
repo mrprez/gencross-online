@@ -92,18 +92,14 @@
 	cursor: pointer;
 }
 
-.character .propertyNode .editPropertyContainer {
+.character .propertyNode .propertyValue {
 	position: relative;
-	display: inline;
+	display: inline-block;
 }
 
 .character .propertyNode .editPropertyField {
 	position: absolute;
-	display: none;
 	z-index: 10;
-}
-
-.character .propertyNode .editPropertyField.editStringPropertyField {
 	top: -20px;
 	left: 0;
 }
@@ -113,7 +109,6 @@
 	align-items: center;
 }
 
-.character .propertyNode .editPropertyField .editPropertyButton {
-	height: 2em;
-	cursor: pointer;
+.character .propertyNode .editPropertyField .card-body .editPropertyButton {
+	height: 1.5em;
 }
