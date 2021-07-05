@@ -24,21 +24,28 @@ function addRootProperty(property) {
 }
 
 function addProperty(parentUlElement, property) {
-	parentUlElement.append(
-			"<li class='propertyNode'>"
-				+ "<span class='nodeIcon'></span>"
-				+ "<span class='propertyLine'>"
-					+ "<span class='propertyName'>"+property.name+"</span>"
-				+ "</span>"
-			+ "</li>"
-	);
+	if (parentUlElement.children("[propertyName='"+property.absoluteName+"']").length == 0) {
+		parentUlElement.append(
+				"<li class='propertyNode'>"
+					+ "<span class='nodeIcon'></span>"
+					+ "<span class='propertyLine'>"
+						+ "<span class='propertyName'>"+property.name+"</span>"
+					+ "</span>"
+				+ "</li>"
+		);
+		parentUlElement.children(".propertyNode").last().attr("propertyName", property.absoluteName);
+	}
 	
-	const liElement = parentUlElement.children(".propertyNode").last();
-	liElement.attr("propertyName", property.absoluteName);
+	const liElement = parentUlElement.children("[propertyName='"+property.absoluteName+"']");
 	
 	updatePropertyLineElement(liElement.children(".propertyLine"), property);
 	
-	if (property.subProperties != null) {
+	if (property.subProperties == null) {
+		liElement.removeClass("collapsed");
+		liElement.removeClass("expanded");
+		liElement.addClass("end");
+	} else if (liElement.children("ul.subProperties").length == 0) {
+		liElement.removeClass("end");
 		liElement.addClass("collapsed");
 		liElement.children(".nodeIcon").click(() => {
 			if (liElement.hasClass("collapsed")) {
@@ -52,7 +59,7 @@ function addProperty(parentUlElement, property) {
 		liElement.append("<ul class='subProperties'></ul>");
 		property.subProperties.forEach((subProperty) => {addProperty(liElement.children(".subProperties"), subProperty)});
 	} else {
-		liElement.addClass("end");
+		property.subProperties.forEach((subProperty) => {addProperty(liElement.children(".subProperties"), subProperty)});
 	}
 }
 
@@ -101,9 +108,9 @@ function clickOnEditValue(propertyLineElement, event) {
 function setPropertyValue(propertyLineElement, event) {
 	const value = propertyLineElement.find(".edit-card-body input").val();
 	const propertyName = propertyLineElement.parent().attr("propertyName");
-	$(this).find(".edit-card-body").remove();
-	$(this).find(".propertyValue").empty();
-	$(this).find(".propertyValue").append("<div class='propertyValueSpinner spinner-border' role='status'></div>");
+	propertyLineElement.find(".edit-card-body").remove();
+	propertyLineElement.find(".propertyValue").empty();
+	propertyLineElement.find(".propertyValue").append("<div class='propertyValueSpinner spinner-border' role='status'></div>");
 	
 	console.log("value="+value);
 	console.log("propertyName="+propertyName);
@@ -116,26 +123,8 @@ function setPropertyValue(propertyLineElement, event) {
 
 function refreshCharacter(character) {
 	console.log(character);
-	const liElements = $("#characterRoot").children();
 	
-	let propertyIndex = 0;
-	let liElementIndex = 0;
-	
-	while (propertyIndex<character.properties.length && liElementIndex<liElements.length) {
-		if (character.properties[propertyIndex].absoluteName == liElements.eq(liElementIndex).attr("propertyName")) {
-			const propertyLineElement = liElements.eq(liElementIndex).children(".propertyLine");
-			updatePropertyLineElement(propertyLineElement, character.properties[propertyIndex]);
-			propertyIndex++;
-			liElementIndex++;
-		} else {
-			console.log(character.properties[propertyIndex].absoluteName);
-			console.log(liElements.eq(liElementIndex).attr("propertyName"));
-			propertyIndex++;
-			liElementIndex++;
-		}
-		
-	}
-	
+	character.properties.forEach(addRootProperty);
 }
 
 		</script>
