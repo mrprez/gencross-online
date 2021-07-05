@@ -6,122 +6,136 @@
 	<head>
 		<%@ include file="include/head.jsp" %>
 		<script type="text/javascript">
-
-var shownEditPropertyField = null;
+		
+const characterId = ${character.id};
 
 window.addEventListener('load', (event) => {
 	$.get(
 		"/gencross-online/dispatcher/rest/character/${character.id}",
-		function( character ) { 
+		( character ) => {
 			$("#characterRootSpinner").remove();
 			character.properties.forEach(addRootProperty);
-		});
-	
-	$(".propertyNode .editPropertyContainer .editIcon").click(function() {
-		if (shownEditPropertyField) {
-			shownEditPropertyField.hide();
-			shownEditPropertyField = null;
 		}
-		var editPropertyContainer = $(this).parent();
-		shownEditPropertyField = editPropertyContainer.children(".editPropertyField");
-		shownEditPropertyField.show();
-	});
-	$(".editPropertyButton.close").click(function() {
-		shownEditPropertyField.hide();
-		shownEditPropertyField = null;
-	});
-	$(".editPropertyButton.valid").click(function() {
-		var propertyForm = $(this).parents(".propertyForm");
-		$.post(
-			"/gencross-online/dispatcher/rest/character/${character.id}/setValue",
-			propertyForm.serialize());
-	});
+	);
 });
 
 function addRootProperty(property) {
-	addProperty(document.getElementById("characterRoot"), property);
+	addProperty($("#characterRoot"), property);
 }
 
 function addProperty(parentUlElement, property) {
-	const liElement = document.createElement("li");
-	liElement.setAttribute("propertyName", property.absoluteName);
-	liElement.classList.add("propertyNode");
-	parentUlElement.appendChild(liElement);
+	parentUlElement.append(
+			"<li class='propertyNode'>"
+				+ "<span class='nodeIcon'></span>"
+				+ "<span class='propertyLine'>"
+					+ "<span class='propertyName'>"+property.name+"</span>"
+				+ "</span>"
+			+ "</li>"
+	);
 	
-	const nodeIconElement = document.createElement("span");
-	nodeIconElement.classList.add("nodeIcon");
-	liElement.appendChild(nodeIconElement);
+	const liElement = parentUlElement.children(".propertyNode").last();
+	liElement.attr("propertyName", property.absoluteName);
 	
-	const nodeLineElement = document.createElement("span");
-	liElement.appendChild(nodeLineElement);
-	
-	const propertyNameElement = document.createElement("span");
-	propertyNameElement.innerText = property.name;
-	nodeLineElement.appendChild(propertyNameElement);
-	
-	if (property.value != null) {
-		nodeLineElement.appendChild(document.createTextNode(": "));
-		
-		const propertyValueElement = document.createElement("span");
-		propertyValueElement.innerText = property.value;
-		propertyValueElement.classList.add("propertyValue");
-		nodeLineElement.appendChild(propertyValueElement);
-		
-		if (property.editable) {
-			const editIconElement = document.createElement("img");
-			editIconElement.src = "/gencross-online/img/bootstrap-icons-1.4.1/pencil.svg";
-			editIconElement.classList.add("actionIcon");
-			liElement.appendChild(editIconElement);
-			$(editIconElement).click(clickOnEditValue);
-		}
-	}
+	updatePropertyLineElement(liElement.children(".propertyLine"), property);
 	
 	if (property.subProperties != null) {
-		liElement.classList.add("collapsed");
-		nodeIconElement.addEventListener("click", () => {
-			if (liElement.classList.contains("collapsed")) {
-				liElement.classList.remove("collapsed");
-				liElement.classList.add("expanded");
-			} else if (liElement.classList.contains("expanded")) {
-				liElement.classList.add("collapsed");
-				liElement.classList.remove("expanded");
+		liElement.addClass("collapsed");
+		liElement.children(".nodeIcon").click(() => {
+			if (liElement.hasClass("collapsed")) {
+				liElement.removeClass("collapsed");
+				liElement.addClass("expanded");
+			} else if (liElement.hasClass("expanded")) {
+				liElement.addClass("collapsed");
+				liElement.removeClass("expanded");
 			}
 		});
-		const ulElement = document.createElement("ul");
-		liElement.appendChild(ulElement);
-		property.subProperties.forEach((subProperty) => {addProperty(ulElement, subProperty)});
+		liElement.append("<ul class='subProperties'></ul>");
+		property.subProperties.forEach((subProperty) => {addProperty(liElement.children(".subProperties"), subProperty)});
 	} else {
-		liElement.classList.add("end");
+		liElement.addClass("end");
 	}
 }
 
-function clickOnEditValue(event) {
-	const liElement = event.currentTarget.parentElement;
-	
-	const cardElement = document.createElement("div");
-	cardElement.classList.add("card");
-	cardElement.classList.add("editPropertyField");
-	$(liElement).find(".propertyValue").append(cardElement);
-	
-	const cardBodyElement = document.createElement("div");
-	cardBodyElement.classList.add("card-body");
-	cardElement.appendChild(cardBodyElement);
-	
-	const inputTextElement = document.createElement("input");
-	inputTextElement.setAttribute("type", "text");
-	inputTextElement.setAttribute("name", "value");
-	inputTextElement.setAttribute("value", $(liElement).find(".propertyValue").text());
-	cardBodyElement.appendChild(inputTextElement);
-	
-	const closeButtonElement = document.createElement("img");
-	closeButtonElement.setAttribute("src", "/gencross-online/img/bootstrap-icons-1.4.1/x.svg");
-	closeButtonElement.classList.add("editPropertyButton");
-	cardBodyElement.appendChild(closeButtonElement);
+function updatePropertyLineElement(propertyLineElement, property) {
+	if (property.value != null) {
+		if (propertyLineElement.find(".separator").length == 0) {
+			propertyLineElement.append("<span class='separator'>: </span>");
+		}
+		if (propertyLineElement.find(".propertyValue").length == 0) {
+			propertyLineElement.append("<span class='propertyValue'></span>");
+		}
+		propertyLineElement.find(".propertyValue").text(property.value);
+		
+		if (property.editable && propertyLineElement.find(".editIcon").length == 0) {
+			propertyLineElement.append("<img src='/gencross-online/img/bootstrap-icons-1.4.1/pencil.svg' class='actionIcon editIcon'/>");
+			propertyLineElement.find(".editIcon").click(clickOnEditValue.bind(this, propertyLineElement));
+		}
+	} else {
+		propertyLineElement.find(".separator").remove();
+		propertyLineElement.find(".propertyValue").remove();
+		propertyLineElement.find(".editIcon").remove();
+	}
+}
+	 
+function clickOnEditValue(propertyLineElement, event) {
+	propertyLineElement.find(".propertyValue").append(
+			"<div class='card editPropertyField'>"
+				+ "<div class='card-body edit-card-body'>"
+					+ "<input type='text' name='value' value='"+propertyLineElement.find(".propertyValue").text()+"'/>"
+					+ "<img src='/gencross-online/img/bootstrap-icons-1.4.1/x.svg' class='editPropertyButton cancel'/>"
+					+ "<img src='/gencross-online/img/bootstrap-icons-1.4.1/check.svg' class='editPropertyButton validate'/>"
+				+ "</div>"
+			+ "</div>");
+	const cardElement = propertyLineElement.find(".propertyValue .editPropertyField");
+	propertyLineElement.find(".editPropertyField input[type='text']").focus();
+	propertyLineElement.find(".editPropertyField input[type='text']").keydown((e) => {
+		if (e.key === "Escape") {
+			cardElement.remove();
+			e.preventDefault();
+		}
+	});
+	propertyLineElement.find(".editPropertyField .editPropertyButton.cancel").click(() => {cardElement.remove()});
+	propertyLineElement.find(".editPropertyField .editPropertyButton.validate").click(setPropertyValue.bind(this, propertyLineElement));
+}
 
-	const validButtonElement = document.createElement("img");
-	validButtonElement.setAttribute("src", "/gencross-online/img/bootstrap-icons-1.4.1/check.svg");
-	validButtonElement.classList.add("editPropertyButton");
-	cardBodyElement.appendChild(validButtonElement);
+function setPropertyValue(propertyLineElement, event) {
+	const value = propertyLineElement.find(".edit-card-body input").val();
+	const propertyName = propertyLineElement.parent().attr("propertyName");
+	$(this).find(".edit-card-body").remove();
+	$(this).find(".propertyValue").empty();
+	$(this).find(".propertyValue").append("<div class='propertyValueSpinner spinner-border' role='status'></div>");
+	
+	console.log("value="+value);
+	console.log("propertyName="+propertyName);
+	$.ajax("/gencross-online/dispatcher/rest/character/"+characterId+"/setValue", {
+		method: "PUT",
+		data: { 'property': propertyName, 'value': value }
+	}).done(refreshCharacter);
+	
+}
+
+function refreshCharacter(character) {
+	console.log(character);
+	const liElements = $("#characterRoot").children();
+	
+	let propertyIndex = 0;
+	let liElementIndex = 0;
+	
+	while (propertyIndex<character.properties.length && liElementIndex<liElements.length) {
+		if (character.properties[propertyIndex].absoluteName == liElements.eq(liElementIndex).attr("propertyName")) {
+			const propertyLineElement = liElements.eq(liElementIndex).children(".propertyLine");
+			updatePropertyLineElement(propertyLineElement, character.properties[propertyIndex]);
+			propertyIndex++;
+			liElementIndex++;
+		} else {
+			console.log(character.properties[propertyIndex].absoluteName);
+			console.log(liElements.eq(liElementIndex).attr("propertyName"));
+			propertyIndex++;
+			liElementIndex++;
+		}
+		
+	}
+	
 }
 
 		</script>

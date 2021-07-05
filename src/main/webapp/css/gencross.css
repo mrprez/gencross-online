@@ -56,11 +56,6 @@
 
 .character .propertyNode {
 	list-style-type: none;
-	display: flex;
-}
-
-.character .propertyNode .nodeIcon {
-	cursor: pointer;
 }
 
 .character .propertyNode.collapsed > .nodeIcon::before {
@@ -75,19 +70,28 @@
 	content: url('/gencross-online/img/bootstrap-icons-1.4.1/dash.svg');
 }
 
-.character .propertyNode.collapsed ul {
-	display: none;
+.character .propertyNode.collapsed .nodeIcon {
+	cursor: pointer;
 }
 
-.character .propertyNode .propertyForm {
-	display: flex;
+.character .propertyNode.expanded .nodeIcon {
+	cursor: pointer;
+}
+
+.character .propertyNode.collapsed .subProperties {
+	display: none;
 }
 
 .character .propertyNode .propertyValue {
 	display: inline;
 }
 
-.character .propertyNode > .actionIcon {
+.character .propertyNode .propertyValue .propertyValueSpinner {
+	width: 1em;
+	height: 1em;
+}
+
+.character .propertyNode .actionIcon {
 	margin-left: 0.5em;
 	cursor: pointer;
 }
@@ -111,4 +115,5 @@
 
 .character .propertyNode .editPropertyField .card-body .editPropertyButton {
 	height: 1.5em;
+	cursor: pointer;
 }
