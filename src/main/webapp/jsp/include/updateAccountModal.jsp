@@ -38,6 +38,7 @@
 </div>
 
 <script type="text/javascript">
+"use strict";
 function submitUpdateAccount() {
 	var accountChange = {};
 	// $('#updateAccountModal input[name=usernameInput]')

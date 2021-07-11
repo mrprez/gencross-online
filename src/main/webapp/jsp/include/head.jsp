@@ -8,6 +8,7 @@
 <script src="/gencross-online/js/popper.min.js"></script>
 <script src="/gencross-online/js/bootstrap.min.js"></script>
 <script>
+	"use strict";
 	$(document).ajaxError(function( event, request, settings ) {
 		if (request.status == 403) {
 			window.location.href = '/gencross-online/dispatcher/login';

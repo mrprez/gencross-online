@@ -27,6 +27,7 @@
 </div>
 
 <script type="text/javascript">
+"use strict";
 $('#createCharacterModal').on('shown.bs.modal', function () {
 	$('#nameInput').trigger('focus');
 })

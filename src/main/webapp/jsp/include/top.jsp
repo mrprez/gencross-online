@@ -19,6 +19,7 @@
 	</div>
 </nav>
 <script type="text/javascript">
+"use strict";
 function openUpdateAccountModal() {
 	$.ajax("/gencross-online/dispatcher/account/include/update")
 		.done(function(data, textStatus, xhr) {

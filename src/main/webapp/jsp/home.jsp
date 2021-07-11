@@ -6,6 +6,8 @@
 	<head>
 		<%@ include file="include/head.jsp" %>
 		<script type="text/javascript">
+"use strict";
+
 window.addEventListener('load', (event) => {
 	const results = new RegExp('[\?&]tableId=([^&#]*)').exec(window.location.search);
 	if (results !== null) {

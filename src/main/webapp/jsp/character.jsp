@@ -6,6 +6,8 @@
 	<head>
 		<%@ include file="include/head.jsp" %>
 		<script type="text/javascript">
+
+"use strict";
 		
 const characterId = ${character.id};
 

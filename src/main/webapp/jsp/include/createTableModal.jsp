@@ -33,6 +33,7 @@
 </div>
 
 <script type="text/javascript">
+"use strict";
 $('#createTableModal').on('shown.bs.modal', function () {
 	$('#nameInput').trigger('focus');
 })
