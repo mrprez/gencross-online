@@ -8,6 +8,9 @@ public class PropertyDto {
 	private String value;
 	private boolean editable;
 	private List<PropertyDto> subProperties;
+	private boolean subPropertiesListFixe;
+	private boolean subPropertiesListOpen;
+	private List<String> subPropertiesListOptions;
 	
 	
 	public String getName() {
@@ -40,4 +43,25 @@ public class PropertyDto {
 	public void setSubProperties(List<PropertyDto> subProperties) {
 		this.subProperties = subProperties;
 	}
+	public boolean isSubPropertiesListFixe() {
+		return subPropertiesListFixe;
+	}
+	public void setSubPropertiesListFixe(boolean subPropertiesListFixe) {
+		this.subPropertiesListFixe = subPropertiesListFixe;
+	}
+	public boolean isSubPropertiesListOpen() {
+		return subPropertiesListOpen;
+	}
+	public void setSubPropertiesListOpen(boolean subPropertiesListOpen) {
+		this.subPropertiesListOpen = subPropertiesListOpen;
+	}
+	public List<String> getSubPropertiesListOptions() {
+		return subPropertiesListOptions;
+	}
+	public void setSubPropertiesListOptions(List<String> subPropertiesListOptions) {
+		this.subPropertiesListOptions = subPropertiesListOptions;
+	}
+	
+	
+	
 }

@@ -23,6 +23,7 @@ public class PropertyBeanToDtoMapper implements Function<Property, PropertyDto> 
 		
 		if (bean.getSubProperties()!=null) {
 			dto.setSubProperties(bean.getSubProperties().stream().map(this).collect(Collectors.toList()));
+			dto.setSubPropertiesListFixe(bean.getSubProperties().isFixe());
 		}
 		
 		return dto;

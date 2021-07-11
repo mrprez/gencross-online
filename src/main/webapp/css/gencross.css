@@ -117,3 +117,8 @@
 	height: 1.5em;
 	cursor: pointer;
 }
+
+.character .propertyNode .subProperties .addAction {
+	cursor: pointer;
+	font-style: italic;
+}

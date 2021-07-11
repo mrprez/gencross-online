@@ -44,22 +44,29 @@ function addProperty(parentUlElement, property) {
 		liElement.removeClass("collapsed");
 		liElement.removeClass("expanded");
 		liElement.addClass("end");
-	} else if (liElement.children("ul.subProperties").length == 0) {
-		liElement.removeClass("end");
-		liElement.addClass("collapsed");
-		liElement.children(".nodeIcon").click(() => {
-			if (liElement.hasClass("collapsed")) {
-				liElement.removeClass("collapsed");
-				liElement.addClass("expanded");
-			} else if (liElement.hasClass("expanded")) {
-				liElement.addClass("collapsed");
-				liElement.removeClass("expanded");
-			}
-		});
-		liElement.append("<ul class='subProperties'></ul>");
-		property.subProperties.forEach((subProperty) => {addProperty(liElement.children(".subProperties"), subProperty)});
 	} else {
-		property.subProperties.forEach((subProperty) => {addProperty(liElement.children(".subProperties"), subProperty)});
+		if (liElement.children("ul.subProperties").length == 0) {
+			liElement.removeClass("end");
+			liElement.addClass("collapsed");
+			liElement.children(".nodeIcon").click(() => {
+				if (liElement.hasClass("collapsed")) {
+					liElement.removeClass("collapsed");
+					liElement.addClass("expanded");
+				} else if (liElement.hasClass("expanded")) {
+					liElement.addClass("collapsed");
+					liElement.removeClass("expanded");
+				}
+			});
+			liElement.append("<ul class='subProperties'></ul>");
+		}
+		
+		const subPropertiesUlElement = liElement.children(".subProperties");
+		property.subProperties.forEach((subProperty) => {addProperty(subPropertiesUlElement, subProperty)});
+		
+		if (!property.subPropertiesListFixe) {
+			subPropertiesUlElement.append("<span class='addAction'>Ajouter</span>");
+			subPropertiesUlElement.children(".addAction").click(clickOnAddProperty.bind(this, property));
+		}
 	}
 }
 
@@ -103,6 +110,11 @@ function clickOnEditValue(propertyLineElement, event) {
 	});
 	propertyLineElement.find(".editPropertyField .editPropertyButton.cancel").click(() => {cardElement.remove()});
 	propertyLineElement.find(".editPropertyField .editPropertyButton.validate").click(setPropertyValue.bind(this, propertyLineElement));
+}
+
+function clickOnAddProperty(parentProperty, event) {
+	console.log(parentProperty);
+	console.log(event);
 }
 
 function setPropertyValue(propertyLineElement, event) {
