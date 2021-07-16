@@ -14,7 +14,7 @@
 				<div class="editPropertyContainer">
 					<img class="editIcon" src="/gencross-online/img/bootstrap-icons-1.4.1/pencil.svg"/>
 					<c:if test="${property.value['class'].simpleName == 'StringValue'}">
-						<div class="card editPropertyField editStringPropertyField">
+						<div class="card editPropertyCard editStringPropertyField">
 							<div class="card-body">
 								<form class="propertyForm">
 									<input type="hidden" name="property" value="${property.absoluteName}"/>

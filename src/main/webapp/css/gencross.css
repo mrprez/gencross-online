@@ -96,29 +96,34 @@
 	cursor: pointer;
 }
 
-.character .propertyNode .propertyValue {
-	position: relative;
-	display: inline-block;
-}
-
-.character .propertyNode .editPropertyField {
+.character .propertyNode .flyingCard {
 	position: absolute;
 	z-index: 10;
 	top: -20px;
 	left: 0;
 }
 
-.character .propertyNode .editPropertyField .card-body {
+.character .propertyNode .flyingCard .card-body {
 	display: flex;
 	align-items: center;
 }
 
-.character .propertyNode .editPropertyField .card-body .editPropertyButton {
+.character .propertyNode .flyingCard .card-body .flyingCardButton {
 	height: 1.5em;
 	cursor: pointer;
+}
+
+.character .propertyNode .flyingCard .card-body select {
+	min-width: 10em;
+}
+
+.character .propertyNode .propertyValue {
+	position: relative;
+	display: inline-block;
 }
 
 .character .propertyNode .subProperties .addAction {
 	cursor: pointer;
 	font-style: italic;
+	position: relative;
 }

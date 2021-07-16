@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,6 +45,15 @@ public class CharacterRestController {
 			@RequestParam("property") String property, @RequestParam("value") String value) throws Exception {
 		UserId userId = authenticationProvider.getAuthenticatedUser().getId();
 		Personnage personnage = characterService.setValue(characterId, property, value, userId);
+		return characterBeanToDtoMapper.apply(personnage);
+	}
+	
+	@PostMapping(path = "{characterId}/addProperty",
+			  consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+	public CharacterDto addProperty(@PathVariable("characterId") CharacterId characterId,
+			@RequestParam("parentProperty") String parentAbsoluteName, @RequestParam("name") String newPropertyName) throws Exception {
+		UserId userId = authenticationProvider.getAuthenticatedUser().getId();
+		Personnage personnage = characterService.addProperty(characterId, parentAbsoluteName, newPropertyName, userId);
 		return characterBeanToDtoMapper.apply(personnage);
 	}
 	

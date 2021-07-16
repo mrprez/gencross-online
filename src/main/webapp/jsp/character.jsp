@@ -10,22 +10,24 @@
 "use strict";
 		
 const characterId = ${character.id};
+const messages = new Object();
+messages.chooseOption='<fmt:message key="label.chooseOption"/>';
 
 window.addEventListener('load', (event) => {
 	$.get(
 		"/gencross-online/dispatcher/rest/character/${character.id}",
 		( character ) => {
 			$("#characterRootSpinner").remove();
-			character.properties.forEach(addRootProperty);
+			character.properties.forEach(displayRootProperty);
 		}
 	);
 });
 
-function addRootProperty(property) {
-	addProperty($("#characterRoot"), property);
+function displayRootProperty(property) {
+	displayProperty($("#characterRoot"), property);
 }
 
-function addProperty(parentUlElement, property) {
+function displayProperty(parentUlElement, property) {
 	if (parentUlElement.children("[propertyName='"+property.absoluteName+"']").length == 0) {
 		parentUlElement.append(
 				"<li class='propertyNode'>"
@@ -63,8 +65,9 @@ function addProperty(parentUlElement, property) {
 		}
 		
 		const subPropertiesUlElement = liElement.children(".subProperties");
-		property.subProperties.forEach((subProperty) => {addProperty(subPropertiesUlElement, subProperty)});
+		property.subProperties.forEach((subProperty) => {displayProperty(subPropertiesUlElement, subProperty)});
 		
+		subPropertiesUlElement.children(".addAction").remove();
 		if (!property.subPropertiesListFixe) {
 			subPropertiesUlElement.append("<span class='addAction'>Ajouter</span>");
 			subPropertiesUlElement.children(".addAction").click(clickOnAddProperty.bind(this, property));
@@ -95,50 +98,77 @@ function updatePropertyLineElement(propertyLineElement, property) {
 	 
 function clickOnEditValue(propertyLineElement, event) {
 	propertyLineElement.find(".propertyValue").append(
-			"<div class='card editPropertyField'>"
-				+ "<div class='card-body edit-card-body'>"
-					+ "<input type='text' name='value' value='"+propertyLineElement.find(".propertyValue").text()+"'/>"
-					+ "<img src='/gencross-online/img/bootstrap-icons-1.4.1/x.svg' class='editPropertyButton cancel'/>"
-					+ "<img src='/gencross-online/img/bootstrap-icons-1.4.1/check.svg' class='editPropertyButton validate'/>"
-				+ "</div>"
+			"<div class='card editPropertyCard flyingCard'>"
+				+ "<form class='card-body flyingCardBody' onsubmit='event.preventDefault();'>"
+					+ "<input type='text' name='value' value='"+propertyLineElement.find(".propertyValue").text()+"' required/>"
+					+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/x.svg' class='flyingCardButton cancel'/>"
+					+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/check.svg' class='flyingCardButton validate'/>"
+				+ "</form>"
 			+ "</div>");
-	const cardElement = propertyLineElement.find(".propertyValue .editPropertyField");
-	propertyLineElement.find(".editPropertyField input[type='text']").focus();
-	propertyLineElement.find(".editPropertyField input[type='text']").keydown((e) => {
+	const cardElement = propertyLineElement.find(".propertyValue .editPropertyCard");
+	propertyLineElement.find(".editPropertyCard input[type='text']").focus();
+	propertyLineElement.find(".editPropertyCard input[type='text']").keydown((e) => {
 		if (e.key === "Escape") {
 			cardElement.remove();
 			e.preventDefault();
 		}
 	});
-	propertyLineElement.find(".editPropertyField .editPropertyButton.cancel").click(() => {cardElement.remove()});
-	propertyLineElement.find(".editPropertyField .editPropertyButton.validate").click(setPropertyValue.bind(this, propertyLineElement));
+	propertyLineElement.find(".editPropertyCard .cancel").click(() => {cardElement.remove()});
+	propertyLineElement.find(".editPropertyCard .validate").click(setPropertyValue.bind(this, propertyLineElement));
 }
 
 function clickOnAddProperty(parentProperty, event) {
-	console.log(parentProperty);
-	console.log(event);
+	if (parentProperty.subPropertiesListOptions != null && parentProperty.subPropertiesListOptions.length > 0) {
+		$(event.target).append(
+			"<div class='card addPropertyCard flyingCard'>"
+				+ "<form class='card-body flyingCardBody' onsubmit='event.preventDefault();'>"
+					+ "<select name='addPropertySelect' class='addPropertySelect' required><option value='' hidden>"+messages.chooseOption+"</option></select>"
+					+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/x.svg' class='flyingCardButton cancel'/>"
+					+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/check.svg' class='flyingCardButton validate'/>"
+				+ "</form>"
+			+ "</div>");
+		const cardElement = $(event.target).find(".addPropertyCard");
+		for (const option of parentProperty.subPropertiesListOptions) {
+			cardElement.find(".addPropertySelect").append("<option>"+option+"</option>")
+		}
+		cardElement.find(".addPropertySelect").focus();
+		cardElement.find(".addPropertySelect").keydown((e) => {
+			if (e.key === "Escape") {
+				cardElement.remove();
+				e.preventDefault();
+			}
+		});
+		
+		cardElement.find(".cancel").click(() => {cardElement.remove()});
+		cardElement.find(".validate").click(addProperty.bind(this, cardElement, parentProperty));
+	}
 }
 
 function setPropertyValue(propertyLineElement, event) {
-	const value = propertyLineElement.find(".edit-card-body input").val();
+	const value = propertyLineElement.find(".flyingCardBody input").val();
 	const propertyName = propertyLineElement.parent().attr("propertyName");
-	propertyLineElement.find(".edit-card-body").remove();
+	propertyLineElement.find(".flyingCardBody").remove();
 	propertyLineElement.find(".propertyValue").empty();
 	propertyLineElement.find(".propertyValue").append("<div class='propertyValueSpinner spinner-border' role='status'></div>");
 	
-	console.log("value="+value);
-	console.log("propertyName="+propertyName);
 	$.ajax("/gencross-online/dispatcher/rest/character/"+characterId+"/setValue", {
 		method: "PUT",
 		data: { 'property': propertyName, 'value': value }
-	}).done(refreshCharacter);
+	}).done(refreshCharacter);	
+}
+
+function addProperty(addPropertyCard, parentProperty, event) {
+	const parentPropertyName = parentProperty.absoluteName;
+	const newPropertyName = addPropertyCard.find(".addPropertySelect").val();
 	
+	$.ajax("/gencross-online/dispatcher/rest/character/"+characterId+"/addProperty", {
+		method: "POST",
+		data: { 'parentProperty': parentPropertyName, 'name': newPropertyName }
+	}).done(refreshCharacter);
 }
 
 function refreshCharacter(character) {
-	console.log(character);
-	
-	character.properties.forEach(addRootProperty);
+	character.properties.forEach(displayRootProperty);
 }
 
 		</script>
