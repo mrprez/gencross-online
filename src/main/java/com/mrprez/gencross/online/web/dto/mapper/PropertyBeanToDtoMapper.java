@@ -27,6 +27,7 @@ public class PropertyBeanToDtoMapper implements Function<Property, PropertyDto> 
 			if (bean.getSubProperties().getOptions() != null) {
 				dto.setSubPropertiesListOptions(bean.getSubProperties().getOptions().keySet().stream().sorted().collect(Collectors.toList()));
 			}
+			dto.setSubPropertiesListOpen(bean.getSubProperties().isOpen());
 		}
 		
 		return dto;

@@ -96,8 +96,11 @@ public class CharacterService {
 			newProperty = parentProperty.getSubProperties().getOptions().get(newPropertyName).clone();
 		} else {
 			newProperty = parentProperty.getSubProperties().getDefaultProperty().clone();
+			newProperty.setName(newPropertyName);
 		}
 		personnage.addPropertyToMotherProperty(newProperty);
+		
+		updateCharacterData(characterId, personnage);
 		
 		return personnage;
 	}

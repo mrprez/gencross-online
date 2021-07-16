@@ -98,13 +98,13 @@ function updatePropertyLineElement(propertyLineElement, property) {
 	 
 function clickOnEditValue(propertyLineElement, event) {
 	propertyLineElement.find(".propertyValue").append(
-			"<div class='card editPropertyCard flyingCard'>"
-				+ "<form class='card-body flyingCardBody' onsubmit='event.preventDefault();'>"
-					+ "<input type='text' name='value' value='"+propertyLineElement.find(".propertyValue").text()+"' required/>"
+			"<dialog class='card editPropertyCard flyingCard' open>"
+				+ "<form class='card-body flyingCardBody' method='dialog'>"
+					+ "<input type='text' name='value' value='"+propertyLineElement.find(".propertyValue").text()+"'/>"
 					+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/x.svg' class='flyingCardButton cancel'/>"
 					+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/check.svg' class='flyingCardButton validate'/>"
 				+ "</form>"
-			+ "</div>");
+			+ "</dialog>");
 	const cardElement = propertyLineElement.find(".propertyValue .editPropertyCard");
 	propertyLineElement.find(".editPropertyCard input[type='text']").focus();
 	propertyLineElement.find(".editPropertyCard input[type='text']").keydown((e) => {
@@ -118,16 +118,17 @@ function clickOnEditValue(propertyLineElement, event) {
 }
 
 function clickOnAddProperty(parentProperty, event) {
+	$(event.target).append(
+		"<dialog class='card addPropertyCard flyingCard' open>"
+			+ "<form class='card-body flyingCardBody' method='dialog'>"
+				+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/x.svg' class='flyingCardButton cancel'/>"
+				+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/check.svg' class='flyingCardButton validate'/>"
+			+ "</form>"
+		+ "</dialog>");
+	const cardElement = $(event.target).find(".addPropertyCard");
+	
 	if (parentProperty.subPropertiesListOptions != null && parentProperty.subPropertiesListOptions.length > 0) {
-		$(event.target).append(
-			"<div class='card addPropertyCard flyingCard'>"
-				+ "<form class='card-body flyingCardBody' onsubmit='event.preventDefault();'>"
-					+ "<select name='addPropertySelect' class='addPropertySelect' required><option value='' hidden>"+messages.chooseOption+"</option></select>"
-					+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/x.svg' class='flyingCardButton cancel'/>"
-					+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/check.svg' class='flyingCardButton validate'/>"
-				+ "</form>"
-			+ "</div>");
-		const cardElement = $(event.target).find(".addPropertyCard");
+		cardElement.find("form").prepend("<select name='addPropertySelect' class='addPropertySelect' required><option value='' hidden>"+messages.chooseOption+"</option></select>");
 		for (const option of parentProperty.subPropertiesListOptions) {
 			cardElement.find(".addPropertySelect").append("<option>"+option+"</option>")
 		}
@@ -138,10 +139,19 @@ function clickOnAddProperty(parentProperty, event) {
 				e.preventDefault();
 			}
 		});
-		
-		cardElement.find(".cancel").click(() => {cardElement.remove()});
-		cardElement.find(".validate").click(addProperty.bind(this, cardElement, parentProperty));
+	} else if (parentProperty.subPropertiesListOpen) {
+		cardElement.find("form").prepend("<input type='text' name='addPropertyText' class='addPropertyText' required/>");
+		cardElement.find(".addPropertyText").focus();
+		cardElement.find(".addPropertyText").keydown((e) => {
+			if (e.key === "Escape") {
+				cardElement.remove();
+				e.preventDefault();
+			}
+		});
 	}
+	
+	cardElement.find(".cancel").click(() => {cardElement.remove()});
+	cardElement.find(".validate").click(addProperty.bind(this, cardElement, parentProperty));
 }
 
 function setPropertyValue(propertyLineElement, event) {
@@ -159,12 +169,19 @@ function setPropertyValue(propertyLineElement, event) {
 
 function addProperty(addPropertyCard, parentProperty, event) {
 	const parentPropertyName = parentProperty.absoluteName;
-	const newPropertyName = addPropertyCard.find(".addPropertySelect").val();
+	let newPropertyName = null;
+	if (addPropertyCard.find(".addPropertySelect").length > 0) {
+		newPropertyName = addPropertyCard.find(".addPropertySelect").val();
+	} else if (addPropertyCard.find(".addPropertyText").length > 0) {
+		newPropertyName = addPropertyCard.find(".addPropertyText").val();
+	}
 	
-	$.ajax("/gencross-online/dispatcher/rest/character/"+characterId+"/addProperty", {
-		method: "POST",
-		data: { 'parentProperty': parentPropertyName, 'name': newPropertyName }
-	}).done(refreshCharacter);
+	if (newPropertyName != null) {
+		$.ajax("/gencross-online/dispatcher/rest/character/"+characterId+"/addProperty", {
+			method: "POST",
+			data: { 'parentProperty': parentPropertyName, 'name': newPropertyName }
+		}).done(refreshCharacter);
+	}
 }
 
 function refreshCharacter(character) {
