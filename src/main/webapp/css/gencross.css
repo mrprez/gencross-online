@@ -118,6 +118,11 @@
 	min-width: 10em;
 }
 
+.character .propertyNode .flyingCard .card-body .addPropertyInputGroup .addPropertyText {
+	margin-top: 1em;
+	width: 100%;
+}
+
 .character .propertyNode .propertyValue {
 	position: relative;
 	display: inline-block;

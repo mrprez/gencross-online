@@ -69,8 +69,9 @@ function displayProperty(parentUlElement, property) {
 		
 		subPropertiesUlElement.children(".addAction").remove();
 		if (!property.subPropertiesListFixe) {
-			subPropertiesUlElement.append("<span class='addAction'>Ajouter</span>");
-			subPropertiesUlElement.children(".addAction").click(clickOnAddProperty.bind(this, property));
+			subPropertiesUlElement.append("<span class='addAction'><span class='addActionText'>Ajouter</span></span>");
+			const addActionElement = subPropertiesUlElement.children(".addAction");
+			addActionElement.children(".addActionText").click(clickOnAddProperty.bind(this, addActionElement, property));
 		}
 	}
 }
@@ -117,20 +118,37 @@ function clickOnEditValue(propertyLineElement, event) {
 	propertyLineElement.find(".editPropertyCard .validate").click(setPropertyValue.bind(this, propertyLineElement));
 }
 
-function clickOnAddProperty(parentProperty, event) {
-	$(event.target).append(
+function clickOnAddProperty(addActionElement, parentProperty, event) {
+	$(addActionElement).append(
 		"<dialog class='card addPropertyCard flyingCard' open>"
 			+ "<form class='card-body flyingCardBody' method='dialog'>"
 				+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/x.svg' class='flyingCardButton cancel'/>"
 				+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/check.svg' class='flyingCardButton validate'/>"
 			+ "</form>"
 		+ "</dialog>");
-	const cardElement = $(event.target).find(".addPropertyCard");
-	
-	if (parentProperty.subPropertiesListOptions != null && parentProperty.subPropertiesListOptions.length > 0) {
+	const cardElement = $(addActionElement).find(".addPropertyCard");
+	if (parentProperty.subPropertiesListOptions != null && parentProperty.subPropertiesListOptions.length > 0 && parentProperty.subPropertiesListOpen) {
+		cardElement.find("form.flyingCardBody").prepend(
+				"<div class='addPropertyInputGroup'>"
+					+ "<select name='addPropertySelect' class='addPropertySelect' required><option value='' hidden>"+messages.chooseOption+"</option></select>"
+					+ "<input type='text' name='addPropertyText' class='addPropertyText'/>"
+				+ "</div>");
+		for (const option of parentProperty.subPropertiesListOptions) {
+			cardElement.find(".addPropertySelect").append("<option>"+option+"</option>");
+		}
+		cardElement.find(".addPropertySelect").append("<option value='???'>Choix libre</option>");
+		cardElement.find(".addPropertySelect").focus();
+		cardElement.find(".addPropertyText").hide();
+		cardElement.find(".addPropertySelect").change(() => {
+			if (cardElement.find(".addPropertySelect").val() == "???") {
+				cardElement.find(".addPropertyText").show(400);
+			} else {
+				cardElement.find(".addPropertyText").hide(400);
+			}});
+	} else if (parentProperty.subPropertiesListOptions != null && parentProperty.subPropertiesListOptions.length > 0) {
 		cardElement.find("form").prepend("<select name='addPropertySelect' class='addPropertySelect' required><option value='' hidden>"+messages.chooseOption+"</option></select>");
 		for (const option of parentProperty.subPropertiesListOptions) {
-			cardElement.find(".addPropertySelect").append("<option>"+option+"</option>")
+			cardElement.find(".addPropertySelect").append("<option>"+option+"</option>");
 		}
 		cardElement.find(".addPropertySelect").focus();
 		cardElement.find(".addPropertySelect").keydown((e) => {
@@ -172,6 +190,9 @@ function addProperty(addPropertyCard, parentProperty, event) {
 	let newPropertyName = null;
 	if (addPropertyCard.find(".addPropertySelect").length > 0) {
 		newPropertyName = addPropertyCard.find(".addPropertySelect").val();
+		if (newPropertyName == '???') {
+			newPropertyName = addPropertyCard.find(".addPropertyText").val();
+		}
 	} else if (addPropertyCard.find(".addPropertyText").length > 0) {
 		newPropertyName = addPropertyCard.find(".addPropertyText").val();
 	}
