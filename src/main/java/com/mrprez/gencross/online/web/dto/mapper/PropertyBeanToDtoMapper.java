@@ -14,7 +14,7 @@ public class PropertyBeanToDtoMapper implements Function<Property, PropertyDto> 
 	@Override
 	public PropertyDto apply(Property bean) {
 		PropertyDto dto = new PropertyDto();
-		dto.setName(bean.getName());
+		dto.setName(bean.getFullName());
 		dto.setAbsoluteName(bean.getAbsoluteName());
 		if (bean.getValue() != null) {
 			dto.setValue(bean.getValue().getString());

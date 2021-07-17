@@ -87,13 +87,14 @@ public class CharacterService {
 		characterDao.updateData(characterId, baos.toByteArray());
 	}
 
-	public Personnage addProperty(CharacterId characterId, String parentAbsoluteName, String newPropertyName, UserId userId) throws Exception {
+	public Personnage addProperty(CharacterId characterId, String parentAbsoluteName, String newPropertyName, String specification, UserId userId) throws Exception {
 		LoadedCharacter loadedCharacter = getCharachter(characterId);
 		Personnage personnage = loadedCharacter.getData();
 		Property parentProperty = personnage.getProperty(parentAbsoluteName);
 		Property newProperty;
 		if (parentProperty.getSubProperties().getOptions().containsKey(newPropertyName)) {
 			newProperty = parentProperty.getSubProperties().getOptions().get(newPropertyName).clone();
+			newProperty.setSpecification(specification);
 		} else {
 			newProperty = parentProperty.getSubProperties().getDefaultProperty().clone();
 			newProperty.setName(newPropertyName);

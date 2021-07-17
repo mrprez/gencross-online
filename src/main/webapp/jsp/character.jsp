@@ -135,6 +135,7 @@ function clickOnAddProperty(addActionElement, parentProperty, event) {
  				+ "<input type='text' name='addPropertyText' class='addPropertyText freeChoiceText'/>");
 		for (const option of parentProperty.subPropertiesListOptions) {
 			cardElement.find(".addPropertySelect").append("<option>"+option+"</option>");
+			cardElement.find(".addPropertySelect option").last().attr("value", option);
 		}
 		cardElement.find(".addPropertySelect").append("<option value='???'>"+messages.freeChoice+"</option>");
 		cardElement.find(".addPropertySelect").focus();
@@ -142,14 +143,17 @@ function clickOnAddProperty(addActionElement, parentProperty, event) {
 		cardElement.find(".addPropertySelect").change(() => {
 			if (cardElement.find(".addPropertySelect").val() == "???") {
 				cardElement.find(".addPropertyText").slideDown();
+				cardElement.find(".addPropertyText").prop("required", true);
 			} else {
 				cardElement.find(".addPropertyText").slideUp();
+				cardElement.find(".addPropertyText").prop("required", false);
 			}
 		});
 	} else if (parentProperty.subPropertiesListOptions != null && parentProperty.subPropertiesListOptions.length > 0) {
 		cardElement.find(".addPropertyInputGroup").append("<select name='addPropertySelect' class='addPropertySelect' required><option value='' hidden>"+messages.chooseOption+"</option></select>");
 		for (const option of parentProperty.subPropertiesListOptions) {
 			cardElement.find(".addPropertySelect").append("<option>"+option+"</option>");
+			cardElement.find(".addPropertySelect option").last().attr("value", option);
 		}
 		cardElement.find(".addPropertySelect").focus();
 		cardElement.find(".addPropertySelect").keydown((e) => {
@@ -169,8 +173,26 @@ function clickOnAddProperty(addActionElement, parentProperty, event) {
 		});
 	}
 	
-	cardElement.find(".cancel").click(() => {cardElement.remove()});
-	cardElement.find(".validate").click(addProperty.bind(this, cardElement, parentProperty));
+	if (parentProperty.subPropertiesListOptions != null && parentProperty.subPropertiesListOptions.length > 0) {
+		cardElement.find(".addPropertyInputGroup").append(
+			"<div class='specificationGroup'>"
+				+ "<label for='specificationText'>Précisez&#8239;:&nbsp;</label>"
+				+ "<input type='text' name='specificationText' class='specificationText' required/>"
+			+ "</div>");
+		cardElement.find(".specificationGroup").hide();
+		cardElement.find(".addPropertySelect").change(() => {
+			if (cardElement.find(".addPropertySelect").val().endsWith(" - ")) {
+				cardElement.find(".specificationGroup").slideDown();
+				cardElement.find(".specificationText").prop("required", true);
+			} else {
+				cardElement.find(".specificationGroup").slideUp();
+				cardElement.find(".specificationText").prop("required", false);
+			}
+		});
+	}
+	
+ 	cardElement.find(".cancel").click(() => {cardElement.remove()});
+ 	cardElement.find("form").submit(addProperty.bind(this, cardElement, parentProperty));
 }
 
 function setPropertyValue(propertyLineElement, event) {
@@ -187,23 +209,24 @@ function setPropertyValue(propertyLineElement, event) {
 }
 
 function addProperty(addPropertyCard, parentProperty, event) {
-	const parentPropertyName = parentProperty.absoluteName;
-	let newPropertyName = null;
+	const data = new Object();
+	data.parentProperty = parentProperty.absoluteName;
+	
 	if (addPropertyCard.find(".addPropertySelect").length > 0) {
-		newPropertyName = addPropertyCard.find(".addPropertySelect").val();
-		if (newPropertyName == '???') {
-			newPropertyName = addPropertyCard.find(".addPropertyText").val();
+		data.name = addPropertyCard.find(".addPropertySelect").val();
+		if (data.name == '???') {
+			data.name = addPropertyCard.find(".addPropertyText").val();
+		} else if (data.name.endsWith(" - ")) {
+			data.specification = addPropertyCard.find(".specificationText").val();
 		}
 	} else if (addPropertyCard.find(".addPropertyText").length > 0) {
-		newPropertyName = addPropertyCard.find(".addPropertyText").val();
+		data.name = addPropertyCard.find(".addPropertyText").val();
 	}
 	
-	if (newPropertyName != null) {
-		$.ajax("/gencross-online/dispatcher/rest/character/"+characterId+"/addProperty", {
-			method: "POST",
-			data: { 'parentProperty': parentPropertyName, 'name': newPropertyName }
-		}).done(refreshCharacter);
-	}
+	$.ajax("/gencross-online/dispatcher/rest/character/"+characterId+"/addProperty", {
+		method: "POST",
+		data: data
+	}).done(refreshCharacter);
 }
 
 function refreshCharacter(character) {

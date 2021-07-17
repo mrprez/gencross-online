@@ -51,9 +51,10 @@ public class CharacterRestController {
 	@PostMapping(path = "{characterId}/addProperty",
 			  consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
 	public CharacterDto addProperty(@PathVariable("characterId") CharacterId characterId,
-			@RequestParam("parentProperty") String parentAbsoluteName, @RequestParam("name") String newPropertyName) throws Exception {
+			@RequestParam("parentProperty") String parentAbsoluteName, @RequestParam("name") String newPropertyName,
+			@RequestParam(name="specification", required=false) String specification) throws Exception {
 		UserId userId = authenticationProvider.getAuthenticatedUser().getId();
-		Personnage personnage = characterService.addProperty(characterId, parentAbsoluteName, newPropertyName, userId);
+		Personnage personnage = characterService.addProperty(characterId, parentAbsoluteName, newPropertyName, specification, userId);
 		return characterBeanToDtoMapper.apply(personnage);
 	}
 	

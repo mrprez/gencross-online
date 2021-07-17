@@ -123,13 +123,26 @@
 	width: 100%;
 }
 
+.character .propertyNode .flyingCard .card-body .specificationGroup {
+	margin-top: 1em;
+	width: 100%;
+	display: flex;
+}
+
+.character .propertyNode .flyingCard .card-body .specificationGroup .specificationText {
+	flex: auto 1 1;
+}
+
 .character .propertyNode .propertyValue {
 	position: relative;
 	display: inline-block;
 }
 
 .character .propertyNode .subProperties .addAction {
+	position: relative;
+}
+
+.character .propertyNode .subProperties .addAction .addActionText {
 	cursor: pointer;
 	font-style: italic;
-	position: relative;
 }
