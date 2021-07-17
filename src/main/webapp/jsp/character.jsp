@@ -12,6 +12,7 @@
 const characterId = ${character.id};
 const messages = new Object();
 messages.chooseOption='<fmt:message key="label.chooseOption"/>';
+messages.freeChoice='<fmt:message key="label.freeChoice"/>';
 
 window.addEventListener('load', (event) => {
 	$.get(
@@ -136,14 +137,14 @@ function clickOnAddProperty(addActionElement, parentProperty, event) {
 		for (const option of parentProperty.subPropertiesListOptions) {
 			cardElement.find(".addPropertySelect").append("<option>"+option+"</option>");
 		}
-		cardElement.find(".addPropertySelect").append("<option value='???'>Choix libre</option>");
+		cardElement.find(".addPropertySelect").append("<option value='???'>"+messages.freeChoice+"</option>");
 		cardElement.find(".addPropertySelect").focus();
 		cardElement.find(".addPropertyText").hide();
 		cardElement.find(".addPropertySelect").change(() => {
 			if (cardElement.find(".addPropertySelect").val() == "???") {
-				cardElement.find(".addPropertyText").show(400);
+				cardElement.find(".addPropertyText").slideDown();
 			} else {
-				cardElement.find(".addPropertyText").hide(400);
+				cardElement.find(".addPropertyText").slideUp();
 			}});
 	} else if (parentProperty.subPropertiesListOptions != null && parentProperty.subPropertiesListOptions.length > 0) {
 		cardElement.find("form").prepend("<select name='addPropertySelect' class='addPropertySelect' required><option value='' hidden>"+messages.chooseOption+"</option></select>");
