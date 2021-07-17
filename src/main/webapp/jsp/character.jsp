@@ -123,17 +123,16 @@ function clickOnAddProperty(addActionElement, parentProperty, event) {
 	$(addActionElement).append(
 		"<dialog class='card addPropertyCard flyingCard' open>"
 			+ "<form class='card-body flyingCardBody' method='dialog'>"
+				+ "<div class='addPropertyInputGroup'></div>"
 				+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/x.svg' class='flyingCardButton cancel'/>"
 				+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/check.svg' class='flyingCardButton validate'/>"
 			+ "</form>"
 		+ "</dialog>");
 	const cardElement = $(addActionElement).find(".addPropertyCard");
 	if (parentProperty.subPropertiesListOptions != null && parentProperty.subPropertiesListOptions.length > 0 && parentProperty.subPropertiesListOpen) {
-		cardElement.find("form.flyingCardBody").prepend(
-				"<div class='addPropertyInputGroup'>"
-					+ "<select name='addPropertySelect' class='addPropertySelect' required><option value='' hidden>"+messages.chooseOption+"</option></select>"
-					+ "<input type='text' name='addPropertyText' class='addPropertyText'/>"
-				+ "</div>");
+ 		cardElement.find(".addPropertyInputGroup").append(
+ 				"<select name='addPropertySelect' class='addPropertySelect' required><option value='' hidden>"+messages.chooseOption+"</option></select>"
+ 				+ "<input type='text' name='addPropertyText' class='addPropertyText freeChoiceText'/>");
 		for (const option of parentProperty.subPropertiesListOptions) {
 			cardElement.find(".addPropertySelect").append("<option>"+option+"</option>");
 		}
@@ -145,9 +144,10 @@ function clickOnAddProperty(addActionElement, parentProperty, event) {
 				cardElement.find(".addPropertyText").slideDown();
 			} else {
 				cardElement.find(".addPropertyText").slideUp();
-			}});
+			}
+		});
 	} else if (parentProperty.subPropertiesListOptions != null && parentProperty.subPropertiesListOptions.length > 0) {
-		cardElement.find("form").prepend("<select name='addPropertySelect' class='addPropertySelect' required><option value='' hidden>"+messages.chooseOption+"</option></select>");
+		cardElement.find(".addPropertyInputGroup").append("<select name='addPropertySelect' class='addPropertySelect' required><option value='' hidden>"+messages.chooseOption+"</option></select>");
 		for (const option of parentProperty.subPropertiesListOptions) {
 			cardElement.find(".addPropertySelect").append("<option>"+option+"</option>");
 		}
@@ -159,7 +159,7 @@ function clickOnAddProperty(addActionElement, parentProperty, event) {
 			}
 		});
 	} else if (parentProperty.subPropertiesListOpen) {
-		cardElement.find("form").prepend("<input type='text' name='addPropertyText' class='addPropertyText' required/>");
+		cardElement.find(".addPropertyInputGroup").append("<input type='text' name='addPropertyText' class='addPropertyText' required/>");
 		cardElement.find(".addPropertyText").focus();
 		cardElement.find(".addPropertyText").keydown((e) => {
 			if (e.key === "Escape") {
