@@ -108,19 +108,22 @@ function clickOnEditValue(propertyLineElement, property, event) {
 		+ "</dialog>");
 	const cardElement = propertyLineElement.find(".propertyValue .editPropertyCard");
 	
-	if (property.valueType === "StringValue") {
-		cardElement.find("form").prepend("<input type='text' name='value' value='"+propertyLineElement.find(".propertyValue").text()+"'/>");
-		propertyLineElement.find(".editPropertyCard input[type='text']").focus();
-		propertyLineElement.find(".editPropertyCard input[type='text']").keydown((e) => {
-			if (e.key === "Escape") {
-				cardElement.remove();
-				e.preventDefault();
-			}
-		});
-	} else if (property.valueType === "IntValue") {
-		cardElement.find("form").prepend("<input type='number' name='value' value='"+propertyLineElement.find(".propertyValue").text()+"' required/>");
+	if (property.options) {
+		cardElement.find("form").prepend("<select name='value' class='editPropertyField' required></select>");
+		for (const option of property.options) {
+			cardElement.find(".editPropertyField").append("<option>"+option+"</option>");
+		}
+		if (property.value) {
+			cardElement.find(".editPropertyField").val(property.value);
+		} else {
+			cardElement.find(".editPropertyField").prepend("<option value='' hidden>"+messages.chooseOption+"</option>");
+		}
+	} else if (property.valueType === "StringValue") {
+		cardElement.find("form").prepend("<input type='text' name='value' class='editPropertyField' value='"+propertyLineElement.find(".propertyValue").text()+"'/>");
+	} else if (property.valueType === "IntValue" || property.valueType === "DoubleValue") {
+		cardElement.find("form").prepend("<input type='number' class='editPropertyField' name='value' value='"+propertyLineElement.find(".propertyValue").text()+"' required/>");
 		if (property.valueOffset) {
-			propertyLineElement.find(".editPropertyCard input[type='number']").attr("step", property.minValue);
+			propertyLineElement.find(".editPropertyCard input[type='number']").attr("step", property.valueOffset);
 		}
 		if (property.minValue) {
 			propertyLineElement.find(".editPropertyCard input[type='number']").attr("min", property.minValue);
@@ -128,14 +131,15 @@ function clickOnEditValue(propertyLineElement, property, event) {
 		if (property.maxValue) {
 			propertyLineElement.find(".editPropertyCard input[type='number']").attr("max", property.maxValue);
 		}
-		propertyLineElement.find(".editPropertyCard input[type='number']").focus();
-		propertyLineElement.find(".editPropertyCard input[type='number']").keydown((e) => {
-			if (e.key === "Escape") {
-				cardElement.remove();
-				e.preventDefault();
-			}
-		});
 	}
+	
+	propertyLineElement.find(".editPropertyCard .editPropertyField").focus();
+	propertyLineElement.find(".editPropertyCard .editPropertyField").keydown((e) => {
+		if (e.key === "Escape") {
+			cardElement.remove();
+			e.preventDefault();
+		}
+	});
 	
 	propertyLineElement.find(".editPropertyCard .cancel").click(() => {cardElement.remove()});
 	propertyLineElement.find(".editPropertyCard form").submit(setPropertyValue.bind(this, propertyLineElement));

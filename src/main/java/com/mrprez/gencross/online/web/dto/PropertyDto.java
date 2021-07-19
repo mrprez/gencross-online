@@ -10,6 +10,7 @@ public class PropertyDto {
 	private String minValue;
 	private String maxValue;
 	private String valueOffset;
+	private List<String> options;
 	private boolean editable;
 	private List<PropertyDto> subProperties;
 	private boolean subPropertiesListFixe;
@@ -58,6 +59,12 @@ public class PropertyDto {
 	}
 	public void setValueType(String valueType) {
 		this.valueType = valueType;
+	}
+	public List<String> getOptions() {
+		return options;
+	}
+	public void setOptions(List<String> options) {
+		this.options = options;
 	}
 	public boolean isEditable() {
 		return editable;

@@ -29,6 +29,9 @@ public class PropertyBeanToDtoMapper implements Function<Property, PropertyDto> 
 		if (bean.getMax() != null) {
 			dto.setMaxValue(bean.getMax().getString());
 		}
+		if (bean.getOptions() != null) {
+			dto.setOptions(bean.getOptions().stream().map(Object::toString).collect(Collectors.toList()));
+		}
 		dto.setEditable(bean.isEditable());
 		
 		if (bean.getSubProperties()!=null) {
