@@ -18,6 +18,16 @@ public class PropertyBeanToDtoMapper implements Function<Property, PropertyDto> 
 		dto.setAbsoluteName(bean.getAbsoluteName());
 		if (bean.getValue() != null) {
 			dto.setValue(bean.getValue().getString());
+			dto.setValueType(bean.getValue().getClass().getSimpleName());
+			if (bean.getValue().getOffset() != null) {
+				dto.setValueOffset(bean.getValue().getOffset().toString());
+			}
+		}
+		if (bean.getMin() != null) {
+			dto.setMinValue(bean.getMin().getString());
+		}
+		if (bean.getMax() != null) {
+			dto.setMaxValue(bean.getMax().getString());
 		}
 		dto.setEditable(bean.isEditable());
 		

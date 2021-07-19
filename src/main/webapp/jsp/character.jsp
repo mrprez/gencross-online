@@ -89,7 +89,7 @@ function updatePropertyLineElement(propertyLineElement, property) {
 		
 		if (property.editable && propertyLineElement.find(".editIcon").length == 0) {
 			propertyLineElement.append("<img src='/gencross-online/img/bootstrap-icons-1.4.1/pencil.svg' class='actionIcon editIcon'/>");
-			propertyLineElement.find(".editIcon").click(clickOnEditValue.bind(this, propertyLineElement));
+			propertyLineElement.find(".editIcon").click(clickOnEditValue.bind(this, propertyLineElement, property));
 		}
 	} else {
 		propertyLineElement.find(".separator").remove();
@@ -98,25 +98,47 @@ function updatePropertyLineElement(propertyLineElement, property) {
 	}
 }
 	 
-function clickOnEditValue(propertyLineElement, event) {
+function clickOnEditValue(propertyLineElement, property, event) {
 	propertyLineElement.find(".propertyValue").append(
-			"<dialog class='card editPropertyCard flyingCard' open>"
-				+ "<form class='card-body flyingCardBody' method='dialog'>"
-					+ "<input type='text' name='value' value='"+propertyLineElement.find(".propertyValue").text()+"'/>"
-					+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/x.svg' class='flyingCardButton cancel'/>"
-					+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/check.svg' class='flyingCardButton validate'/>"
-				+ "</form>"
-			+ "</dialog>");
+		"<dialog class='card editPropertyCard flyingCard' open>"
+			+ "<form class='card-body flyingCardBody' method='dialog'>"
+				+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/x.svg' class='flyingCardButton cancel'/>"
+				+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/check.svg' class='flyingCardButton validate'/>"
+			+ "</form>"
+		+ "</dialog>");
 	const cardElement = propertyLineElement.find(".propertyValue .editPropertyCard");
-	propertyLineElement.find(".editPropertyCard input[type='text']").focus();
-	propertyLineElement.find(".editPropertyCard input[type='text']").keydown((e) => {
-		if (e.key === "Escape") {
-			cardElement.remove();
-			e.preventDefault();
+	
+	if (property.valueType === "StringValue") {
+		cardElement.find("form").prepend("<input type='text' name='value' value='"+propertyLineElement.find(".propertyValue").text()+"'/>");
+		propertyLineElement.find(".editPropertyCard input[type='text']").focus();
+		propertyLineElement.find(".editPropertyCard input[type='text']").keydown((e) => {
+			if (e.key === "Escape") {
+				cardElement.remove();
+				e.preventDefault();
+			}
+		});
+	} else if (property.valueType === "IntValue") {
+		cardElement.find("form").prepend("<input type='number' name='value' value='"+propertyLineElement.find(".propertyValue").text()+"' required/>");
+		if (property.valueOffset) {
+			propertyLineElement.find(".editPropertyCard input[type='number']").attr("step", property.minValue);
 		}
-	});
+		if (property.minValue) {
+			propertyLineElement.find(".editPropertyCard input[type='number']").attr("min", property.minValue);
+		}
+		if (property.maxValue) {
+			propertyLineElement.find(".editPropertyCard input[type='number']").attr("max", property.maxValue);
+		}
+		propertyLineElement.find(".editPropertyCard input[type='number']").focus();
+		propertyLineElement.find(".editPropertyCard input[type='number']").keydown((e) => {
+			if (e.key === "Escape") {
+				cardElement.remove();
+				e.preventDefault();
+			}
+		});
+	}
+	
 	propertyLineElement.find(".editPropertyCard .cancel").click(() => {cardElement.remove()});
-	propertyLineElement.find(".editPropertyCard .validate").click(setPropertyValue.bind(this, propertyLineElement));
+	propertyLineElement.find(".editPropertyCard form").submit(setPropertyValue.bind(this, propertyLineElement));
 }
 
 function clickOnAddProperty(addActionElement, parentProperty, event) {
