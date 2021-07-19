@@ -12,6 +12,7 @@ public class PropertyDto {
 	private String valueOffset;
 	private List<String> options;
 	private boolean editable;
+	private boolean removable;
 	private List<PropertyDto> subProperties;
 	private boolean subPropertiesListFixe;
 	private boolean subPropertiesListOpen;
@@ -71,6 +72,12 @@ public class PropertyDto {
 	}
 	public void setEditable(boolean editable) {
 		this.editable = editable;
+	}
+	public boolean isRemovable() {
+		return removable;
+	}
+	public void setRemovable(boolean removable) {
+		this.removable = removable;
 	}
 	public List<PropertyDto> getSubProperties() {
 		return subProperties;

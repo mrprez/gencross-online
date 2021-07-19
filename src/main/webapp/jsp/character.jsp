@@ -13,6 +13,11 @@ const characterId = ${character.id};
 const messages = new Object();
 messages.chooseOption='<fmt:message key="label.chooseOption"/>';
 messages.freeChoice='<fmt:message key="label.freeChoice"/>';
+messages.confirm='<fmt:message key="label.confirm"/>';
+messages.cancel='<fmt:message key="label.cancel"/>';
+messages.confirmTitle='<fmt:message key="label.confirmTitle"/>';
+messages.confirmPropertyDeletion='<fmt:message key="label.confirmPropertyDeletion"/>';
+
 
 window.addEventListener('load', (event) => {
 	$.get(
@@ -90,11 +95,22 @@ function updatePropertyLineElement(propertyLineElement, property) {
 		if (property.editable && propertyLineElement.find(".editIcon").length == 0) {
 			propertyLineElement.append("<img src='/gencross-online/img/bootstrap-icons-1.4.1/pencil.svg' class='actionIcon editIcon'/>");
 			propertyLineElement.find(".editIcon").click(clickOnEditValue.bind(this, propertyLineElement, property));
+		} else if (!property.editable) {
+			propertyLineElement.find(".editIcon").remove();
 		}
+		
+		if (property.removable && propertyLineElement.find(".deleteIcon").length == 0) {
+			propertyLineElement.append("<img src='/gencross-online/img/bootstrap-icons-1.4.1/trash.svg' class='actionIcon deleteIcon'/>");
+			propertyLineElement.find(".deleteIcon").click(clickOnDeleteProperty.bind(this, propertyLineElement, property));
+		} else if (!property.removable) {
+			propertyLineElement.find(".deleteIcon").remove();
+		}
+		
 	} else {
 		propertyLineElement.find(".separator").remove();
 		propertyLineElement.find(".propertyValue").remove();
 		propertyLineElement.find(".editIcon").remove();
+		propertyLineElement.find(".deleteIcon").remove();
 	}
 }
 	 
@@ -219,6 +235,36 @@ function clickOnAddProperty(addActionElement, parentProperty, event) {
 	
  	cardElement.find(".cancel").click(() => {cardElement.remove()});
  	cardElement.find("form").submit(addProperty.bind(this, cardElement, parentProperty));
+}
+
+function clickOnDeleteProperty(propertyLineElement, property, event) {
+	$("body").append(
+		"<div class='modal fade' id='deletePropertyModal' tabindex='-1' role='dialog' aria-labelledby='deletePropertyLabel' aria-hidden='true'>"
+  			+ "<div class='modal-dialog' role='document'>"
+				+ "<div class='modal-content'>"
+	  				+ "<div class='modal-header'>"
+						+ "<h5 class='modal-title' >"+messages.confirmTitle+"</h5>"
+					+ "</div>"
+	  				+ "<div class='modal-body'>"
+	  					+ messages.confirmPropertyDeletion.replace("{0}", property.name)
+	  				+ "</div>"
+					+ "<div class='modal-footer'>"
+						+ "<button type='button' class='btn btn-primary confirmButton'>"+messages.confirm+"</button>"
+						+ "<button type='button' class='btn btn-secondary cancelButton' data-dismiss='modal'>"+messages.cancel+"</button>"
+					+ "</div>"
+	  			+ "</div>"
+			+ "</div>"
+		+ "</div>");
+	const deletePropertyModal = new bootstrap.Modal(document.getElementById('deletePropertyModal'));
+	document.getElementById('deletePropertyModal').addEventListener('show.bs.modal', () => {
+		$("#deletePropertyModal .cancelButton").click(() => { 
+			deletePropertyModal.hide();
+		});
+	});
+	document.getElementById('deletePropertyModal').addEventListener('hidden.bs.modal', () => {
+		$("#deletePropertyModal").remove();
+	});
+	deletePropertyModal.show();
 }
 
 function setPropertyValue(propertyLineElement, event) {

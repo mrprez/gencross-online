@@ -33,6 +33,9 @@ public class PropertyBeanToDtoMapper implements Function<Property, PropertyDto> 
 			dto.setOptions(bean.getOptions().stream().map(Object::toString).collect(Collectors.toList()));
 		}
 		dto.setEditable(bean.isEditable());
+		if (bean.getOwner() instanceof Property && !((Property) bean.getOwner()).getSubProperties().isFixe()) {
+			dto.setRemovable(bean.isRemovable());
+		}
 		
 		if (bean.getSubProperties()!=null) {
 			dto.setSubProperties(bean.getSubProperties().stream().map(this).collect(Collectors.toList()));
