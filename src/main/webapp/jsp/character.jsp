@@ -291,7 +291,7 @@ function clickOnDeleteProperty(propertyLineElement, property, event) {
 }
 
 function setPropertyValue(propertyLineElement, event) {
-	const value = propertyLineElement.find(".flyingCardBody input").val();
+	const value = propertyLineElement.find(".flyingCardBody [name='value']").val();
 	const propertyName = propertyLineElement.parent().attr("propertyName");
 	propertyLineElement.find(".flyingCardBody").remove();
 	propertyLineElement.find(".propertyValue").empty();
