@@ -3,10 +3,19 @@ package com.mrprez.gencross.online.web.dto;
 import java.util.List;
 
 public class CharacterDto {
+	private String phase;
 	private List<PropertyDto> properties;
 	private List<PointPoolDto> pointPools;
 	private List<String> errors;
 	
+
+	public String getPhase() {
+		return phase;
+	}
+
+	public void setPhase(String phase) {
+		this.phase = phase;
+	}
 
 	public List<PropertyDto> getProperties() {
 		return properties;

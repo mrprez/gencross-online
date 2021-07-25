@@ -21,9 +21,10 @@ public class CharacterBeanToDtoMapper implements Function<Personnage, CharacterD
 	@Override
 	public CharacterDto apply(Personnage bean) {
 		CharacterDto dto = new CharacterDto();
-		dto.setProperties(bean.getProperties().stream().map(propertyMapper).collect(Collectors.toList()));
+		dto.setPhase(bean.getPhase());
 		dto.setPointPools(bean.getPointPools().values().stream().map(pointPoolMapper).collect(Collectors.toList()));
 		dto.setErrors(bean.getErrors());
+		dto.setProperties(bean.getProperties().stream().map(propertyMapper).collect(Collectors.toList()));
 		
 		return dto;
 	}

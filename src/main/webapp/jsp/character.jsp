@@ -17,6 +17,7 @@ messages.confirm='<fmt:message key="label.confirm"/>';
 messages.cancel='<fmt:message key="label.cancel"/>';
 messages.confirmTitle='<fmt:message key="label.confirmTitle"/>';
 messages.confirmPropertyDeletion='<fmt:message key="label.confirmPropertyDeletion"/>';
+messages.phase='<fmt:message key="label.phase"/>';
 
 
 window.addEventListener('load', (event) => {
@@ -345,6 +346,7 @@ function deleteProperty(propertyLineElement, event) {
 }
 
 function refreshCharacter(character) {
+	$("#phaseContainer").html(messages.phase + "&#8239;:&nbsp;" + character.phase);
 	$("#pointPoolsContainer").empty();
 	character.pointPools.forEach(displayPointPool);
 	$("#errorContainer").empty();
@@ -360,6 +362,7 @@ function refreshCharacter(character) {
 			<div class="row align-items-center">
 				<div class="col border">
 					<h5 class="p-3">${character.name}</h5>
+					<h6 class="ps-3" id="phaseContainer"></h6>
 					<div class="row border-top border-bottom p-3" id="pointPoolsContainer">
 						<div class="spinner-border initialSpinner" role="status"></div>
 					</div>
