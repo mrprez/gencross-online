@@ -54,6 +54,10 @@
 	cursor: pointer;
 }
 
+.character #characterRoot {
+	padding-left: 0;
+}
+
 .character .propertyNode {
 	list-style-type: none;
 }

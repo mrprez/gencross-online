@@ -335,15 +335,12 @@ function refreshCharacter(character) {
 		<%@ include file="include/top.jsp" %>
 		<div class="container">
 			<div class="row align-items-center">
-				<div class="col">
-					<div class="card">
-						<div class="card-body">
-							<h5 class="card-title">${character.name}</h5>
-						</div>
-						<ul id="characterRoot">
-							<div id="characterRootSpinner" class="spinner-border" role="status"></div>
-						</ul>
-					</div>
+				<div class="col border">
+					<h5 class="p-3">${character.name}</h5>
+					<div class="row border-top border-bottom p-3"></div>
+					<ul class="p-3" id="characterRoot">
+						<div id="characterRootSpinner" class="spinner-border" role="status"></div>
+					</ul>
 				</div>
 			</div>
 		</div>
