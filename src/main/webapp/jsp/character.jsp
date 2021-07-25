@@ -24,8 +24,7 @@ window.addEventListener('load', (event) => {
 		"/gencross-online/dispatcher/rest/character/${character.id}",
 		( character ) => {
 			$(".initialSpinner").remove();
-			character.pointPools.forEach(displayPointPool);
-			character.properties.forEach(displayRootProperty);
+			refreshCharacter(character);
 		}
 	);
 });
@@ -36,6 +35,15 @@ function displayPointPool(pointPool) {
 			+ "<span>" + pointPool.name + "&#8239;:&nbsp;</span>"
 			+ "<span>" + pointPool.remaining + "/" + pointPool.total + "</span>" 
 		+ "</div>"
+	);
+}
+
+function displayError(error) {
+	$("#errorContainer").append(
+		"<li>"
+			+ "<i class='bi bi-exclamation-circle-fill'></i>"
+			+ error 
+		+ "</li>"
 	);
 }
 
@@ -112,7 +120,7 @@ function updatePropertyLineElement(propertyLineElement, property) {
 		propertyLineElement.find(".propertyValue").text(property.value);
 		
 		if (property.editable && propertyLineElement.find(".editIcon").length == 0) {
-			propertyLineElement.append("<img src='/gencross-online/img/bootstrap-icons-1.4.1/pencil.svg' class='actionIcon editIcon'/>");
+			propertyLineElement.append("<i class='bi bi-pencil actionIcon editIcon'></i>");
 			propertyLineElement.find(".editIcon").click(clickOnEditValue.bind(this, propertyLineElement, property));
 		} else if (!property.editable) {
 			propertyLineElement.find(".editIcon").remove();
@@ -126,7 +134,7 @@ function updatePropertyLineElement(propertyLineElement, property) {
 	
 	
 	if (property.removable && propertyLineElement.find(".deleteIcon").length == 0) {
-		propertyLineElement.append("<img src='/gencross-online/img/bootstrap-icons-1.4.1/trash.svg' class='actionIcon deleteIcon'/>");
+		propertyLineElement.append("<i class='bi bi-trash actionIcon deleteIcon'></i>");
 		propertyLineElement.find(".deleteIcon").click(clickOnDeleteProperty.bind(this, propertyLineElement, property));
 	} else if (!property.removable) {
 		propertyLineElement.find(".deleteIcon").remove();
@@ -339,6 +347,8 @@ function deleteProperty(propertyLineElement, event) {
 function refreshCharacter(character) {
 	$("#pointPoolsContainer").empty();
 	character.pointPools.forEach(displayPointPool);
+	$("#errorContainer").empty();
+	character.errors.forEach(displayError);
 	character.properties.forEach(displayRootProperty);
 }
 
@@ -352,6 +362,9 @@ function refreshCharacter(character) {
 					<h5 class="p-3">${character.name}</h5>
 					<div class="row border-top border-bottom p-3" id="pointPoolsContainer">
 						<div class="spinner-border initialSpinner" role="status"></div>
+					</div>
+					<div class="row border-bottom">
+						<ul id="errorContainer" class="text-warning bg-dark"></ul>
 					</div>
 					<ul class="p-3" id="characterRoot">
 						<div class="spinner-border initialSpinner" role="status"></div>
