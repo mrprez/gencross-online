@@ -2,6 +2,7 @@ package com.mrprez.gencross.online.web.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +56,15 @@ public class CharacterRestController {
 			@RequestParam(name="specification", required=false) String specification) throws Exception {
 		UserId userId = authenticationProvider.getAuthenticatedUser().getId();
 		Personnage personnage = characterService.addProperty(characterId, parentAbsoluteName, newPropertyName, specification, userId);
+		return characterBeanToDtoMapper.apply(personnage);
+	}
+	
+	@DeleteMapping(path = "{characterId}/deleteProperty",
+			  consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+	public CharacterDto deleteProperty(@PathVariable("characterId") CharacterId characterId,
+			@RequestParam("property") String propertyName) throws Exception {
+		UserId userId = authenticationProvider.getAuthenticatedUser().getId();
+		Personnage personnage = characterService.deleteProperty(characterId, propertyName, userId);
 		return characterBeanToDtoMapper.apply(personnage);
 	}
 	

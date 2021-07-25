@@ -146,3 +146,8 @@
 	cursor: pointer;
 	font-style: italic;
 }
+
+.character .propertyNode .nodeSpinner {
+	width: 1em;
+	height: 1em;
+}

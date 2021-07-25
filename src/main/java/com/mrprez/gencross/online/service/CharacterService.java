@@ -80,12 +80,6 @@ public class CharacterService {
 		updateCharacterData(characterId, personnage);
 		return personnage;
 	}
-	
-	private void updateCharacterData(CharacterId characterId, Personnage personnage) throws IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		PersonnageSaver.savePersonnage(personnage, baos);
-		characterDao.updateData(characterId, baos.toByteArray());
-	}
 
 	public Personnage addProperty(CharacterId characterId, String parentAbsoluteName, String newPropertyName, String specification, UserId userId) throws Exception {
 		LoadedCharacter loadedCharacter = getCharachter(characterId);
@@ -104,6 +98,27 @@ public class CharacterService {
 		updateCharacterData(characterId, personnage);
 		
 		return personnage;
+	}
+	
+	public Personnage deleteProperty(CharacterId characterId, String propertyName, UserId userId) throws Exception {
+		LoadedCharacter loadedCharacter = getCharachter(characterId);
+		Personnage personnage = loadedCharacter.getData();
+		Property property = personnage.getProperty(propertyName);
+		personnage.removePropertyFromMotherProperty(property);
+		
+		updateCharacterData(characterId, personnage);
+		
+		return personnage;
+		
+	}
+	
+	
+
+	
+	private void updateCharacterData(CharacterId characterId, Personnage personnage) throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PersonnageSaver.savePersonnage(personnage, baos);
+		characterDao.updateData(characterId, baos.toByteArray());
 	}
 
 }

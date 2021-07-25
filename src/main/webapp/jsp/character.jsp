@@ -54,6 +54,7 @@ function displayProperty(parentUlElement, property) {
 		liElement.removeClass("collapsed");
 		liElement.removeClass("expanded");
 		liElement.addClass("end");
+		liElement.children("ul.subProperties").remove();
 	} else {
 		if (liElement.children("ul.subProperties").length == 0) {
 			liElement.removeClass("end");
@@ -70,7 +71,14 @@ function displayProperty(parentUlElement, property) {
 			liElement.append("<ul class='subProperties'></ul>");
 		}
 		
+		const subPropertiesAbsoluteName = property.subProperties.map((property) => property.absoluteName)
+		
 		const subPropertiesUlElement = liElement.children(".subProperties");
+		subPropertiesUlElement.children("li.propertyNode").each((index, subPropertyNodeElement) => {
+			if (!subPropertiesAbsoluteName.includes($(subPropertyNodeElement).attr("propertyName"))) {
+				$(subPropertyNodeElement).remove();
+			}
+		});
 		property.subProperties.forEach((subProperty) => {displayProperty(subPropertiesUlElement, subProperty)});
 		
 		subPropertiesUlElement.children(".addAction").remove();
@@ -99,17 +107,17 @@ function updatePropertyLineElement(propertyLineElement, property) {
 			propertyLineElement.find(".editIcon").remove();
 		}
 		
-		if (property.removable && propertyLineElement.find(".deleteIcon").length == 0) {
-			propertyLineElement.append("<img src='/gencross-online/img/bootstrap-icons-1.4.1/trash.svg' class='actionIcon deleteIcon'/>");
-			propertyLineElement.find(".deleteIcon").click(clickOnDeleteProperty.bind(this, propertyLineElement, property));
-		} else if (!property.removable) {
-			propertyLineElement.find(".deleteIcon").remove();
-		}
-		
 	} else {
 		propertyLineElement.find(".separator").remove();
 		propertyLineElement.find(".propertyValue").remove();
 		propertyLineElement.find(".editIcon").remove();
+	}
+	
+	
+	if (property.removable && propertyLineElement.find(".deleteIcon").length == 0) {
+		propertyLineElement.append("<img src='/gencross-online/img/bootstrap-icons-1.4.1/trash.svg' class='actionIcon deleteIcon'/>");
+		propertyLineElement.find(".deleteIcon").click(clickOnDeleteProperty.bind(this, propertyLineElement, property));
+	} else if (!property.removable) {
 		propertyLineElement.find(".deleteIcon").remove();
 	}
 }
@@ -257,9 +265,13 @@ function clickOnDeleteProperty(propertyLineElement, property, event) {
 		+ "</div>");
 	const deletePropertyModal = new bootstrap.Modal(document.getElementById('deletePropertyModal'));
 	document.getElementById('deletePropertyModal').addEventListener('show.bs.modal', () => {
-		$("#deletePropertyModal .cancelButton").click(() => { 
+		$("#deletePropertyModal .confirmButton").click((event) => {
+			deleteProperty(propertyLineElement, event);
 			deletePropertyModal.hide();
 		});
+	});
+	document.getElementById('deletePropertyModal').addEventListener('show.bs.modal', () => {
+		$("#deletePropertyModal .cancelButton").click(() => { deletePropertyModal.hide(); });
 	});
 	document.getElementById('deletePropertyModal').addEventListener('hidden.bs.modal', () => {
 		$("#deletePropertyModal").remove();
@@ -299,6 +311,18 @@ function addProperty(addPropertyCard, parentProperty, event) {
 		method: "POST",
 		data: data
 	}).done(refreshCharacter);
+}
+
+function deleteProperty(propertyLineElement, event) {
+	const propertyName = propertyLineElement.parent().attr("propertyName");
+	const nodeElement = propertyLineElement.parent();
+	nodeElement.empty();
+	nodeElement.append("<div class='nodeSpinner spinner-border' role='status'></div>");
+	
+	$.ajax("/gencross-online/dispatcher/rest/character/"+characterId+"/deleteProperty", {
+		method: "DELETE",
+		data: { 'property': propertyName }
+	}).done(refreshCharacter);	
 }
 
 function refreshCharacter(character) {
