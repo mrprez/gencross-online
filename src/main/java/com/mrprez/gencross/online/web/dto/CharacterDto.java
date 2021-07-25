@@ -4,6 +4,7 @@ import java.util.List;
 
 public class CharacterDto {
 	private List<PropertyDto> properties;
+	private List<PointPoolDto> pointPools;
 	
 
 	public List<PropertyDto> getProperties() {
@@ -13,4 +14,13 @@ public class CharacterDto {
 	public void setProperties(List<PropertyDto> properties) {
 		this.properties = properties;
 	}
+
+	public List<PointPoolDto> getPointPools() {
+		return pointPools;
+	}
+
+	public void setPointPools(List<PointPoolDto> pointPools) {
+		this.pointPools = pointPools;
+	}
+	
 }

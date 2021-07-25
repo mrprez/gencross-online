@@ -23,11 +23,22 @@ window.addEventListener('load', (event) => {
 	$.get(
 		"/gencross-online/dispatcher/rest/character/${character.id}",
 		( character ) => {
-			$("#characterRootSpinner").remove();
+			$(".initialSpinner").remove();
+			character.pointPools.forEach(displayPointPool);
 			character.properties.forEach(displayRootProperty);
 		}
 	);
 });
+
+function displayPointPool(pointPool) {
+	$("#pointPoolsContainer").append(
+		"<div class='text-nowrap pointPool'>" 
+			+ "<span>" + pointPool.name + "&#8239;:&nbsp;</span>"
+			+ "<span>" + pointPool.remaining + "/" + pointPool.total + "</span>" 
+		+ "</div>"
+	);
+}
+
 
 function displayRootProperty(property) {
 	displayProperty($("#characterRoot"), property);
@@ -326,6 +337,8 @@ function deleteProperty(propertyLineElement, event) {
 }
 
 function refreshCharacter(character) {
+	$("#pointPoolsContainer").empty();
+	character.pointPools.forEach(displayPointPool);
 	character.properties.forEach(displayRootProperty);
 }
 
@@ -337,9 +350,11 @@ function refreshCharacter(character) {
 			<div class="row align-items-center">
 				<div class="col border">
 					<h5 class="p-3">${character.name}</h5>
-					<div class="row border-top border-bottom p-3"></div>
+					<div class="row border-top border-bottom p-3" id="pointPoolsContainer">
+						<div class="spinner-border initialSpinner" role="status"></div>
+					</div>
 					<ul class="p-3" id="characterRoot">
-						<div id="characterRootSpinner" class="spinner-border" role="status"></div>
+						<div class="spinner-border initialSpinner" role="status"></div>
 					</ul>
 				</div>
 			</div>

@@ -14,12 +14,15 @@ public class CharacterBeanToDtoMapper implements Function<Personnage, CharacterD
 	
 	@Autowired
 	private PropertyBeanToDtoMapper propertyMapper;
+	@Autowired
+	private PointPoolBeanToDtoMapper pointPoolMapper;
 	
 
 	@Override
 	public CharacterDto apply(Personnage bean) {
 		CharacterDto dto = new CharacterDto();
 		dto.setProperties(bean.getProperties().stream().map(propertyMapper).collect(Collectors.toList()));
+		dto.setPointPools(bean.getPointPools().values().stream().map(pointPoolMapper).collect(Collectors.toList()));
 		
 		return dto;
 	}
