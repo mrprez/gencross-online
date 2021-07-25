@@ -58,6 +58,16 @@
 	padding-left: 0;
 }
 
+.character #phaseContainer {
+	display: flex;
+	align-items: center;
+}
+
+.character #phaseContainer #phaseName {
+	display: inline;
+	margin-bottom: 0;
+}
+
 .character .pointPool {
 	width: 15em;
 }

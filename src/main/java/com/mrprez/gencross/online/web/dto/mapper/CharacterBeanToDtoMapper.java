@@ -25,6 +25,7 @@ public class CharacterBeanToDtoMapper implements Function<Personnage, CharacterD
 		dto.setPointPools(bean.getPointPools().values().stream().map(pointPoolMapper).collect(Collectors.toList()));
 		dto.setErrors(bean.getErrors());
 		dto.setProperties(bean.getProperties().stream().map(propertyMapper).collect(Collectors.toList()));
+		dto.setNextPhaseAvailable(bean.phaseFinished());
 		
 		return dto;
 	}

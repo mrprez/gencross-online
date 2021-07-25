@@ -346,7 +346,8 @@ function deleteProperty(propertyLineElement, event) {
 }
 
 function refreshCharacter(character) {
-	$("#phaseContainer").html(messages.phase + "&#8239;:&nbsp;" + character.phase);
+	$("#phaseName").html(messages.phase + "&#8239;:&nbsp;" + character.phase);
+	$("#nextPhaseButton").prop("disabled", !character.nextPhaseAvailable);
 	$("#pointPoolsContainer").empty();
 	character.pointPools.forEach(displayPointPool);
 	$("#errorContainer").empty();
@@ -362,7 +363,13 @@ function refreshCharacter(character) {
 			<div class="row align-items-center">
 				<div class="col border">
 					<h5 class="p-3">${character.name}</h5>
-					<h6 class="ps-3" id="phaseContainer"></h6>
+					<div class="ps-3 pb-3" id="phaseContainer">
+						<h6 id="phaseName" class="pe-3"></h6>
+						<button type="button" id="nextPhaseButton" class="btn btn-primary" disabled>
+							<fmt:message key="label.nextPhase"/>
+							<i class="bi bi-caret-right-fill"></i>
+						</button>
+					</div>
 					<div class="row border-top border-bottom p-3" id="pointPoolsContainer">
 						<div class="spinner-border initialSpinner" role="status"></div>
 					</div>
