@@ -112,6 +112,16 @@ public class CharacterService {
 		
 	}
 	
+	public Personnage passToNextPhase(CharacterId characterId, UserId userId) throws Exception {
+		LoadedCharacter loadedCharacter = getCharachter(characterId);
+		Personnage personnage = loadedCharacter.getData();
+		personnage.passToNextPhase();
+		
+		updateCharacterData(characterId, personnage);
+		
+		return personnage;
+	}
+	
 	
 
 	

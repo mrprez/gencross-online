@@ -18,6 +18,7 @@ messages.cancel='<fmt:message key="label.cancel"/>';
 messages.confirmTitle='<fmt:message key="label.confirmTitle"/>';
 messages.confirmPropertyDeletion='<fmt:message key="label.confirmPropertyDeletion"/>';
 messages.phase='<fmt:message key="label.phase"/>';
+messages.confirmPassToNextPhase='<fmt:message key="label.confirmPassToNextPhase"/>';
 
 
 window.addEventListener('load', (event) => {
@@ -299,6 +300,48 @@ function clickOnDeleteProperty(propertyLineElement, property, event) {
 	deletePropertyModal.show();
 }
 
+function clickOnPassToNextPhase() {
+	$("body").append(
+		"<div class='modal fade' id='passToNextPhaseModal' tabindex='-1' role='dialog' aria-labelledby='passToNextPhaseLabel' aria-hidden='true'>"
+  			+ "<div class='modal-dialog' role='document'>"
+				+ "<div class='modal-content'>"
+	  				+ "<div class='modal-header'>"
+						+ "<h5 class='modal-title' >"+messages.confirmTitle+"</h5>"
+					+ "</div>"
+	  				+ "<div class='modal-body'>"
+	  					+ messages.confirmPassToNextPhase
+	  				+ "</div>"
+					+ "<div class='modal-footer'>"
+						+ "<button type='button' class='btn btn-primary confirmButton'>"+messages.confirm+"</button>"
+						+ "<button type='button' class='btn btn-secondary cancelButton' data-dismiss='modal'>"+messages.cancel+"</button>"
+					+ "</div>"
+	  			+ "</div>"
+			+ "</div>"
+		+ "</div>");
+	const passToNextPhaseModal = new bootstrap.Modal(document.getElementById('passToNextPhaseModal'));
+	document.getElementById('passToNextPhaseModal').addEventListener('show.bs.modal', () => {
+		$("#passToNextPhaseModal .confirmButton").click((event) => {
+			passToNextPhase(event);
+			passToNextPhaseModal.hide();
+		});
+	});
+	document.getElementById('passToNextPhaseModal').addEventListener('show.bs.modal', () => {
+		$("#passToNextPhaseModal .cancelButton").click(() => { passToNextPhaseModal.hide(); });
+	});
+	document.getElementById('passToNextPhaseModal').addEventListener('hidden.bs.modal', () => {
+		$("#passToNextPhaseModal").remove();
+	});
+	passToNextPhaseModal.show();
+}
+
+function passToNextPhase() {
+	$("#nextPhaseButton").hide();
+	$("#nextPhaseButton").after("<div class='spinner-border nextPhaseButtonSpinner' role='status'></div>")
+	$.ajax("/gencross-online/dispatcher/rest/character/"+characterId+"/passToNextPhase", {
+		method: "POST"
+	}).done(refreshCharacter);
+}
+
 function setPropertyValue(propertyLineElement, event) {
 	const value = propertyLineElement.find(".flyingCardBody [name='value']").val();
 	const propertyName = propertyLineElement.parent().attr("propertyName");
@@ -309,7 +352,7 @@ function setPropertyValue(propertyLineElement, event) {
 	$.ajax("/gencross-online/dispatcher/rest/character/"+characterId+"/setValue", {
 		method: "PUT",
 		data: { 'property': propertyName, 'value': value }
-	}).done(refreshCharacter);	
+	}).done(refreshCharacter);
 }
 
 function addProperty(addPropertyCard, parentProperty, event) {
@@ -347,6 +390,8 @@ function deleteProperty(propertyLineElement, event) {
 
 function refreshCharacter(character) {
 	$("#phaseName").html(messages.phase + "&#8239;:&nbsp;" + character.phase);
+	$(".nextPhaseButtonSpinner").remove();
+	$("#nextPhaseButton").show();
 	$("#nextPhaseButton").prop("disabled", !character.nextPhaseAvailable);
 	$("#pointPoolsContainer").empty();
 	character.pointPools.forEach(displayPointPool);
@@ -365,7 +410,7 @@ function refreshCharacter(character) {
 					<h5 class="p-3">${character.name}</h5>
 					<div class="ps-3 pb-3" id="phaseContainer">
 						<h6 id="phaseName" class="pe-3"></h6>
-						<button type="button" id="nextPhaseButton" class="btn btn-primary" disabled>
+						<button type="button" id="nextPhaseButton" class="btn btn-primary" onclick="clickOnPassToNextPhase()" disabled>
 							<fmt:message key="label.nextPhase"/>
 							<i class="bi bi-caret-right-fill"></i>
 						</button>

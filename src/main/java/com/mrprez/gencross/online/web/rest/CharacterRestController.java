@@ -68,5 +68,13 @@ public class CharacterRestController {
 		return characterBeanToDtoMapper.apply(personnage);
 	}
 	
+	@PostMapping(path = "{characterId}/passToNextPhase")
+	public CharacterDto addProperty(@PathVariable("characterId") CharacterId characterId) throws Exception {
+		UserId userId = authenticationProvider.getAuthenticatedUser().getId();
+		Personnage personnage = characterService.passToNextPhase(characterId, userId);
+		return characterBeanToDtoMapper.apply(personnage);
+	}
+			
+	
 	
 }
