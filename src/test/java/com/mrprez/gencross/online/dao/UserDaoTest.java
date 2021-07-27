@@ -7,6 +7,8 @@ import org.assertj.core.api.Assertions;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITable;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import com.mrprez.gencross.online.dbbuilder.UserTestDbBuilder;
 import com.mrprez.gencross.online.model.User;
@@ -23,8 +25,10 @@ public class UserDaoTest extends AbstractDaoTest {
 	}
 	
 	@Override
-	protected String getXmlFilePath() {
-		return "com/mrprez/gencross/online/dao/UserDao.xml";
+	protected Resource[] getXmlFileResources() {
+		return new Resource[] {
+				new ClassPathResource("com/mrprez/gencross/online/dao/UserDao.xml")
+			};
 	}
 	
 	@Test

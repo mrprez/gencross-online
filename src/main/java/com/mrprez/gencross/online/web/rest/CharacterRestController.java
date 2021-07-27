@@ -36,7 +36,8 @@ public class CharacterRestController {
 	
 	@GetMapping(path = "{characterId}")
 	public CharacterDto get(@PathVariable("characterId") CharacterId characterId) throws Exception {
-		LoadedCharacter loadedCharacter = characterService.getCharachter(characterId);
+		UserId userId = authenticationProvider.getAuthenticatedUser().getId();
+		LoadedCharacter loadedCharacter = characterService.getCharacter(characterId, userId);
 		return characterBeanToDtoMapper.apply(loadedCharacter.getData());
 	}
 	

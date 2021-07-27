@@ -9,11 +9,15 @@ import org.assertj.core.api.Assertions;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.ITable;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import com.mrprez.gencross.online.dbbuilder.CharacterTestDbBuilder;
 import com.mrprez.gencross.online.dbbuilder.TableTestDbBuilder;
 import com.mrprez.gencross.online.dbbuilder.UserTestDbBuilder;
 import com.mrprez.gencross.online.model.RpgCharacter;
+import com.mrprez.gencross.online.model.RpgCharacterWithTable;
+import com.mrprez.gencross.online.model.Table;
 import com.mrprez.gencross.online.model.id.CharacterId;
 import com.mrprez.gencross.online.model.id.TableId;
 import com.mrprez.gencross.online.model.id.UserId;
@@ -29,23 +33,32 @@ public class CharacterDaoTest extends AbstractDaoTest {
 	}
 
 	@Override
-	protected String getXmlFilePath() {
-		return "com/mrprez/gencross/online/dao/CharacterDao.xml";
+	protected Resource[] getXmlFileResources() {
+		return new Resource[] {
+				new ClassPathResource("com/mrprez/gencross/online/dao/TableDao.xml"),
+				new ClassPathResource("com/mrprez/gencross/online/dao/CharacterDao.xml")
+		};
 	}
 	
 	@Test
-	public void get() throws Exception {
+	public void getRpgCharacterWithTable() throws Exception {
 		// GIVEN
-		TableId tableId = TableTestDbBuilder.newTable("myTable").save(getConnection());
+		UserId gmId = UserTestDbBuilder.newUser("myGm").save(getConnection());
+		TableId tableId = TableTestDbBuilder.newTable("myTable").withGm(gmId).save(getConnection());
 		UserId playerId = UserTestDbBuilder.newUser("myPlayer").save(getConnection());
 		CharacterId characterId = CharacterTestDbBuilder.newCharacter("myCharacter", tableId)
 				.withPlayer(playerId).withCreationDate(LocalDateTime.parse("2021-05-06T11:17:20")).withData("myData".getBytes())
 				.save(getConnection());
 		
 		// WHEN
-		RpgCharacter character = characterDao.get(characterId);
+		RpgCharacterWithTable characterWithTable = characterDao.getRpgCharacterWithTable(characterId);
 		
 		// THEN
+		Table table = characterWithTable.getTable();
+		Assertions.assertThat(table.getGmId()).isEqualTo(gmId);
+		Assertions.assertThat(table.getName()).isEqualTo("myTable");
+		
+		RpgCharacter character = characterWithTable.getRpgCharacter();
 		Assertions.assertThat(character.getId()).isEqualTo(characterId);
 		Assertions.assertThat(character.getName()).isEqualTo("myCharacter");
 		Assertions.assertThat(character.getTableId()).isEqualTo(tableId);

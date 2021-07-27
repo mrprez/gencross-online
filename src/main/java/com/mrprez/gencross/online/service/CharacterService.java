@@ -15,8 +15,10 @@ import com.mrprez.gencross.disk.PersonnageSaver;
 import com.mrprez.gencross.disk.PluginDescriptor;
 import com.mrprez.gencross.online.dao.CharacterDao;
 import com.mrprez.gencross.online.dao.TableDao;
+import com.mrprez.gencross.online.exception.NotAllowedAccessException;
 import com.mrprez.gencross.online.model.LoadedCharacter;
 import com.mrprez.gencross.online.model.RpgCharacter;
+import com.mrprez.gencross.online.model.RpgCharacterWithTable;
 import com.mrprez.gencross.online.model.Table;
 import com.mrprez.gencross.online.model.id.CharacterId;
 import com.mrprez.gencross.online.model.id.TableId;
@@ -46,7 +48,7 @@ public class CharacterService {
 	public void createCharacter(TableId tableId, UserId userId, String name) throws Exception {
 		Table table = tableDao.get(tableId);
 		if (! table.getGmId().equals(userId)) {
-			throw new IllegalAccessError();
+			throw new NotAllowedAccessException();
 		}
 		Personnage personnage = personnageFactory.buildNewPersonnage(table.getGame());
 		RpgCharacter character = new RpgCharacter();
@@ -59,8 +61,13 @@ public class CharacterService {
 		characterDao.createCharacter(character);
 	}
 
-	public LoadedCharacter getCharachter(CharacterId characterId) throws Exception {
-		RpgCharacter rpgCharacter = characterDao.get(characterId);
+	public LoadedCharacter getCharacter(CharacterId characterId, UserId userId) throws Exception {
+		RpgCharacterWithTable rpgCharacterWithTable = characterDao.getRpgCharacterWithTable(characterId);
+		if (!rpgCharacterWithTable.getTable().getGmId().equals(userId) 
+				&& !rpgCharacterWithTable.getRpgCharacter().getPlayerId().equals(userId)) {
+			throw new NotAllowedAccessException();
+		}
+		RpgCharacter rpgCharacter = rpgCharacterWithTable.getRpgCharacter();
 		LoadedCharacter loadedCharacter = new LoadedCharacter();
 		loadedCharacter.setId(rpgCharacter.getId());
 		loadedCharacter.setName(rpgCharacter.getName());
@@ -71,7 +78,7 @@ public class CharacterService {
 	}
 
 	public Personnage setValue(CharacterId characterId, String propertyName, String valueAsString, UserId userId) throws Exception {
-		LoadedCharacter loadedCharacter = getCharachter(characterId);
+		LoadedCharacter loadedCharacter = getCharacter(characterId, userId);
 		Personnage personnage = loadedCharacter.getData();
 		Property property = personnage.getProperty(propertyName);
 		Value newValue = property.getValue().clone();
@@ -82,7 +89,7 @@ public class CharacterService {
 	}
 
 	public Personnage addProperty(CharacterId characterId, String parentAbsoluteName, String newPropertyName, String specification, UserId userId) throws Exception {
-		LoadedCharacter loadedCharacter = getCharachter(characterId);
+		LoadedCharacter loadedCharacter = getCharacter(characterId, userId);
 		Personnage personnage = loadedCharacter.getData();
 		Property parentProperty = personnage.getProperty(parentAbsoluteName);
 		Property newProperty;
@@ -101,7 +108,7 @@ public class CharacterService {
 	}
 	
 	public Personnage deleteProperty(CharacterId characterId, String propertyName, UserId userId) throws Exception {
-		LoadedCharacter loadedCharacter = getCharachter(characterId);
+		LoadedCharacter loadedCharacter = getCharacter(characterId, userId);
 		Personnage personnage = loadedCharacter.getData();
 		Property property = personnage.getProperty(propertyName);
 		personnage.removePropertyFromMotherProperty(property);
@@ -113,7 +120,7 @@ public class CharacterService {
 	}
 	
 	public Personnage passToNextPhase(CharacterId characterId, UserId userId) throws Exception {
-		LoadedCharacter loadedCharacter = getCharachter(characterId);
+		LoadedCharacter loadedCharacter = getCharacter(characterId, userId);
 		Personnage personnage = loadedCharacter.getData();
 		personnage.passToNextPhase();
 		

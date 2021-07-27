@@ -11,7 +11,7 @@ import org.flywaydb.core.Flyway;
 import org.h2.jdbcx.JdbcDataSource;
 import org.junit.jupiter.api.BeforeEach;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import com.mrprez.gencross.online.context.GencrossSpringConfiguration;
 
@@ -33,14 +33,14 @@ public abstract class AbstractDaoTest {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
 		factoryBean.setDataSource(dataSource);
 		factoryBean.setTypeHandlers(GencrossSpringConfiguration.getTypeHandlers());
-		factoryBean.setMapperLocations(new ClassPathResource(getXmlFilePath()));
+		factoryBean.setMapperLocations(getXmlFileResources());
 		SqlSession session = factoryBean.getObject().openSession();
 		initDao(session);
 	}
 	
 	protected abstract void initDao(SqlSession session);
 	
-	protected abstract String getXmlFilePath();
+	protected abstract Resource[] getXmlFileResources();
 	
 	protected DatabaseDataSourceConnection getDataSourceConnection() throws SQLException {
 		return new DatabaseDataSourceConnection(dataSource);

@@ -11,6 +11,7 @@ public class LoadedCharacter {
 	private CharacterId id;
 	private String name;
 	private TableId tableId;
+	private UserId gmId;
 	private UserId playerId;
 	private Personnage data;
 	private LocalDateTime creationDate;
@@ -39,6 +40,12 @@ public class LoadedCharacter {
 	}
 	public void setPlayerId(UserId playerId) {
 		this.playerId = playerId;
+	}
+	public UserId getGmId() {
+		return gmId;
+	}
+	public void setGmId(UserId gmId) {
+		this.gmId = gmId;
 	}
 	public Personnage getData() {
 		return data;

@@ -4,13 +4,19 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mrprez.gencross.online.dao.CharacterDao">
 
-	<resultMap id="Character" type="com.mrprez.gencross.online.model.RpgCharacter">
+	<resultMap id="RpgCharacter" type="com.mrprez.gencross.online.model.RpgCharacter">
 		<id column="id" property="id"/>
 		<result column="name" property="name"/>
 		<result column="table_id" property="tableId"/>
 		<result column="player_id" property="playerId"/>
 		<result column="data" property="data"/>
 		<result column="creation_date" property="creationDate"/>
+	</resultMap>
+	
+	<resultMap id="RpgCharacterWithTable" type="com.mrprez.gencross.online.model.RpgCharacterWithTable">
+		<id column="rc_id"/>
+		<association property="rpgCharacter" resultMap="RpgCharacter" columnPrefix="rc_"/>
+		<association property="table" resultMap="com.mrprez.gencross.online.dao.TableDao.Table" columnPrefix="rt_"/>
 	</resultMap>
 	
 	<insert id="createCharacter" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
@@ -21,8 +27,13 @@
 		UPDATE rpg_character SET data = #{data} WHERE id = #{id}
 	</update>
 	
-	<select id="get" resultMap="Character">
-		SELECT * FROM rpg_character WHERE id=#{characterId}
+	<select id="getRpgCharacterWithTable" resultMap="RpgCharacterWithTable">
+		SELECT 
+			rc.id AS rc_id, rc.name AS rc_name, rc.table_id AS rc_table_id, rc.data AS rc_data, rc.player_id AS rc_player_id, rc.creation_date AS rc_creation_date,
+			rt.id AS rt_id, rt.name AS rt_name, rt.game AS rt_game, rt.creation_date AS rt_creation_date, rt.gm_id AS rt_gm_id
+		FROM rpg_character rc
+		JOIN rpg_table rt ON rt.id = rc.table_id
+		WHERE rc.id = #{id}
 	</select>
 	
 </mapper>

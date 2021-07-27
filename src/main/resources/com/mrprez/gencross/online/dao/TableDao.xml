@@ -15,7 +15,7 @@
 	<resultMap id="TableWithCharacters" type="com.mrprez.gencross.online.model.TableWithCharacters">
 		<id column="id"/>
 		<association property="table" resultMap="Table"/>
-		<collection property="characters" resultMap="com.mrprez.gencross.online.dao.CharacterDao.Character" columnPrefix="rc_"/>
+		<collection property="characters" resultMap="com.mrprez.gencross.online.dao.CharacterDao.RpgCharacter" columnPrefix="rc_"/>
 	</resultMap>
 
 	<select id="getTablesAsGm" resultMap="TableWithCharacters">
