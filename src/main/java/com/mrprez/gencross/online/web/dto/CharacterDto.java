@@ -9,6 +9,8 @@ public class CharacterDto {
 	private List<String> errors;
 	private boolean nextPhase;
 	private boolean nextPhaseAvailable;
+	private String actionMessage;
+	
 
 	public String getPhase() {
 		return phase;
@@ -57,9 +59,14 @@ public class CharacterDto {
 	public void setNextPhaseAvailable(boolean nextPhaseAvailable) {
 		this.nextPhaseAvailable = nextPhaseAvailable;
 	}
-	
-	
-	
+
+	public String getActionMessage() {
+		return actionMessage;
+	}
+
+	public void setActionMessage(String actionMessage) {
+		this.actionMessage = actionMessage;
+	}
 	
 	
 }

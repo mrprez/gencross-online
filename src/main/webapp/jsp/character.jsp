@@ -19,6 +19,8 @@ messages.confirmTitle='<fmt:message key="label.confirmTitle"/>';
 messages.confirmPropertyDeletion='<fmt:message key="label.confirmPropertyDeletion"/>';
 messages.phase='<fmt:message key="label.phase"/>';
 messages.confirmPassToNextPhase='<fmt:message key="label.confirmPassToNextPhase"/>';
+messages.actionMessageTitle='<fmt:message key="label.actionMessageTitle"/>';
+messages.ok='<fmt:message key="label.ok"/>';
 
 
 window.addEventListener('load', (event) => {
@@ -388,6 +390,33 @@ function deleteProperty(propertyLineElement, event) {
 	}).done(refreshCharacter);	
 }
 
+function displayActionMessage(actionMessage) {
+	$("body").append(
+		"<div class='modal fade' id='actionMessageModal' tabindex='-1' role='dialog' aria-labelledby='actionMessageLabel' aria-hidden='true'>"
+  			+ "<div class='modal-dialog' role='document'>"
+				+ "<div class='modal-content'>"
+	  				+ "<div class='modal-header'>"
+						+ "<h5 class='modal-title' >"+messages.actionMessageTitle+"</h5>"
+					+ "</div>"
+	  				+ "<div class='modal-body'>"
+	  					+ actionMessage
+	  				+ "</div>"
+					+ "<div class='modal-footer'>"
+						+ "<button type='button' class='btn btn-primary cancelButton' data-dismiss='modal'>"+messages.ok+"</button>"
+					+ "</div>"
+	  			+ "</div>"
+			+ "</div>"
+		+ "</div>");
+	const actionMessageModal = new bootstrap.Modal(document.getElementById('actionMessageModal'));
+	document.getElementById('actionMessageModal').addEventListener('show.bs.modal', () => {
+		$("#actionMessageModal .cancelButton").click(() => { actionMessageModal.hide(); });
+	});
+	document.getElementById('actionMessageModal').addEventListener('hidden.bs.modal', () => {
+		$("#actionMessageModal").remove();
+	});
+	actionMessageModal.show();
+}
+
 function refreshCharacter(character) {
 	$("#phaseName").html(messages.phase + "&#8239;:&nbsp;" + character.phase);
 	$(".nextPhaseButtonSpinner").remove();
@@ -402,6 +431,9 @@ function refreshCharacter(character) {
 	$("#errorContainer").empty();
 	character.errors.forEach(displayError);
 	character.properties.forEach(displayRootProperty);
+	if (character.actionMessage) {
+		displayActionMessage(character.actionMessage);
+	}
 }
 
 		</script>
