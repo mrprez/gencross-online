@@ -391,7 +391,11 @@ function deleteProperty(propertyLineElement, event) {
 function refreshCharacter(character) {
 	$("#phaseName").html(messages.phase + "&#8239;:&nbsp;" + character.phase);
 	$(".nextPhaseButtonSpinner").remove();
-	$("#nextPhaseButton").show();
+	if (character.nextPhase) {
+		$("#nextPhaseButton").show();
+	} else {
+		$("#nextPhaseButton").hide();
+	}
 	$("#nextPhaseButton").prop("disabled", !character.nextPhaseAvailable);
 	$("#pointPoolsContainer").empty();
 	character.pointPools.forEach(displayPointPool);

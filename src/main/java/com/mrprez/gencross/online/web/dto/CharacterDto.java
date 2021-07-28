@@ -7,8 +7,8 @@ public class CharacterDto {
 	private List<PropertyDto> properties;
 	private List<PointPoolDto> pointPools;
 	private List<String> errors;
+	private boolean nextPhase;
 	private boolean nextPhaseAvailable;
-	
 
 	public String getPhase() {
 		return phase;
@@ -40,6 +40,14 @@ public class CharacterDto {
 
 	public void setErrors(List<String> errors) {
 		this.errors = errors;
+	}
+	
+	public boolean isNextPhase() {
+		return nextPhase;
+	}
+
+	public void setNextPhase(boolean nextPhase) {
+		this.nextPhase = nextPhase;
 	}
 
 	public boolean isNextPhaseAvailable() {
