@@ -26,12 +26,7 @@ public class CharacterBeanToDtoMapper implements Function<Personnage, CharacterD
 		dto.setErrors(bean.getErrors());
 		dto.setActionMessage(bean.getActionMessage());
 		dto.setProperties(bean.getProperties().stream().map(propertyMapper).collect(Collectors.toList()));
-		if (bean.getPhaseList() != null && !bean.getPhaseList().isEmpty()) {
-			String lastPhase = bean.getPhaseList().get(bean.getPhaseList().size()-1);
-			dto.setNextPhase(! lastPhase.equals(bean.getPhase()));
-		} else {
-			dto.setNextPhase(false);
-		}
+		dto.setNextPhase(bean.nextPhase() != null);
 		dto.setNextPhaseAvailable(bean.phaseFinished());
 		
 		return dto;
