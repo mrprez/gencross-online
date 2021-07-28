@@ -83,8 +83,12 @@ public class CharacterService {
 		Property property = personnage.getProperty(propertyName);
 		Value newValue = property.getValue().clone();
 		newValue.setValue(valueAsString);
-		personnage.setNewValue(propertyName, newValue);
-		updateCharacterData(characterId, personnage);
+		
+		boolean success = personnage.setNewValue(propertyName, newValue);
+		if (success) {
+			updateCharacterData(characterId, personnage);
+		}
+		
 		return personnage;
 	}
 
@@ -100,9 +104,11 @@ public class CharacterService {
 			newProperty = parentProperty.getSubProperties().getDefaultProperty().clone();
 			newProperty.setName(newPropertyName);
 		}
-		personnage.addPropertyToMotherProperty(newProperty);
 		
-		updateCharacterData(characterId, personnage);
+		boolean success = personnage.addPropertyToMotherProperty(newProperty);
+		if (success) {
+			updateCharacterData(characterId, personnage);
+		}
 		
 		return personnage;
 	}
@@ -111,20 +117,23 @@ public class CharacterService {
 		LoadedCharacter loadedCharacter = getCharacter(characterId, userId);
 		Personnage personnage = loadedCharacter.getData();
 		Property property = personnage.getProperty(propertyName);
-		personnage.removePropertyFromMotherProperty(property);
 		
-		updateCharacterData(characterId, personnage);
+		boolean success = personnage.removePropertyFromMotherProperty(property);
+		if (success) {
+			updateCharacterData(characterId, personnage);
+		}
 		
 		return personnage;
-		
 	}
 	
 	public Personnage passToNextPhase(CharacterId characterId, UserId userId) throws Exception {
 		LoadedCharacter loadedCharacter = getCharacter(characterId, userId);
 		Personnage personnage = loadedCharacter.getData();
-		personnage.passToNextPhase();
 		
-		updateCharacterData(characterId, personnage);
+		boolean success = personnage.passToNextPhase();
+		if (success) {
+			updateCharacterData(characterId, personnage);
+		}
 		
 		return personnage;
 	}
