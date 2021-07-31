@@ -8,7 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.mrprez.gencross.online.exception.EmailAlreadyExistException;
+import com.mrprez.gencross.online.exception.UsernameAlreadyExistException;
 import com.mrprez.gencross.online.model.id.UserId;
 import com.mrprez.gencross.online.service.UserService;
 
@@ -30,9 +33,17 @@ public class AccountController {
     }
 	
 	@RequestMapping(method = RequestMethod.POST)
-    public String post(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
-		userService.createUser(username, email, password);
-		return "/jsp/login.jsp";
+    public ModelAndView post(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+		try {
+			userService.createUser(username, email, password);
+		} catch (UsernameAlreadyExistException | EmailAlreadyExistException e) {
+			ModelAndView modelAndView = new ModelAndView("/jsp/createAccount.jsp", "exception", e);
+			modelAndView.addObject("username", username);
+			modelAndView.addObject("email", email);
+			modelAndView.addObject("password", password);
+			return modelAndView;
+		}
+		return new ModelAndView("/jsp/login.jsp");
     }
 	
 	@RequestMapping(method = RequestMethod.PUT)

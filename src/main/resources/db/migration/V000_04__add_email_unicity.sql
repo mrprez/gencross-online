@@ -1,0 +1,2 @@
+ALTER TABLE `user`
+ADD CONSTRAINT u_user_2 UNIQUE (email);

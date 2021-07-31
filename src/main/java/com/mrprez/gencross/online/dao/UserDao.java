@@ -17,5 +17,9 @@ public interface UserDao {
 	void updateUser(User user);
 
 	void updatePassword(@Param("userId") UserId userId, @Param("passwordHash") String passwordHash);
+
+	User getFromUsername(@Param("username") String username);
+	
+	User getFromEmail(@Param("email") String email);
 	
 }

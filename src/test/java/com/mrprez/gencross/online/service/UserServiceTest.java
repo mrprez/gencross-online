@@ -1,5 +1,7 @@
 package com.mrprez.gencross.online.service;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
@@ -16,6 +18,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.mrprez.gencross.online.dao.UserDao;
+import com.mrprez.gencross.online.exception.EmailAlreadyExistException;
+import com.mrprez.gencross.online.exception.UsernameAlreadyExistException;
 import com.mrprez.gencross.online.model.User;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,7 +37,7 @@ public class UserServiceTest {
 	
 	
 	@Test
-	public void createUser() throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public void createUser() throws NoSuchAlgorithmException, InvalidKeySpecException, UsernameAlreadyExistException, EmailAlreadyExistException {
 		// GIVEN
 		Mockito.when(passwordEncoder.encode("myPassword")).thenReturn("myHash");
 		
@@ -47,4 +51,25 @@ public class UserServiceTest {
 		Assertions.assertThat(userCaptor.getValue().getEmail()).isEqualTo("myemail@test.com");
 	}
 
+	@Test
+	public void createUser_usernameAlreadyExists() throws NoSuchAlgorithmException, InvalidKeySpecException, UsernameAlreadyExistException, EmailAlreadyExistException {
+		// GIVEN
+		Mockito.when(userDao.getFromUsername("myUser")).thenReturn(new User());
+		
+		// WHEN
+		assertThrows(
+				UsernameAlreadyExistException.class, 
+				() -> userService.createUser("myUser", "myemail@test.com", "myPassword"));
+	}
+
+	@Test
+	public void createUser_emailAlreadyExists() throws NoSuchAlgorithmException, InvalidKeySpecException, UsernameAlreadyExistException, EmailAlreadyExistException {
+		// GIVEN
+		Mockito.when(userDao.getFromEmail("myemail@test.com")).thenReturn(new User());
+		
+		// WHEN
+		assertThrows(
+				EmailAlreadyExistException.class, 
+				() -> userService.createUser("myUser", "myemail@test.com", "myPassword"));
+	}
 }

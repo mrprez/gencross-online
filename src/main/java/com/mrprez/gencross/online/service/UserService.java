@@ -9,6 +9,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.mrprez.gencross.online.dao.UserDao;
+import com.mrprez.gencross.online.exception.EmailAlreadyExistException;
+import com.mrprez.gencross.online.exception.UsernameAlreadyExistException;
 import com.mrprez.gencross.online.model.User;
 import com.mrprez.gencross.online.model.id.UserId;
 
@@ -21,7 +23,12 @@ public class UserService {
 	private PasswordEncoder passwordEncoder;
 	
 	
-	public void createUser(String username, String email, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public void createUser(String username, String email, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, UsernameAlreadyExistException, EmailAlreadyExistException {
+		if (userDao.getFromUsername(username) != null) {
+			throw new UsernameAlreadyExistException(username);
+		} else if (userDao.getFromEmail(email) != null) {
+			throw new EmailAlreadyExistException(email);
+		}
 		User user = new User();
 		user.setUsername(username);
 		user.setEmail(email);

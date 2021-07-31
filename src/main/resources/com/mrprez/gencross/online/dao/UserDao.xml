@@ -36,4 +36,11 @@
 		UPDATE user SET password_hash = #{passwordHash} WHERE id = #{userId}
 	</update>
 	
+	<select id="getFromUsername" resultMap="User">
+		SELECT * FROM user u WHERE u.username = #{username}
+	</select>
+	
+	<select id="getFromEmail" resultMap="User">
+		SELECT * FROM user u WHERE u.email = #{email}
+	</select>
 </mapper>
