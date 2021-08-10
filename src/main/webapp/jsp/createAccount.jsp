@@ -37,6 +37,7 @@ function checkConfirm() {
 	  						<h5><fmt:message key="label.newAccount"/></h5>
 	  						<form method="POST" action="/gencross-online/dispatcher/account" id="createAccountForm">
 	  							<div class="mb-3">
+	  								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	  								<label for="usernameInput"><fmt:message key="label.username"/></label>
 	  								<c:choose>
 		  								<c:when test="${exception != null && exception.getClass().simpleName == 'UsernameAlreadyExistException'}">

@@ -12,6 +12,7 @@
 				</div>
 				<div class="modal-body">
 					<div class="mb-3">
+	  					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						<input type="hidden" name="tableId" value="${tableId}"/>
 						<label for="nameInput"><fmt:message key="label.name"/></label>
 						<input type="text" name="name" class="form-control" id="nameInput" auto-focus required/>

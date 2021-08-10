@@ -38,8 +38,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.defaultSuccessUrl("/dispatcher/home", true)
 				.permitAll()
 			.and().logout().logoutSuccessUrl("/dispatcher/login")
-			.and().csrf().disable()
-			.exceptionHandling()
+			.and().exceptionHandling()
 				.authenticationEntryPoint(new GencrossAuthenticationEntryPoint("/dispatcher/login"));
 	}
 	
