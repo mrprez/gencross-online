@@ -441,10 +441,16 @@ function refreshCharacter(character) {
 	<body class="character">
 		<%@ include file="include/top.jsp" %>
 		<div class="container">
+			<nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="/gencross-online/dispatcher/home"><fmt:message key="label.home"/></a></li>
+					<li class="breadcrumb-item">${table.name}</li>
+					<li class="breadcrumb-item active" aria-current="page">${character.name}</li>
+				</ol>
+			</nav>
 			<div class="row align-items-center">
 				<div class="col border">
-					<h5 class="p-3">${character.name}</h5>
-					<div class="ps-3 pb-3" id="phaseContainer">
+					<div class="ps-3 pb-3 pt-3" id="phaseContainer">
 						<h6 id="phaseName" class="pe-3"></h6>
 						<button type="button" id="nextPhaseButton" class="btn btn-primary" onclick="clickOnPassToNextPhase()" disabled>
 							<fmt:message key="label.nextPhase"/>

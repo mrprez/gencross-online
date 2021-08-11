@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mrprez.gencross.online.model.LoadedCharacter;
+import com.mrprez.gencross.online.model.RpgCharacterWithTable;
 import com.mrprez.gencross.online.model.id.CharacterId;
 import com.mrprez.gencross.online.model.id.TableId;
 import com.mrprez.gencross.online.model.id.UserId;
@@ -37,8 +37,11 @@ public class CharacterController {
 	@GetMapping(path = "{characterId}")
 	public ModelAndView get(@PathVariable("characterId") CharacterId characterId) throws Exception {
 		UserId userId = authenticationProvider.getAuthenticatedUser().getId();
-		LoadedCharacter loadedCharacter = characterService.getCharacter(characterId, userId);
-		return new ModelAndView("/jsp/character.jsp", "character", loadedCharacter);
+		RpgCharacterWithTable characterWithTable = characterService.getRpgCharacterWithTable(characterId, userId);
+		ModelAndView modelAndView = new ModelAndView("/jsp/character.jsp");
+		modelAndView.addObject("character", characterWithTable.getRpgCharacter());
+		modelAndView.addObject("table", characterWithTable.getTable());
+		return modelAndView;
 	}
 	
 

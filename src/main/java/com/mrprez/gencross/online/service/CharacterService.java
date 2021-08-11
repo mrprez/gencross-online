@@ -76,6 +76,15 @@ public class CharacterService {
 		loadedCharacter.setData(personnageFactory.loadPersonnage(new ByteArrayInputStream(rpgCharacter.getData())));
 		return loadedCharacter;
 	}
+	
+	public RpgCharacterWithTable getRpgCharacterWithTable(CharacterId characterId, UserId userId) {
+		RpgCharacterWithTable rpgCharacterWithTable = characterDao.getRpgCharacterWithTable(characterId);
+		if (!rpgCharacterWithTable.getTable().getGmId().equals(userId) 
+				&& !rpgCharacterWithTable.getRpgCharacter().getPlayerId().equals(userId)) {
+			throw new NotAllowedAccessException();
+		}
+		return rpgCharacterWithTable;
+	}
 
 	public Personnage setValue(CharacterId characterId, String propertyName, String valueAsString, UserId userId) throws Exception {
 		LoadedCharacter loadedCharacter = getCharacter(characterId, userId);
