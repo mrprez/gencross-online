@@ -1,0 +1,40 @@
+
+name: CI with Maven and Docker
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set Time
+      run: echo "TIME=$(date +'%s')" >> $GITHUB_ENV
+
+    - name: Set up JDK 1.8 for Shared Runner
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+        server-id: github
+        settings-path: ${{ github.workspace }}
+
+    - name: Publish to GitHub Packages Apache Maven
+      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag ghcr.io/mrprez/gencross-online:${TIME}
+    
+    - name: Log in to Docker Hub
+      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ github.token }}
+
+    - name: Push the Docker image
+      run: docker push ghcr.io/mrprez/gencross-online:${TIME}

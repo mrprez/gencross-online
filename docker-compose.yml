@@ -3,7 +3,7 @@ version: "3.7"
 services:
 
   gencross-online:
-    image: gencross-online:${DOCKER_TAG}
+    image: ghcr.io/mrprez/gencross-online:${DOCKER_TAG}
     build:
       context: .
       dockerfile: Dockerfile
