@@ -5,7 +5,7 @@
 <div class="modal" tabindex="-1" id="createCharacterModal">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="/gencross-online/dispatcher/character" method="POST">
+			<form action="<%=request.getContextPath()%>/dispatcher/character" method="POST">
 				<div class="modal-header">
 					<h5 class="modal-title"><fmt:message key="label.newCharacter"/></h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

@@ -5,7 +5,7 @@
 <div class="modal" tabindex="-1" id="createTableModal">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="/gencross-online/dispatcher/table" method="POST">
+			<form action="<%=request.getContextPath()%>/dispatcher/table" method="POST">
 				<div class="modal-header">
 					<h5 class="modal-title"><fmt:message key="label.newTable"/></h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

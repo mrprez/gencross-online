@@ -35,7 +35,7 @@ function checkConfirm() {
   					<div class="card">
   						<div class="card-body">
 	  						<h5><fmt:message key="label.newAccount"/></h5>
-	  						<form method="POST" action="/gencross-online/dispatcher/account" id="createAccountForm">
+	  						<form method="POST" action="<%=request.getContextPath()%>/dispatcher/account" id="createAccountForm">
 	  							<div class="mb-3">
 	  								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	  								<label for="usernameInput"><fmt:message key="label.username"/></label>
@@ -80,7 +80,7 @@ function checkConfirm() {
 	  							<button type="submit" class="btn btn-primary"><fmt:message key="label.validate"/></button>
 	  						</form>
 	  						<div class="mt-2">
-	  							<a href="/gencross-online/dispatcher/login"><fmt:message key="label.login"/></a>
+	  							<a href="<%=request.getContextPath()%>/dispatcher/login"><fmt:message key="label.login"/></a>
 	  						</div>
 	  					</div>
   					</div>

@@ -59,6 +59,7 @@ public class GencrossAuthenticationProvider extends AbstractUserDetailsAuthentic
 		return ((GencrossUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
 	}
 	
+	@SuppressWarnings("serial")
 	public class GencrossUserDetail implements UserDetails {
 		private User user;
 		private String passwordHash;

@@ -24,7 +24,7 @@ body {
   					<div class="card">
   						<div class="card-body">
 	  						<h5><fmt:message key="label.connection"/></h5>
-	  						<form action="/gencross-online/login" method="POST">
+	  						<form action="<%=request.getContextPath()%>/login" method="POST">
 	  							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	  							<div class="mb-3">
 	  								<label for="usernameInput"><fmt:message key="label.username"/></label>
@@ -42,7 +42,7 @@ body {
 	  							<button type="submit" class="btn btn-primary"><fmt:message key="label.connection"/></button>
 	  						</form>
 	  						<div class="mt-2">
-	  							<a href="/gencross-online/dispatcher/account/create"><fmt:message key="label.createAccount"/></a>
+	  							<a href="<%=request.getContextPath()%>/dispatcher/account/create"><fmt:message key="label.createAccount"/></a>
 	  						</div>
 	  					</div>
   					</div>

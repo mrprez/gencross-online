@@ -25,7 +25,7 @@ messages.ok='<fmt:message key="label.ok"/>';
 
 window.addEventListener('load', (event) => {
 	$.get(
-		"/gencross-online/dispatcher/rest/character/${character.id}",
+		"<%=request.getContextPath()%>/dispatcher/rest/character/${character.id}",
 		( character ) => {
 			$(".initialSpinner").remove();
 			refreshCharacter(character);
@@ -149,8 +149,8 @@ function clickOnEditValue(propertyLineElement, property, event) {
 	propertyLineElement.find(".propertyValue").append(
 		"<dialog class='card editPropertyCard flyingCard' open>"
 			+ "<form class='card-body flyingCardBody' method='dialog'>"
-				+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/x.svg' class='flyingCardButton cancel'/>"
-				+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/check.svg' class='flyingCardButton validate'/>"
+				+ "<input type='image' src='<%=request.getContextPath()%>/img/bootstrap-icons-1.4.1/x.svg' class='flyingCardButton cancel'/>"
+				+ "<input type='image' src='<%=request.getContextPath()%>/img/bootstrap-icons-1.4.1/check.svg' class='flyingCardButton validate'/>"
 			+ "</form>"
 		+ "</dialog>");
 	const cardElement = propertyLineElement.find(".propertyValue .editPropertyCard");
@@ -197,8 +197,8 @@ function clickOnAddProperty(addActionElement, parentProperty, event) {
 		"<dialog class='card addPropertyCard flyingCard' open>"
 			+ "<form class='card-body flyingCardBody' method='dialog'>"
 				+ "<div class='addPropertyInputGroup'></div>"
-				+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/x.svg' class='flyingCardButton cancel'/>"
-				+ "<input type='image' src='/gencross-online/img/bootstrap-icons-1.4.1/check.svg' class='flyingCardButton validate'/>"
+				+ "<input type='image' src='<%=request.getContextPath()%>/img/bootstrap-icons-1.4.1/x.svg' class='flyingCardButton cancel'/>"
+				+ "<input type='image' src='<%=request.getContextPath()%>/img/bootstrap-icons-1.4.1/check.svg' class='flyingCardButton validate'/>"
 			+ "</form>"
 		+ "</dialog>");
 	const cardElement = $(addActionElement).find(".addPropertyCard");
@@ -339,7 +339,7 @@ function clickOnPassToNextPhase() {
 function passToNextPhase() {
 	$("#nextPhaseButton").hide();
 	$("#nextPhaseButton").after("<div class='spinner-border nextPhaseButtonSpinner' role='status'></div>")
-	$.ajax("/gencross-online/dispatcher/rest/character/"+characterId+"/passToNextPhase", {
+	$.ajax("<%=request.getContextPath()%>/dispatcher/rest/character/"+characterId+"/passToNextPhase", {
 		method: "POST"
 	}).done(refreshCharacter);
 }
@@ -351,7 +351,7 @@ function setPropertyValue(propertyLineElement, event) {
 	propertyLineElement.find(".propertyValue").empty();
 	propertyLineElement.find(".propertyValue").append("<div class='propertyValueSpinner spinner-border' role='status'></div>");
 	
-	$.ajax("/gencross-online/dispatcher/rest/character/"+characterId+"/setValue", {
+	$.ajax("<%=request.getContextPath()%>/dispatcher/rest/character/"+characterId+"/setValue", {
 		method: "PUT",
 		data: { 'property': propertyName, 'value': value }
 	}).done(refreshCharacter);
@@ -372,7 +372,7 @@ function addProperty(addPropertyCard, parentProperty, event) {
 		data.name = addPropertyCard.find(".addPropertyText").val();
 	}
 	
-	$.ajax("/gencross-online/dispatcher/rest/character/"+characterId+"/addProperty", {
+	$.ajax("<%=request.getContextPath()%>/dispatcher/rest/character/"+characterId+"/addProperty", {
 		method: "POST",
 		data: data
 	}).done(refreshCharacter);
@@ -384,7 +384,7 @@ function deleteProperty(propertyLineElement, event) {
 	nodeElement.empty();
 	nodeElement.append("<div class='nodeSpinner spinner-border' role='status'></div>");
 	
-	$.ajax("/gencross-online/dispatcher/rest/character/"+characterId+"/deleteProperty", {
+	$.ajax("<%=request.getContextPath()%>/dispatcher/rest/character/"+characterId+"/deleteProperty", {
 		method: "DELETE",
 		data: { 'property': propertyName }
 	}).done(refreshCharacter);	
@@ -443,7 +443,7 @@ function refreshCharacter(character) {
 		<div class="container">
 			<nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="/gencross-online/dispatcher/home"><fmt:message key="label.home"/></a></li>
+					<li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/dispatcher/home"><fmt:message key="label.home"/></a></li>
 					<li class="breadcrumb-item">${table.name}</li>
 					<li class="breadcrumb-item active" aria-current="page">${character.name}</li>
 				</ol>

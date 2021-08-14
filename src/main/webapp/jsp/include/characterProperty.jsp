@@ -12,15 +12,15 @@
 			${property.value}
 			<c:if test="${property.editable}">
 				<div class="editPropertyContainer">
-					<img class="editIcon" src="/gencross-online/img/bootstrap-icons-1.4.1/pencil.svg"/>
+					<img class="editIcon" src="<%=request.getContextPath()%>/img/bootstrap-icons-1.4.1/pencil.svg"/>
 					<c:if test="${property.value['class'].simpleName == 'StringValue'}">
 						<div class="card editPropertyCard editStringPropertyField">
 							<div class="card-body">
 								<form class="propertyForm">
 									<input type="hidden" name="property" value="${property.absoluteName}"/>
 									<input type="text" name="value" value="${property.value}"/>
-									<img class="editPropertyButton valid" src="/gencross-online/img/bootstrap-icons-1.4.1/check.svg"/>
-									<img class="editPropertyButton close" src="/gencross-online/img/bootstrap-icons-1.4.1/x.svg"/>
+									<img class="editPropertyButton valid" src="<%=request.getContextPath()%>/img/bootstrap-icons-1.4.1/check.svg"/>
+									<img class="editPropertyButton close" src="<%=request.getContextPath()%>/img/bootstrap-icons-1.4.1/x.svg"/>
 								</form>
 							</div>
 						</div>

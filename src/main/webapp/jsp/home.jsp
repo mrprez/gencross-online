@@ -22,7 +22,7 @@ function openCreateTableModal() {
 	$('#newTableButton').height($('#newTableButton').height());
 	$('#newTableButton .buttonLabel').fadeOut();
 	$('#newTableButton .buttonSpinner').fadeIn();
-	$.ajax("/gencross-online/dispatcher/home/include/createTable")
+	$.ajax("<%=request.getContextPath()%>/dispatcher/home/include/createTable")
 		.done(function(data) {
 			$('body').append(data);
 			$('#createTableModal').modal('show');
@@ -38,7 +38,7 @@ function openCreateCharacterModal(tableId) {
 	$('#newCharacterButton_'+tableId).height($('#newCharacterButton_'+tableId).height());
 	$('#newCharacterButton_'+tableId+' .buttonLabel').fadeOut();
 	$('#newCharacterButton_'+tableId+' .buttonSpinner').fadeIn();
-	$.ajax("/gencross-online/dispatcher/table/"+tableId+"/include/createCharacter")
+	$.ajax("<%=request.getContextPath()%>/dispatcher/table/"+tableId+"/include/createCharacter")
 		.done(function(data) {
 			$('body').append(data);
 			$('#createCharacterModal').modal('show');
@@ -50,7 +50,7 @@ function openCreateCharacterModal(tableId) {
 }
 
 function clickOnCharacter(characterId) {
-	window.location = "/gencross-online/dispatcher/character/"+characterId;
+	window.location = "<%=request.getContextPath()%>/dispatcher/character/"+characterId;
 }
 		</script>
 	</head>
