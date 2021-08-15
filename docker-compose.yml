@@ -25,3 +25,12 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ${HOST_MYSQL_DATA_DIR}:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.1.1
+    environment:
+      PMA_HOST: db
+      PMA_PORT: "3306"
+      HIDE_PHP_VERSION: "true"
+    ports:
+      - "9000:80"
