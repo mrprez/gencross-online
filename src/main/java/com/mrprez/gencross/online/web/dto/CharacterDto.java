@@ -10,6 +10,7 @@ public class CharacterDto {
 	private boolean nextPhase;
 	private boolean nextPhaseAvailable;
 	private String actionMessage;
+	private List<HistoryItemDto> history;
 	
 
 	public String getPhase() {
@@ -67,6 +68,15 @@ public class CharacterDto {
 	public void setActionMessage(String actionMessage) {
 		this.actionMessage = actionMessage;
 	}
+
+	public List<HistoryItemDto> getHistory() {
+		return history;
+	}
+
+	public void setHistory(List<HistoryItemDto> history) {
+		this.history = history;
+	}
+	
 	
 	
 }

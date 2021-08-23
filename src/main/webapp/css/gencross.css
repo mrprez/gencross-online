@@ -62,14 +62,33 @@
 	padding-left: 0;
 }
 
-.character #phaseContainer {
+.character .characterHeader {
 	display: flex;
 	align-items: center;
 }
 
-.character #phaseContainer #phaseName {
+.character .characterHeader .phaseContainer {
+	display: flex;
+	align-items: center;
+}
+
+.character .characterHeader .phaseContainer #phaseName {
 	display: inline;
 	margin-bottom: 0;
+}
+
+.character .characterHeader .historyButtonContainer {
+	display: flex;
+	flex-grow: 1;
+	justify-content: flex-end;
+}
+
+.character .characterHeader .historyButtonContainer .displayHistoryButton {
+	display: none;
+}
+
+.character .characterHeader .historyButtonContainer .displayHistoryButton.collapsed {
+	display: block;
 }
 
 .character .pointPool {
@@ -184,4 +203,8 @@
 .character .propertyNode .nodeSpinner {
 	width: 1em;
 	height: 1em;
+}
+
+.character .btn-close {
+	float: right;
 }

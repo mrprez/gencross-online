@@ -21,6 +21,9 @@ messages.phase='<fmt:message key="label.phase"/>';
 messages.confirmPassToNextPhase='<fmt:message key="label.confirmPassToNextPhase"/>';
 messages.actionMessageTitle='<fmt:message key="label.actionMessageTitle"/>';
 messages.ok='<fmt:message key="label.ok"/>';
+messages.historyAdd='<fmt:message key="label.historyAdd"/>';
+messages.historyDelete='<fmt:message key="label.historyDelete"/>';
+messages.cost='<fmt:message key="label.cost"/>';
 
 
 window.addEventListener('load', (event) => {
@@ -417,6 +420,52 @@ function displayActionMessage(actionMessage) {
 	actionMessageModal.show();
 }
 
+function displayHistory(history) {
+	history.forEach((historyItem, index) => {
+		if (index >= $("#history tbody tr").length) {
+			$("#history tbody").prepend(
+				"<tr data-bs-toggle='tooltip' data-bs-placement='left'>"
+	      			+ "<th class='historyTitle' scope='row'></th>"
+	      			+ "<td class='historyDescription'></td>"
+	      			+ "<td class='historyCost'></td>"
+	      		+ "</tr>");
+		}
+		
+		const trSelector = $("#history tbody tr");
+		const trElement = trSelector.get(trSelector.length - index - 1);
+		$(trElement).attr("title", new Date(historyItem.date).toLocaleString());
+		new bootstrap.Tooltip(trElement);
+		
+		let rowTitle = historyItem.absoluteName;
+		if (historyItem.action == 1) {
+			rowTitle = historyItem.absoluteName.substring(0, historyItem.absoluteName.lastIndexOf("#"));
+			const propertyName = historyItem.absoluteName.substring(historyItem.absoluteName.lastIndexOf("#") + 1);
+			$(trElement).children(".historyDescription").html("<i "
+				+ "class='bi bi-node-plus me-2' "
+				+ "title='"+messages.historyAdd+"' "
+				+ "data-bs-toggle='tooltip'></i>");
+			new bootstrap.Tooltip(document.querySelectorAll("#history tbody .historyDescription i.bi-node-plus")[0]);
+			$(trElement).children(".historyDescription").append(propertyName);
+		} else if (historyItem.action == 2) {
+			$(trElement).children(".historyDescription").html(historyItem.oldValue + "<i class='bi bi-arrow-right-short'></i>" + historyItem.newValue);
+		} else if (historyItem.action == 3) {
+			rowTitle = historyItem.absoluteName.substring(0, historyItem.absoluteName.lastIndexOf("#"));
+			const propertyName = historyItem.absoluteName.substring(historyItem.absoluteName.lastIndexOf("#") + 1);
+			$(trElement).children(".historyDescription").html("<i "
+				+ "class='bi bi-node-minus me-2' "
+				+ "title='"+messages.historyDelete+"' "
+				+ "data-bs-toggle='tooltip'></i>");
+			new bootstrap.Tooltip(document.querySelectorAll("#history tbody .historyDescription i.bi-node-minus")[0]);
+			$(trElement).children(".historyDescription").append(propertyName);
+		}
+		
+		if (historyItem.pointPool) {
+			$(trElement).children(".historyCost").html("<span title='"+messages.cost+"'>" + historyItem.cost+" "+historyItem.pointPool + "</span>");
+		}
+		$(trElement).children(".historyTitle").html(rowTitle.replaceAll("#", "<i class='bi bi-chevron-right'></i>"));
+	});
+}
+
 function refreshCharacter(character) {
 	$("#phaseName").html(messages.phase + "&#8239;:&nbsp;" + character.phase);
 	$(".nextPhaseButtonSpinner").remove();
@@ -434,6 +483,7 @@ function refreshCharacter(character) {
 	if (character.actionMessage) {
 		displayActionMessage(character.actionMessage);
 	}
+	displayHistory(character.history);
 }
 
 		</script>
@@ -448,14 +498,21 @@ function refreshCharacter(character) {
 					<li class="breadcrumb-item active" aria-current="page">${character.name}</li>
 				</ol>
 			</nav>
-			<div class="row align-items-center">
+			<div class="row mb-3">
 				<div class="col border">
-					<div class="ps-3 pb-3 pt-3" id="phaseContainer">
-						<h6 id="phaseName" class="pe-3"></h6>
-						<button type="button" id="nextPhaseButton" class="btn btn-primary" onclick="clickOnPassToNextPhase()" disabled>
-							<fmt:message key="label.nextPhase"/>
-							<i class="bi bi-caret-right-fill"></i>
-						</button>
+					<div class="characterHeader ps-3 pb-3 pt-3">
+						<div class="phaseContainer">
+							<h6 id="phaseName" class="pe-3"></h6>
+							<button type="button" id="nextPhaseButton" class="btn btn-primary" onclick="clickOnPassToNextPhase()" disabled>
+								<fmt:message key="label.nextPhase"/>
+								<i class="bi bi-caret-right-fill"></i>
+							</button>
+						</div>
+						<div class="historyButtonContainer">
+							<button type="button" class="btn btn-outline-primary align-self-end collapsed displayHistoryButton" data-bs-toggle="collapse" data-bs-target="#historyContainer">
+								<fmt:message key="label.displayHistory"/>
+							</button>
+						</div>
 					</div>
 					<div class="row border-top border-bottom p-3" id="pointPoolsContainer">
 						<div class="spinner-border initialSpinner" role="status"></div>
@@ -463,9 +520,24 @@ function refreshCharacter(character) {
 					<div class="row border-bottom">
 						<ul id="errorContainer" class="text-warning bg-dark"></ul>
 					</div>
-					<ul class="p-3" id="characterRoot">
+					<ul class="p-3 m-0" id="characterRoot">
 						<div class="spinner-border initialSpinner" role="status"></div>
 					</ul>
+				</div>
+				<div class="col border ms-3 collapse collapse-horizontal" id="historyContainer">
+					<div class="row">
+						<div class="col">
+							<h6 class="ps-3 pb-3 pt-3">
+								<fmt:message key="label.history"/>
+							</h6>
+						</div>
+						<div class="col pe-3 pt-3">
+							<button type="button" class="btn-close" data-bs-toggle="collapse" data-bs-target="#historyContainer" title="<fmt:message key="label.hideHistory"/>"></button>
+						</div>
+					</div>
+					<table id="history" class="table">
+						<tbody></tbody>
+					</table>
 				</div>
 			</div>
 		</div>

@@ -16,6 +16,8 @@ public class CharacterBeanToDtoMapper implements Function<Personnage, CharacterD
 	private PropertyBeanToDtoMapper propertyMapper;
 	@Autowired
 	private PointPoolBeanToDtoMapper pointPoolMapper;
+	@Autowired
+	private HistoryItemBeanToDtoMapper historyItemMapper;
 	
 
 	@Override
@@ -28,6 +30,7 @@ public class CharacterBeanToDtoMapper implements Function<Personnage, CharacterD
 		dto.setProperties(bean.getProperties().stream().map(propertyMapper).collect(Collectors.toList()));
 		dto.setNextPhase(bean.nextPhase() != null);
 		dto.setNextPhaseAvailable(bean.phaseFinished());
+		dto.setHistory(bean.getHistory().stream().map(historyItemMapper).collect(Collectors.toList()));
 		
 		return dto;
 	}
