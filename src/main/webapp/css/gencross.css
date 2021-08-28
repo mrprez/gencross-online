@@ -64,6 +64,10 @@
 	flex: 50% 1 1;
 }
 
+.home #attributeToPlayerModal #invitePlayerContainer {
+	display: none;
+}
+
 .character #nextPhaseButton {
 	display: none;
 }

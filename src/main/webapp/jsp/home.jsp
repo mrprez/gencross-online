@@ -52,6 +52,24 @@ function openCreateCharacterModal(tableId) {
 function clickOnCharacter(characterId) {
 	window.location = "<%=request.getContextPath()%>/dispatcher/character/"+characterId;
 }
+
+function openAttributeToPlayer(event, characterId) {
+	event.stopPropagation();
+	$('#attributeToPlayerButton_'+characterId).width($('#attributeToPlayerButton_'+characterId).width());
+	$('#attributeToPlayerButton_'+characterId).height($('#attributeToPlayerButton_'+characterId).height());
+	$('#attributeToPlayerButton_'+characterId+' .buttonLabel').fadeOut();
+	$('#attributeToPlayerButton_'+characterId+' .buttonSpinner').fadeIn();
+	$.ajax("<%=request.getContextPath()%>/dispatcher/character/"+characterId+"/include/attributeToPlayer")
+		.done(function(data) {
+			$('body').append(data);
+			$('#attributeToPlayerModal').modal('show');
+			$('#attributeToPlayerButton_'+characterId+' .buttonLabel').fadeIn(0);
+			$('#attributeToPlayerButton_'+characterId+' .buttonSpinner').fadeOut(0);
+			$('#attributeToPlayerButton_'+characterId).width('');
+			$('#attributeToPlayerButton_'+characterId).height('');
+		});
+}
+
 		</script>
 	</head>
 	<body class="home">
@@ -81,8 +99,11 @@ function clickOnCharacter(characterId) {
 														<li class="list-group-item character" onclick="clickOnCharacter(${character.id})">
 															<span class="characterName">${character.name}</span>
 															<span class="playerContainer">
-																<button type="button" class="btn btn-primary" >
-																	<fmt:message key="label.attributeToPlayer"/>
+																<button type="button" class="btn btn-primary buttonWithSpinner" onclick="openAttributeToPlayer(event, ${character.id})" id="attributeToPlayerButton_${character.id}">
+																	<span class="buttonLabel"><fmt:message key="label.attributeToPlayer"/></span>
+																	<div class="buttonSpinner spinner-border" role="status">
+																		<span class="visually-hidden"><fmt:message key="label.loading"/></span>
+																	</div>
 																</button>
 															</span>
 														</li>

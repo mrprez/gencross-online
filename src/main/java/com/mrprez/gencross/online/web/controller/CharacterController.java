@@ -44,5 +44,10 @@ public class CharacterController {
 		return modelAndView;
 	}
 	
+	@GetMapping(path = "{characterId}/include/attributeToPlayer")
+	public ModelAndView getAttributeToPlayerModal(@PathVariable("characterId") CharacterId characterId) {
+		return new ModelAndView("/jsp/include/attributeToPlayerModal.jsp", "characterId", characterId);
+	}
+	
 
 }
