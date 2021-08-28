@@ -494,7 +494,7 @@ function refreshCharacter(character) {
 			<nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/dispatcher/home"><fmt:message key="label.home"/></a></li>
-					<li class="breadcrumb-item">${table.name}</li>
+					<li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/dispatcher/table/${table.id}">${table.name}</a></li>
 					<li class="breadcrumb-item active" aria-current="page">${character.name}</li>
 				</ol>
 			</nav>
@@ -520,9 +520,11 @@ function refreshCharacter(character) {
 					<div class="row border-bottom">
 						<ul id="errorContainer" class="text-warning bg-dark"></ul>
 					</div>
-					<ul class="p-3 m-0" id="characterRoot">
-						<div class="spinner-border initialSpinner" role="status"></div>
-					</ul>
+					<div class="row">
+						<span class="spinner-border initialSpinner m-3" role="status"></span>
+						<ul class="p-3 m-0" id="characterRoot">
+						</ul>
+					</div>
 				</div>
 				<div class="col border ms-3 collapse collapse-horizontal" id="historyContainer">
 					<div class="row">

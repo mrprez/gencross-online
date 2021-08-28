@@ -36,6 +36,25 @@
 		WHERE rt.gm_id = #{userId} 
 		ORDER BY rt.creation_date DESC
 	</select>
+
+	<select id="getTableAsGm" resultMap="TableWithCharacters">
+		SELECT
+			rt.id AS id,
+			rt.name AS name,
+			rt.game AS game,
+			rt.creation_date AS creation_date,
+			rt.gm_id AS gm_id,
+			rc.id AS rc_id,
+			rc.name AS rc_name,
+			rc.table_id AS rc_table_id,
+			rc.player_id AS rc_player_id,
+			rc.data AS rc_data,
+			rc.creation_date AS rc_creation_date
+		FROM rpg_table rt
+		LEFT JOIN rpg_character rc ON rc.table_id=rt.id
+		WHERE rt.id = #{tableId} AND rt.gm_id = #{userId} 
+		ORDER BY rt.creation_date DESC
+	</select>
 	
 	<select id="get" resultMap="Table">
 		SELECT

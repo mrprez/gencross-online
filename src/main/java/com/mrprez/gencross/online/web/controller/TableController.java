@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mrprez.gencross.online.model.TableWithCharacters;
 import com.mrprez.gencross.online.model.id.TableId;
 import com.mrprez.gencross.online.model.id.UserId;
 import com.mrprez.gencross.online.service.GencrossAuthenticationProvider;
@@ -35,6 +36,13 @@ public class TableController {
 	@GetMapping(path = "/{tableId}/include/createCharacter")
 	public ModelAndView getCreateCharacter(@PathVariable("tableId") TableId tableId) {
 		return new ModelAndView("/jsp/include/createCharacterModal.jsp", "tableId", tableId);
+    }
+	
+	@GetMapping(path = "/{tableId}")
+	public ModelAndView get(@PathVariable("tableId") TableId tableId) {
+		UserId userId = authenticationProvider.getAuthenticatedUser().getId();
+		TableWithCharacters tableWithCharacters = tableService.getTableAsGm(tableId, userId);
+		return new ModelAndView("/jsp/table.jsp", "table", tableWithCharacters.getTable());
     }
 	
 

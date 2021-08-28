@@ -79,7 +79,12 @@ function clickOnCharacter(characterId) {
 												<ul class="list-group mb-3">
 													<c:forEach items="${userGmTable.characters}" var="character">
 														<li class="list-group-item character" onclick="clickOnCharacter(${character.id})">
-															${character.name}
+															<span class="characterName">${character.name}</span>
+															<span class="playerContainer">
+																<button type="button" class="btn btn-primary" >
+																	<fmt:message key="label.attributeToPlayer"/>
+																</button>
+															</span>
 														</li>
 													</c:forEach>
 												</ul>

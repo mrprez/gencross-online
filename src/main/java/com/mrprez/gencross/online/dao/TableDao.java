@@ -17,4 +17,6 @@ public interface TableDao {
 
 	Table get(@Param("tableId") TableId tableId);
 
+	TableWithCharacters getTableAsGm(@Param("tableId") TableId tableId, @Param("userId") UserId userId);
+
 }

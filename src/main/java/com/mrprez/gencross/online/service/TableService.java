@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.mrprez.gencross.online.dao.TableDao;
 import com.mrprez.gencross.online.model.Table;
 import com.mrprez.gencross.online.model.TableWithCharacters;
+import com.mrprez.gencross.online.model.id.TableId;
 import com.mrprez.gencross.online.model.id.UserId;
 
 @Service
@@ -31,6 +32,10 @@ public class TableService {
 		table.setGmId(userId);
 		table.setCreationDate(dateProvider.now());
 		tableDao.createTable(table);
+	}
+
+	public TableWithCharacters getTableAsGm(TableId tableId, UserId userId) {
+		return tableDao.getTableAsGm(tableId, userId);
 	}
 
 }
