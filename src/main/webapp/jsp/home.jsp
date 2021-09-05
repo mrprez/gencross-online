@@ -8,11 +8,37 @@
 		<script type="text/javascript">
 "use strict";
 
-window.addEventListener('load', (event) => {
-	const results = new RegExp('[\?&]tableId=([^&#]*)').exec(window.location.search);
-	if (results !== null) {
-		const tableId = results[1];
-		$('#flush-collapseGmTable'+tableId).collapse('show');
+const error = '${error}';
+const messages = new Object();
+messages.error='<fmt:message key="label.error"/>';
+
+$(document).ready((event) => {
+	let tableId = parseInt("0" + "${tableId}", 10);
+	if (tableId == 0) {
+		const results = new RegExp('[\?&]tableId=([^&#]*)').exec(window.location.search);
+		if (results !== null) {
+			tableId = parseInt(results[1], 10);
+		}
+	}
+	$('#flush-collapseGmTable'+tableId).addClass('show');
+	$('#flush-headingGmTable'+tableId).children('.accordion-button').removeClass('collapsed');
+	
+	if (error == 'com.mrprez.gencross.online.exception.UserNotFoundException') {
+		$('body').append(
+			"<div class='position-fixed top-0 end-0 p-3' style='z-index: 11'>"
+				+"<div id='errorToast' class='toast' role='alert' aria-live='assertive' aria-atomic='true'>"
+					+"<div class='toast-header'>"
+						+"<i class='bi bi-x-octagon-fill text-danger pe-1'></i>"
+						+"<strong class='me-auto'>"+messages.error+"</strong>"
+				      	+"<button type='button' class='btn-close' data-bs-dismiss='toast' aria-label='Close'></button>"
+					+"</div>"
+					+"<div class='toast-body'>"
+						+"${errorMessage}"
+					+"</div>"
+				+"</div>"
+			+"</div>");
+		const errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
+		errorToast.show();
 	}
 });
 		

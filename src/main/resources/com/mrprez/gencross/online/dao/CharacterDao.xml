@@ -36,4 +36,8 @@
 		WHERE rc.id = #{id}
 	</select>
 	
+	<update id="attributeToPlayer">
+		UPDATE rpg_character SET player_id = #{playerId} WHERE id=#{id}
+	</update>
+	
 </mapper>

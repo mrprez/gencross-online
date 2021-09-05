@@ -75,7 +75,6 @@ public class CharacterRestController {
 		Personnage personnage = characterService.passToNextPhase(characterId, userId);
 		return characterBeanToDtoMapper.apply(personnage);
 	}
-			
 	
 	
 }

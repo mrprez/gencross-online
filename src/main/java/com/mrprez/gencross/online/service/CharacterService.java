@@ -15,11 +15,14 @@ import com.mrprez.gencross.disk.PersonnageSaver;
 import com.mrprez.gencross.disk.PluginDescriptor;
 import com.mrprez.gencross.online.dao.CharacterDao;
 import com.mrprez.gencross.online.dao.TableDao;
+import com.mrprez.gencross.online.dao.UserDao;
 import com.mrprez.gencross.online.exception.NotAllowedAccessException;
+import com.mrprez.gencross.online.exception.UserNotFoundException;
 import com.mrprez.gencross.online.model.LoadedCharacter;
 import com.mrprez.gencross.online.model.RpgCharacter;
 import com.mrprez.gencross.online.model.RpgCharacterWithTable;
 import com.mrprez.gencross.online.model.Table;
+import com.mrprez.gencross.online.model.User;
 import com.mrprez.gencross.online.model.id.CharacterId;
 import com.mrprez.gencross.online.model.id.TableId;
 import com.mrprez.gencross.online.model.id.UserId;
@@ -36,6 +39,9 @@ public class CharacterService {
 
 	@Autowired
 	private CharacterDao characterDao;
+	
+	@Autowired
+	private UserDao userDao;
 	
 	@Autowired
 	private DateProvider dateProvider;
@@ -154,6 +160,15 @@ public class CharacterService {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		PersonnageSaver.savePersonnage(personnage, baos);
 		characterDao.updateData(characterId, baos.toByteArray());
+	}
+	
+	
+	public void attributeToExistingPlayer(CharacterId characterId, String username) throws UserNotFoundException {
+		User player = userDao.getFromUsername(username);
+		if (player == null) {
+			throw new UserNotFoundException(username);
+		}
+		characterDao.attributeToPlayer(characterId, player.getId());
 	}
 
 }

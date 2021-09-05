@@ -25,13 +25,14 @@ public class TableService {
 		return tableDao.getTablesAsGm(userId);
 	}
 
-	public void createTable(String name, String game, UserId userId) {
+	public Table createTable(String name, String game, UserId userId) {
 		Table table = new Table();
 		table.setName(name);
 		table.setGame(game);
 		table.setGmId(userId);
 		table.setCreationDate(dateProvider.now());
 		tableDao.createTable(table);
+		return table;
 	}
 
 	public TableWithCharacters getTableAsGm(TableId tableId, UserId userId) {

@@ -5,7 +5,7 @@
 <div class="modal" tabindex="-1" id="attributeToPlayerModal">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form name="attributeToPlayerForm" method="POST">
+			<form name="attributeToPlayerForm" action="<%=request.getContextPath()%>/dispatcher/character/${characterId}/attributeToPlayer" method="post">
 				<div class="modal-header">
 					<h5 class="modal-title"><fmt:message key="label.attributeToPlayer"/></h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -26,14 +26,13 @@
 					<div class="mb-3">
 						<span id="searchedPlayerContainer">
 							<label for="searchedPlayer"><fmt:message key="label.username"/></label>
-							<input type="text" name="searchedPlayer" id="searchedPlayer"/>
+							<input type="text" name="searchedPlayer" id="searchedPlayer" required/>
 						</span>
 						<span id="invitePlayerContainer">
-							<label for="invitePlayer"><fmt:message key="label.email"/></label>
-							<input type="email" name="invitePlayer" id="invitePlayer"/>
+							<label for="invitedPlayer"><fmt:message key="label.email"/></label>
+							<input type="email" name="invitedPlayer" id="invitedPlayer"/>
 						</span>
 					</div>
-					
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><fmt:message key="label.cancel"/></button>
@@ -49,17 +48,17 @@
 
 function swapSearchOrInvite() {
 	const searchOrInvite = document.forms.attributeToPlayerForm.searchOrInvite.value;
-	console.log(searchOrInvite);
 	if (searchOrInvite == "searchPlayer") {
-		console.log("== searchOrInvite");
 		$("#searchedPlayerContainer").show();
 		$("#invitePlayerContainer").hide();
+		$("#searchedPlayer").prop("required", true);
+		$("#invitedPlayer").prop("required", false);
 	} else {
-		console.log("!= searchOrInvite");
 		$("#searchedPlayerContainer").hide();
 		$("#invitePlayerContainer").show();
+		$("#searchedPlayer").prop("required", false);
+		$("#invitedPlayer").prop("required", true);
 	}
-	
 }
 
 </script>

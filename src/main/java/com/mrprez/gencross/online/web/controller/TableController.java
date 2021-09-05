@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mrprez.gencross.online.model.Table;
 import com.mrprez.gencross.online.model.TableWithCharacters;
 import com.mrprez.gencross.online.model.id.TableId;
 import com.mrprez.gencross.online.model.id.UserId;
@@ -27,9 +29,10 @@ public class TableController {
 	
 	
 	@PostMapping
-	public String create(@RequestParam("name") String name, @RequestParam("game") String game) {
+	public String create(@RequestParam("name") String name, @RequestParam("game") String game, RedirectAttributes redirectAttributes) {
 		UserId userId = authenticationProvider.getAuthenticatedUser().getId();
-		tableService.createTable(name, game, userId);
+		Table table = tableService.createTable(name, game, userId);
+		redirectAttributes.addAttribute("tableId", table.getId());
 		return "redirect:home";
 	}
 	
