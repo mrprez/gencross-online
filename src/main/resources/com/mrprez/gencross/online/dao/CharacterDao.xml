@@ -13,10 +13,17 @@
 		<result column="creation_date" property="creationDate"/>
 	</resultMap>
 	
-	<resultMap id="RpgCharacterWithTable" type="com.mrprez.gencross.online.model.RpgCharacterWithTable">
+	<resultMap id="RpgCharacterWithPlayer" type="com.mrprez.gencross.online.model.aggregation.RpgCharacterWithPlayer">
+		<id column="id"/>
+		<association property="character" resultMap="RpgCharacter"/>
+		<association property="player" resultMap="com.mrprez.gencross.online.dao.UserDao.User" columnPrefix="p_"/>
+	</resultMap>
+	
+	<resultMap id="RpgCharacterWithTableAndPlayer" type="com.mrprez.gencross.online.model.aggregation.RpgCharacterWithTableAndPlayer">
 		<id column="rc_id"/>
 		<association property="rpgCharacter" resultMap="RpgCharacter" columnPrefix="rc_"/>
 		<association property="table" resultMap="com.mrprez.gencross.online.dao.TableDao.Table" columnPrefix="rt_"/>
+		<association property="player" resultMap="com.mrprez.gencross.online.dao.UserDao.User" columnPrefix="p_"/>
 	</resultMap>
 	
 	<insert id="createCharacter" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
@@ -27,12 +34,14 @@
 		UPDATE rpg_character SET data = #{data} WHERE id = #{id}
 	</update>
 	
-	<select id="getRpgCharacterWithTable" resultMap="RpgCharacterWithTable">
+	<select id="getRpgCharacterWithTableAndPlayer" resultMap="RpgCharacterWithTableAndPlayer">
 		SELECT 
 			rc.id AS rc_id, rc.name AS rc_name, rc.table_id AS rc_table_id, rc.data AS rc_data, rc.player_id AS rc_player_id, rc.creation_date AS rc_creation_date,
-			rt.id AS rt_id, rt.name AS rt_name, rt.game AS rt_game, rt.creation_date AS rt_creation_date, rt.gm_id AS rt_gm_id
+			rt.id AS rt_id, rt.name AS rt_name, rt.game AS rt_game, rt.creation_date AS rt_creation_date, rt.gm_id AS rt_gm_id,
+			p.id AS p_id, p.username AS p_username, p.email AS p_email
 		FROM rpg_character rc
 		JOIN rpg_table rt ON rt.id = rc.table_id
+		LEFT JOIN user p ON p.id=rc.player_id
 		WHERE rc.id = #{id}
 	</select>
 	

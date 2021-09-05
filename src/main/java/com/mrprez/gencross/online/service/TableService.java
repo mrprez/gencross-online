@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.mrprez.gencross.online.dao.TableDao;
 import com.mrprez.gencross.online.model.Table;
-import com.mrprez.gencross.online.model.TableWithCharacters;
+import com.mrprez.gencross.online.model.aggregation.TableWithCharactersAndPlayers;
 import com.mrprez.gencross.online.model.id.TableId;
 import com.mrprez.gencross.online.model.id.UserId;
 
@@ -21,7 +21,7 @@ public class TableService {
 	private DateProvider dateProvider;
 	
 	
-	public List<TableWithCharacters> getUserGmTables(UserId userId) {
+	public List<TableWithCharactersAndPlayers> getUserGmTables(UserId userId) {
 		return tableDao.getTablesAsGm(userId);
 	}
 
@@ -35,7 +35,7 @@ public class TableService {
 		return table;
 	}
 
-	public TableWithCharacters getTableAsGm(TableId tableId, UserId userId) {
+	public TableWithCharactersAndPlayers getTableAsGm(TableId tableId, UserId userId) {
 		return tableDao.getTableAsGm(tableId, userId);
 	}
 

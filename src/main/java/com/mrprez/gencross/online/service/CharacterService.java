@@ -20,9 +20,9 @@ import com.mrprez.gencross.online.exception.NotAllowedAccessException;
 import com.mrprez.gencross.online.exception.UserNotFoundException;
 import com.mrprez.gencross.online.model.LoadedCharacter;
 import com.mrprez.gencross.online.model.RpgCharacter;
-import com.mrprez.gencross.online.model.RpgCharacterWithTable;
 import com.mrprez.gencross.online.model.Table;
 import com.mrprez.gencross.online.model.User;
+import com.mrprez.gencross.online.model.aggregation.RpgCharacterWithTableAndPlayer;
 import com.mrprez.gencross.online.model.id.CharacterId;
 import com.mrprez.gencross.online.model.id.TableId;
 import com.mrprez.gencross.online.model.id.UserId;
@@ -68,7 +68,7 @@ public class CharacterService {
 	}
 
 	public LoadedCharacter getCharacter(CharacterId characterId, UserId userId) throws Exception {
-		RpgCharacterWithTable rpgCharacterWithTable = characterDao.getRpgCharacterWithTable(characterId);
+		RpgCharacterWithTableAndPlayer rpgCharacterWithTable = characterDao.getRpgCharacterWithTableAndPlayer(characterId);
 		if (!rpgCharacterWithTable.getTable().getGmId().equals(userId) 
 				&& !rpgCharacterWithTable.getRpgCharacter().getPlayerId().equals(userId)) {
 			throw new NotAllowedAccessException();
@@ -83,13 +83,13 @@ public class CharacterService {
 		return loadedCharacter;
 	}
 	
-	public RpgCharacterWithTable getRpgCharacterWithTable(CharacterId characterId, UserId userId) {
-		RpgCharacterWithTable rpgCharacterWithTable = characterDao.getRpgCharacterWithTable(characterId);
-		if (!rpgCharacterWithTable.getTable().getGmId().equals(userId) 
-				&& !rpgCharacterWithTable.getRpgCharacter().getPlayerId().equals(userId)) {
+	public RpgCharacterWithTableAndPlayer getRpgCharacterWithTableAndPlayer(CharacterId characterId, UserId userId) {
+		RpgCharacterWithTableAndPlayer rpgCharacterWithTableAndPlayer = characterDao.getRpgCharacterWithTableAndPlayer(characterId);
+		if (!rpgCharacterWithTableAndPlayer.getTable().getGmId().equals(userId) 
+				&& !rpgCharacterWithTableAndPlayer.getRpgCharacter().getPlayerId().equals(userId)) {
 			throw new NotAllowedAccessException();
 		}
-		return rpgCharacterWithTable;
+		return rpgCharacterWithTableAndPlayer;
 	}
 
 	public Personnage setValue(CharacterId characterId, String propertyName, String valueAsString, UserId userId) throws Exception {

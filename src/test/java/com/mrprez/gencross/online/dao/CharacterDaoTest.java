@@ -16,8 +16,8 @@ import com.mrprez.gencross.online.dbbuilder.CharacterTestDbBuilder;
 import com.mrprez.gencross.online.dbbuilder.TableTestDbBuilder;
 import com.mrprez.gencross.online.dbbuilder.UserTestDbBuilder;
 import com.mrprez.gencross.online.model.RpgCharacter;
-import com.mrprez.gencross.online.model.RpgCharacterWithTable;
 import com.mrprez.gencross.online.model.Table;
+import com.mrprez.gencross.online.model.aggregation.RpgCharacterWithTableAndPlayer;
 import com.mrprez.gencross.online.model.id.CharacterId;
 import com.mrprez.gencross.online.model.id.TableId;
 import com.mrprez.gencross.online.model.id.UserId;
@@ -51,7 +51,7 @@ public class CharacterDaoTest extends AbstractDaoTest {
 				.save(getConnection());
 		
 		// WHEN
-		RpgCharacterWithTable characterWithTable = characterDao.getRpgCharacterWithTable(characterId);
+		RpgCharacterWithTableAndPlayer characterWithTable = characterDao.getRpgCharacterWithTableAndPlayer(characterId);
 		
 		// THEN
 		Table table = characterWithTable.getTable();

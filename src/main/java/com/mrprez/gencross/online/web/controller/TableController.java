@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mrprez.gencross.online.model.Table;
-import com.mrprez.gencross.online.model.TableWithCharacters;
+import com.mrprez.gencross.online.model.aggregation.TableWithCharactersAndPlayers;
 import com.mrprez.gencross.online.model.id.TableId;
 import com.mrprez.gencross.online.model.id.UserId;
 import com.mrprez.gencross.online.service.GencrossAuthenticationProvider;
@@ -44,8 +44,8 @@ public class TableController {
 	@GetMapping(path = "/{tableId}")
 	public ModelAndView get(@PathVariable("tableId") TableId tableId) {
 		UserId userId = authenticationProvider.getAuthenticatedUser().getId();
-		TableWithCharacters tableWithCharacters = tableService.getTableAsGm(tableId, userId);
-		return new ModelAndView("/jsp/table.jsp", "table", tableWithCharacters.getTable());
+		TableWithCharactersAndPlayers tableWithCharactersAndPlayers = tableService.getTableAsGm(tableId, userId);
+		return new ModelAndView("/jsp/table.jsp", "table", tableWithCharactersAndPlayers.getTable());
     }
 	
 

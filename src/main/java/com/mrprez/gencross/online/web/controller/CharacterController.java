@@ -15,8 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.mrprez.gencross.online.exception.NotAllowedAccessException;
 import com.mrprez.gencross.online.exception.UserNotFoundException;
-import com.mrprez.gencross.online.model.RpgCharacterWithTable;
-import com.mrprez.gencross.online.model.TableWithCharacters;
+import com.mrprez.gencross.online.model.aggregation.RpgCharacterWithTableAndPlayer;
+import com.mrprez.gencross.online.model.aggregation.TableWithCharactersAndPlayers;
 import com.mrprez.gencross.online.model.id.CharacterId;
 import com.mrprez.gencross.online.model.id.TableId;
 import com.mrprez.gencross.online.model.id.UserId;
@@ -45,16 +45,17 @@ public class CharacterController {
 	public ModelAndView create(@RequestParam("tableId") TableId tableId, @RequestParam("name") String name) throws Exception {
 		UserId userId = authenticationProvider.getAuthenticatedUser().getId();
 		characterService.createCharacter(tableId, userId, name);
-		return new ModelAndView("redirect:home", "tableId", tableId.getInt());
+		return new ModelAndView("redirect:/dispatcher/home", "tableId", tableId.getInt());
 	}
 	
 	@GetMapping(path = "{characterId}")
 	public ModelAndView get(@PathVariable("characterId") CharacterId characterId) throws Exception {
 		UserId userId = authenticationProvider.getAuthenticatedUser().getId();
-		RpgCharacterWithTable characterWithTable = characterService.getRpgCharacterWithTable(characterId, userId);
+		RpgCharacterWithTableAndPlayer characterWithTableAndPlayer = characterService.getRpgCharacterWithTableAndPlayer(characterId, userId);
 		ModelAndView modelAndView = new ModelAndView("/jsp/character.jsp");
-		modelAndView.addObject("character", characterWithTable.getRpgCharacter());
-		modelAndView.addObject("table", characterWithTable.getTable());
+		modelAndView.addObject("character", characterWithTableAndPlayer.getRpgCharacter());
+		modelAndView.addObject("table", characterWithTableAndPlayer.getTable());
+		modelAndView.addObject("player", characterWithTableAndPlayer.getPlayer());
 		return modelAndView;
 	}
 	
@@ -68,7 +69,7 @@ public class CharacterController {
 			@RequestParam("searchOrInvite") String searchOrInvite, @RequestParam("searchedPlayer") String searchedPlayer,
 			Locale locale) {
 		UserId userId = authenticationProvider.getAuthenticatedUser().getId();
-		RpgCharacterWithTable characterWithTable = characterService.getRpgCharacterWithTable(characterId, userId);
+		RpgCharacterWithTableAndPlayer characterWithTable = characterService.getRpgCharacterWithTableAndPlayer(characterId, userId);
 		if (! characterWithTable.getTable().getGmId().equals(userId)) {
 			throw new NotAllowedAccessException();
 		}
@@ -77,7 +78,7 @@ public class CharacterController {
 			try {
 				characterService.attributeToExistingPlayer(characterId, searchedPlayer);
 			} catch (UserNotFoundException e) {
-				List<TableWithCharacters> userGmTables = tableService.getUserGmTables(authenticationProvider.getAuthenticatedUser().getId());
+				List<TableWithCharactersAndPlayers> userGmTables = tableService.getUserGmTables(authenticationProvider.getAuthenticatedUser().getId());
 				ModelAndView modelAndView = new ModelAndView("/jsp/home.jsp");
 				modelAndView.addObject("tableId", characterWithTable.getTable().getId());
 				modelAndView.addObject("userGmTables", userGmTables);
@@ -86,7 +87,7 @@ public class CharacterController {
 				return modelAndView;
 			}
 		}
-		return new ModelAndView("redirect:/dispatcher/home");
+		return new ModelAndView("redirect:/dispatcher/home", "tableId", characterWithTable.getTable().getId().getInt());
 	}
 	
 

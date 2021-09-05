@@ -34,6 +34,7 @@ window.addEventListener('load', (event) => {
 			refreshCharacter(character);
 		}
 	);
+	new bootstrap.Tooltip(document.querySelectorAll("#playerName")[0]);
 });
 
 function displayPointPool(pointPool) {
@@ -491,13 +492,22 @@ function refreshCharacter(character) {
 	<body class="character">
 		<%@ include file="include/top.jsp" %>
 		<div class="container">
-			<nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/dispatcher/home"><fmt:message key="label.home"/></a></li>
-					<li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/dispatcher/table/${table.id}">${table.name}</a></li>
-					<li class="breadcrumb-item active" aria-current="page">${character.name}</li>
-				</ol>
-			</nav>
+			<div class="row">
+				<div class="col">
+					<nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/dispatcher/home"><fmt:message key="label.home"/></a></li>
+							<li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/dispatcher/table/${table.id}">${table.name}</a></li>
+							<li class="breadcrumb-item active" aria-current="page">${character.name}</li>
+						</ol>
+					</nav>
+				</div>
+				<div class="col text-end">
+					<span id="playerName" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="<fmt:message key="label.playerTooltip"/>">
+						${player.username}
+					</span>
+				</div>
+			</div>
 			<div class="row mb-3">
 				<div class="col border">
 					<div class="characterHeader ps-3 pb-3 pt-3">

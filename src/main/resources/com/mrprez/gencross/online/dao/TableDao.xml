@@ -12,13 +12,13 @@
 		<result column="gm_id" property="gmId"/>
 	</resultMap>
 	
-	<resultMap id="TableWithCharacters" type="com.mrprez.gencross.online.model.TableWithCharacters">
+	<resultMap id="TableWithCharactersAndPlayers" type="com.mrprez.gencross.online.model.aggregation.TableWithCharactersAndPlayers">
 		<id column="id"/>
 		<association property="table" resultMap="Table"/>
-		<collection property="characters" resultMap="com.mrprez.gencross.online.dao.CharacterDao.RpgCharacter" columnPrefix="rc_"/>
+		<collection property="charactersWithPlayers" resultMap="com.mrprez.gencross.online.dao.CharacterDao.RpgCharacterWithPlayer" columnPrefix="rc_"/>
 	</resultMap>
 
-	<select id="getTablesAsGm" resultMap="TableWithCharacters">
+	<select id="getTablesAsGm" resultMap="TableWithCharactersAndPlayers">
 		SELECT
 			rt.id AS id,
 			rt.name AS name,
@@ -30,14 +30,18 @@
 			rc.table_id AS rc_table_id,
 			rc.player_id AS rc_player_id,
 			rc.data AS rc_data,
-			rc.creation_date AS rc_creation_date
+			rc.creation_date AS rc_creation_date,
+			p.id AS rc_p_id,
+			p.username AS rc_p_username,
+			p.email AS rc_p_email
 		FROM rpg_table rt
 		LEFT JOIN rpg_character rc ON rc.table_id=rt.id
+		LEFT JOIN user p ON p.id=rc.player_id
 		WHERE rt.gm_id = #{userId} 
 		ORDER BY rt.creation_date DESC
 	</select>
 
-	<select id="getTableAsGm" resultMap="TableWithCharacters">
+	<select id="getTableAsGm" resultMap="TableWithCharactersAndPlayers">
 		SELECT
 			rt.id AS id,
 			rt.name AS name,

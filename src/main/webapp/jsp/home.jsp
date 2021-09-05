@@ -121,16 +121,23 @@ function openAttributeToPlayer(event, characterId) {
 										<div id="flush-collapseGmTable${userGmTable.table.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingGmTable${userGmTable.table.id}">
 											<div class="accordion-body">
 												<ul class="list-group mb-3">
-													<c:forEach items="${userGmTable.characters}" var="character">
-														<li class="list-group-item character" onclick="clickOnCharacter(${character.id})">
-															<span class="characterName">${character.name}</span>
+													<c:forEach items="${userGmTable.charactersWithPlayers}" var="characterWithPlayer">
+														<li class="list-group-item character" onclick="clickOnCharacter(${characterWithPlayer.character.id})">
+															<span class="characterName">${characterWithPlayer.character.name}</span>
 															<span class="playerContainer">
-																<button type="button" class="btn btn-primary buttonWithSpinner" onclick="openAttributeToPlayer(event, ${character.id})" id="attributeToPlayerButton_${character.id}">
-																	<span class="buttonLabel"><fmt:message key="label.attributeToPlayer"/></span>
-																	<div class="buttonSpinner spinner-border" role="status">
-																		<span class="visually-hidden"><fmt:message key="label.loading"/></span>
-																	</div>
-																</button>
+																<c:choose>
+																	<c:when test="${empty characterWithPlayer.player}">
+																		<button type="button" class="btn btn-primary buttonWithSpinner" onclick="openAttributeToPlayer(event, ${characterWithPlayer.character.id})" id="attributeToPlayerButton_${character.id}">
+																			<span class="buttonLabel"><fmt:message key="label.attributeToPlayer"/></span>
+																			<div class="buttonSpinner spinner-border" role="status">
+																				<span class="visually-hidden"><fmt:message key="label.loading"/></span>
+																			</div>
+																		</button>
+																	</c:when>
+																	<c:otherwise>
+																		<span class="badge bg-secondary" title="<fmt:message key="label.player"/>">${characterWithPlayer.player.username}</span>
+																	</c:otherwise>
+																</c:choose>
 															</span>
 														</li>
 													</c:forEach>
